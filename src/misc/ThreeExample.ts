@@ -47,7 +47,6 @@ export function init(c: HTMLCanvasElement) {
     controls = new TrackballControls( camera, canvas );
 
     //
-    parent.addEventListener( 'resize', onWindowResize );
     new ResizeObserver(onWindowResize).observe(parent)
 
 }
