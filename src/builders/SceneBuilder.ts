@@ -45,3 +45,11 @@ export function build(){
 
     return scene
 }
+
+export function buildCamera(width: number, height: number){
+    const camera = new THREE.PerspectiveCamera( 70, width / height, 1, 1000 );
+    camera.position.y = 150;
+    camera.position.z = 500;
+
+    return camera
+}
