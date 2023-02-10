@@ -51,8 +51,9 @@ const ModelView = ({
             return;
 
         console.log("loading: ", props.url)
+        setLP(0)
 
-        mv?.load(props.url, requestHeaders, (progress)=>{
+        mv.load(props.url, requestHeaders, (progress)=>{
             //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
             //console.log(progress.loaded, progress.total)
             setLP(progress.loaded/progress.total)
