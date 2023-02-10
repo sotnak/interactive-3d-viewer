@@ -19,26 +19,51 @@ const ModelView = ({
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const [mv, setMv] = useState<MV>()
+    const [loadPercentage, setLP] = useState<number>(0)
 
     useEffect(()=>{
-        if(canvasRef.current)
-            setMv(new MV(canvasRef.current))
+        if(!canvasRef.current)
+            return;
+
+        const canvasAttr = canvasRef.current.getAttribute("data-engine")
+
+        if(canvasAttr)
+            return;
+
+        console.log("init")
+
+        const n_mv = new MV(canvasRef.current)
+        n_mv.init()
+
+        setMv(n_mv)
     },[canvasRef.current])
 
     useEffect(()=>{
-        mv?.init()
-    },[mv])
+        if(!mv)
+            return;
 
-    useEffect(()=>{
+        console.log("set controls:", ControlsBuilder.ControlsOption[controlsOption])
         mv?.setControls(controlsOption)
-    })
+    },[mv, controlsOption])
 
     useEffect(()=>{
-        mv?.load(props.url, requestHeaders)
+        if(!mv)
+            return;
+
+        console.log("loading: ", props.url)
+
+        mv?.load(props.url, requestHeaders, (progress)=>{
+            //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
+            //console.log(progress.loaded, progress.total)
+            setLP(progress.loaded/progress.total)
+        }).then(()=>{
+            setLP(100)
+        })
     },[mv, props.url, requestHeaders])
 
     return (
         <div style={style}>
+            <span style={{position: 'absolute', top: '0px', left: '0px'}}>{loadPercentage}</span>
             <canvas ref={canvasRef}/>
         </div>
     );

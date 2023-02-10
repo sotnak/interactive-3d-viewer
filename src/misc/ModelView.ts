@@ -51,12 +51,12 @@ export default class ModelView{
         this.renderer.render(this.scene, this.camera)
     }
 
-    async load(url: string, requestHeaders: {[p: string]: string}){
+    async load(url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void){
 
         if(!this.scene)
             throw new Error('Unable to load. Scene is undefined.')
 
         ModelLoader.removeLoaded(this.scene);
-        await ModelLoader.loadGLTF(url, requestHeaders, this.scene);
+        await ModelLoader.loadGLTF(url, requestHeaders, this.scene, onProgress);
     }
 }

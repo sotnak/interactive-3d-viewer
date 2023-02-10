@@ -5,11 +5,11 @@ const groupName = "loaded model"
 
 THREE.Cache.enabled = true
 
-export async function loadGLTF(url: string, requestHeaders: {[p: string]: string}, scene: THREE.Scene){
+export async function loadGLTF(url: string, requestHeaders: {[p: string]: string}, scene: THREE.Scene, onProgress?: (event: ProgressEvent<EventTarget>) => void ){
     const loader = new GLTFLoader();
     loader.setRequestHeader(requestHeaders)
 
-    const gltf = await loader.loadAsync(url)
+    const gltf = await loader.loadAsync(url, onProgress)
 
     const group = new THREE.Group()
 
