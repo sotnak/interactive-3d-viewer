@@ -43,10 +43,10 @@ export default class ModelView{
     private animate = ()=>{
         requestAnimationFrame(this.animate)
 
-        if(!this.controls || !this.renderer || !this.scene || !this.camera)
+        if(!this.renderer || !this.scene || !this.camera)
             return;
 
-        this.controls.update();
+        this.controls?.update();
 
         this.renderer.render(this.scene, this.camera)
     }
