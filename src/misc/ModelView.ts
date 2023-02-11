@@ -6,20 +6,35 @@ import * as ControlsBuilder from "../builders/ControlsBuilder";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "./ModelLoader";
+import {SynchronizedAttributes, Synchronizer} from "./Synchronizer";
 
 
 export default class ModelView{
     private readonly canvas: HTMLCanvasElement;
-    private renderer: THREE.WebGLRenderer | undefined;
+    private readonly id: number;
+    private readonly synchronizer?: Synchronizer;
+    private renderer?: THREE.WebGLRenderer;
     private parentElement: HTMLElement;
-    private scene: THREE.Scene | undefined;
-    private camera: THREE.PerspectiveCamera | undefined;
-    private controls: OrbitControls | TrackballControls | undefined;
+    private scene?: THREE.Scene;
+    private camera?: THREE.PerspectiveCamera;
+    private controls?: OrbitControls | TrackballControls;
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, id: number, synchronizer?: Synchronizer) {
         this.canvas = canvas
         this.parentElement = getParentElement(this.canvas)
+        this.id = id
+        this.synchronizer = synchronizer
     }
+
+    readonly SyncFun = (attr: SynchronizedAttributes)=>{
+
+        if(attr.cameraPosition)
+            this.camera?.position.set(attr.cameraPosition.x, attr.cameraPosition.y, attr.cameraPosition.z)
+
+        if(attr.cameraTarget)
+            this.controls?.target.set(attr.cameraTarget.x, attr.cameraTarget.y, attr.cameraTarget.z)
+    }
+
     init(){
         this.renderer = RendererBuilder.build(this.canvas);
         this.scene = SceneBuilder.build();
@@ -35,20 +50,27 @@ export default class ModelView{
         if(!this.camera)
             throw new Error('Unable to set controls. Camera is undefined.')
 
-        this.controls?.dispose()
+        const oldControls = this.controls
+        this.controls = undefined
+        oldControls?.dispose()
 
         this.controls = ControlsBuilder.build(this.canvas, this.camera, option)
+        this.controls.zoomSpeed = 1;
+
+        this.controls.addEventListener('change',()=>{
+            this.synchronizer?.update(this.id, {cameraPosition: this.camera?.position, cameraTarget: this.controls?.target})
+        })
     }
 
     private animate = ()=>{
         requestAnimationFrame(this.animate)
 
-        if(!this.renderer || !this.scene || !this.camera)
+        if(!this.scene || !this.camera)
             return;
 
         this.controls?.update();
 
-        this.renderer.render(this.scene, this.camera)
+        this.renderer?.render(this.scene, this.camera)
     }
 
     async load(url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void){

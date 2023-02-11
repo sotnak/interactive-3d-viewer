@@ -1,12 +1,15 @@
 import React, {useEffect, useRef, useState} from "react";
 import * as ControlsBuilder from './builders/ControlsBuilder'
+import * as IDAuthority from './misc/IDAuthority'
 import MV from "./misc/ModelView";
+import {Synchronizer} from "./misc/Synchronizer";
 
 interface Props {
-    style: React.CSSProperties,
-    requestHeaders: {[p: string]: string},
+    style?: React.CSSProperties
+    requestHeaders?: {[p: string]: string}
     url: string,
-    controlsOption: ControlsBuilder.ControlsOption
+    controlsOption?: ControlsBuilder.ControlsOption
+    synchronizer?: Synchronizer
 }
 
 const ModelView = ({
@@ -18,9 +21,11 @@ const ModelView = ({
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
+    const [id] = useState<number>(IDAuthority.getId())
     const [mv, setMv] = useState<MV>()
     const [loadPercentage, setLP] = useState<number>(0)
 
+    // setup scene, when canvas is ready
     useEffect(()=>{
         if(!canvasRef.current)
             return;
@@ -30,27 +35,48 @@ const ModelView = ({
         if(canvasAttr)
             return;
 
-        console.log("init")
+        console.log(id, "init")
 
-        const n_mv = new MV(canvasRef.current)
+        const n_mv = new MV(canvasRef.current, id, props.synchronizer)
         n_mv.init()
 
         setMv(n_mv)
     },[canvasRef.current])
 
+    // setup / cleanup synchronization, when mv is ready and synchronizer is provided
     useEffect(()=>{
         if(!mv)
             return;
 
-        console.log("set controls:", ControlsBuilder.ControlsOption[controlsOption])
+        if(props.synchronizer) {
+            console.log(id, "register for synchronization")
+            props.synchronizer?.register(id, mv.SyncFun)
+        }
+
+        //cleanup function
+        return ()=>{
+            if(props.synchronizer) {
+                console.log(id, "synchronizer cleanup")
+                props.synchronizer.remove(id)
+            }
+        }
+    },[props.synchronizer, mv])
+
+    // set controls, when mv is ready / controlsOption changes
+    useEffect(()=>{
+        if(!mv)
+            return;
+
+        console.log(id, "set controls:", ControlsBuilder.ControlsOption[controlsOption])
         mv?.setControls(controlsOption)
     },[mv, controlsOption])
 
+    // load model, when mv is ready / url or requestHeaders changes
     useEffect(()=>{
         if(!mv)
             return;
 
-        console.log("loading: ", props.url)
+        console.log(id, "loading: ", props.url)
         setLP(0)
 
         mv.load(props.url, requestHeaders, (progress)=>{

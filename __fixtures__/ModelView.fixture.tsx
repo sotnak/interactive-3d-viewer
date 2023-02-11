@@ -19,28 +19,17 @@ export default {
                           requestHeaders={{'Authorization': env.token}}
     />,
     jail: <ModelView style={{width: '99%', height: '98%', position: 'absolute'}}
-                      controlsOption={ControlsOption.Orbit}
                       url={'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'}
                       requestHeaders={{'Authorization': env.token}}
     />,
     double: <div>
-        <ModelView style={{position: 'absolute', width:'45%', left: '0px', top: '0px', bottom: '10px', border: '5px solid'}}
-                   controlsOption={ControlsOption.Orbit}
+        <ModelView style={{position: 'absolute', width:'49%', left: '0px', top: '0px', bottom: '10px'}}
                    url={'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'}
                    requestHeaders={{'Authorization': env.token}}
         />
-        <ModelView style={{position: 'absolute', width:'45%', right: '0px', top: '0px', bottom: '10px', border: '2px dashed'}}
-                   controlsOption={ControlsOption.Orbit}
+        <ModelView style={{position: 'absolute', width:'49%', right: '0px', top: '0px', bottom: '10px'}}
                    url={'http://109.123.202.213:3000/models/62556f89d41c1c0038689e4d'}
                    requestHeaders={{'Authorization': env.token}}
         />
     </div>
 }
-
-/*
-<ModelView style={{}}
-                   controlsOption={ControlsOption.Orbit}
-                   url={'http://109.123.202.213:3000/models/62556f89d41c1c0038689e4d'}
-                   requestHeaders={{'Authorization': env.token}}
-        />
- */
