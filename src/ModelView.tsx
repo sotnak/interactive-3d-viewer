@@ -10,14 +10,20 @@ interface Props {
     url: string,
     controlsOption?: ControlsBuilder.ControlsOption
     synchronizer?: Synchronizer
+    cursorEnabled?: boolean
 }
 
 const ModelView = ({
                        style = {},
                        requestHeaders = {},
                        controlsOption = ControlsBuilder.ControlsOption.Orbit,
+                       cursorEnabled = false,
                        ...props
                     }: Props) => {
+
+    if( style.height || (style.top && style.bottom) ){} else {
+        style.height = 450
+    }
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -62,6 +68,10 @@ const ModelView = ({
         }
     },[props.synchronizer, mv])
 
+    useEffect(()=>{
+        mv?.setCursorState(cursorEnabled)
+    }, [cursorEnabled, mv])
+
     // set controls, when mv is ready / controlsOption changes
     useEffect(()=>{
         if(!mv)
@@ -90,7 +100,7 @@ const ModelView = ({
 
     return (
         <div style={style}>
-            <span style={{position: 'absolute', top: '0px', left: '0px'}}>{loadPercentage}</span>
+            <span style={{ top: '0px', left: '0px'}}>{loadPercentage}</span>
             <canvas ref={canvasRef}/>
         </div>
     );

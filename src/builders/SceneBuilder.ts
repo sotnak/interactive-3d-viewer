@@ -53,3 +53,16 @@ export function buildCamera(width: number, height: number){
 
     return camera
 }
+
+export function buildCursor(scene: THREE.Scene){
+    const geometry = new THREE.BufferGeometry();
+    geometry.setFromPoints( [ new THREE.Vector3(), new THREE.Vector3() ] );
+
+    const cursor: Cursor = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x00ff00}) );
+    cursor.visible = false;
+
+    scene.add(cursor);
+    return cursor;
+}
+
+export class Cursor extends THREE.Line<any, THREE.LineBasicMaterial>{}

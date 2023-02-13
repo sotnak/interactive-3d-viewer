@@ -22,7 +22,7 @@ export default class ModelView{
     private camera?: THREE.PerspectiveCamera;
     private controls?: OrbitControls | TrackballControls;
     private loadedModel?: THREE.Group;
-    private line?: THREE.Line<any, THREE.LineBasicMaterial>;
+    private cursor?: SceneBuilder.Cursor;
 
     constructor(canvas: HTMLCanvasElement, id: number, synchronizer?: Synchronizer) {
         this.canvas = canvas
@@ -34,10 +34,7 @@ export default class ModelView{
     readonly SyncFun = (attr: SynchronizedAttributes)=>{
         SynchronizedTasks.setCameraPosition(attr, this.camera)
         SynchronizedTasks.setCameraTarget(attr, this.controls)
-        //SynchronizedTasks.setCursorPosition(attr, this.raycaster, this.camera, this.line)
-
-        if(attr.cursorPosition)
-            CursorHandler.setCursor(attr.cursorPosition, this.raycaster, this.camera, this.line, this.loadedModel)
+        SynchronizedTasks.setCursorPosition(attr, this.raycaster, this.camera, this.cursor, this.loadedModel)
     }
 
     readonly onPointerMove = ( event: { clientX: number; clientY: number; } ) => {
@@ -49,7 +46,7 @@ export default class ModelView{
         pointer.x = ( (event.clientX - bounding.left) / bounding.width ) * 2 - 1;
         pointer.y = - ( (event.clientY + bounding.top) / bounding.height ) * 2 + 1;
 
-        CursorHandler.setCursor(pointer, this.raycaster, this.camera, this.line, this.loadedModel)
+        CursorHandler.setCursor(pointer, this.raycaster, this.camera, this.cursor, this.loadedModel)
 
         this.synchronizer?.update(this.id, {cursorPosition: pointer})
     }
@@ -60,18 +57,21 @@ export default class ModelView{
         this.camera = SceneBuilder.buildCamera(this.parentElement.clientWidth, this.parentElement.clientHeight);
         this.controls = ControlsBuilder.build(this.canvas, this.camera)
 
-        const geometry = new THREE.BufferGeometry();
-        geometry.setFromPoints( [ new THREE.Vector3(), new THREE.Vector3() ] );
-
-        this.line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x00ff00}) );
-        this.line.visible = false;
-        this.scene.add( this.line );
+        this.cursor = SceneBuilder.buildCursor(this.scene)
 
         RendererBuilder.enableResizing(this.canvas, this.camera, this.renderer);
 
-        this.canvas.addEventListener( 'pointermove', this.onPointerMove );
-
         this.animate()
+    }
+
+    setCursorState(enabled: boolean){
+        if(enabled){
+            this.canvas.addEventListener( 'pointermove', this.onPointerMove );
+        }else{
+            this.canvas.removeEventListener( 'pointermove', this.onPointerMove );
+            if(this.cursor)
+                this.cursor.visible=false
+        }
     }
 
     setControls(option: ControlsBuilder.ControlsOption){
@@ -102,6 +102,7 @@ export default class ModelView{
     }
 
     async load(url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void){
+        this.loadedModel = undefined
 
         if(!this.scene)
             throw new Error('Unable to load. Scene is undefined.')

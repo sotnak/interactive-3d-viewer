@@ -5,26 +5,31 @@ import {Synchronizer} from "./misc/Synchronizer";
 interface Props{
     requestHeaders?: {[p: string]: string}
     urls: string[]
+    styles?: React.CSSProperties[]
+    cursorEnabled?: boolean
 }
 
-const ModelCompare = (props: Props)=>{
+const ModelCompare = ({
+                          //styles = [{},{}],
+                          ...props}: Props)=>{
 
     if(props.urls.length != 2)
         throw new Error('Exactly 2 urls must be provided.')
 
+    if(props.styles && props.styles?.length != 2)
+        throw new Error('Exactly 2 styles must be provided.')
+
     const[synchronizer] = useState<Synchronizer>(new Synchronizer)
 
     return<div>
-        <ModelView style={{position: 'absolute', width:'49%', left: '0px', top: '0px', bottom: '10px'}}
-                   url={props.urls[0]}
-                   requestHeaders={props.requestHeaders}
-                   synchronizer={synchronizer}
-        />
-        <ModelView style={{position: 'absolute', width:'49%', right: '0px', top: '0px', bottom: '10px'}}
-                   url={props.urls[1]}
-                   requestHeaders={props.requestHeaders}
-                   synchronizer={synchronizer}
-        />
+        {props.urls.map((url, index)=>
+            <ModelView style={props.styles?.at(index)}
+                       cursorEnabled={props.cursorEnabled}
+                       url={url}
+                       requestHeaders={props.requestHeaders}
+                       synchronizer={synchronizer}
+            />
+        )}
     </div>
 }
 

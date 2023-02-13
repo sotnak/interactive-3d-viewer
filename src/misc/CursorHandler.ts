@@ -1,6 +1,7 @@
 import * as THREE from "three";
+import * as SceneBuilder from "../builders/SceneBuilder"
 
-export const setCursor = (pointer: THREE.Vector2, raycaster: THREE.Raycaster, camera?: THREE.PerspectiveCamera, line?: THREE.Line<any, THREE.LineBasicMaterial>, loadedModel?: THREE.Group) => {
+export const setCursor = (pointer: THREE.Vector2, raycaster: THREE.Raycaster, camera?: THREE.PerspectiveCamera, line?: SceneBuilder.Cursor, loadedModel?: THREE.Group) => {
 
     const intersection = {
         intersects: false,
