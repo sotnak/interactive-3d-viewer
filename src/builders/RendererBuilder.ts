@@ -6,10 +6,12 @@ function onWindowResizeBuilder(canvas: HTMLCanvasElement, camera: THREE.Perspect
     const parent = getParentElement(canvas)
 
     return () => {
-        camera.aspect = parent.clientWidth / parent.clientHeight;
-        camera.updateProjectionMatrix();
 
         renderer.setSize(parent.clientWidth, parent.clientHeight);
+
+        const bounds = canvas.getBoundingClientRect()
+        camera.aspect = bounds.width / bounds.height;
+        camera.updateProjectionMatrix();
     };
 
 }

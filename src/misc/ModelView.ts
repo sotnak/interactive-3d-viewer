@@ -6,6 +6,8 @@ import * as ControlsBuilder from "../builders/ControlsBuilder";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "./ModelLoader";
+import * as CursorHandler from "./CursorHandler";
+import * as SynchronizedTasks from "./SynchronizedTasks"
 import {SynchronizedAttributes, Synchronizer} from "./Synchronizer";
 
 
@@ -13,11 +15,14 @@ export default class ModelView{
     private readonly canvas: HTMLCanvasElement;
     private readonly id: number;
     private readonly synchronizer?: Synchronizer;
+    private readonly raycaster = new THREE.Raycaster();
     private renderer?: THREE.WebGLRenderer;
     private parentElement: HTMLElement;
     private scene?: THREE.Scene;
     private camera?: THREE.PerspectiveCamera;
     private controls?: OrbitControls | TrackballControls;
+    private loadedModel?: THREE.Group;
+    private line?: THREE.Line<any, THREE.LineBasicMaterial>;
 
     constructor(canvas: HTMLCanvasElement, id: number, synchronizer?: Synchronizer) {
         this.canvas = canvas
@@ -27,12 +32,26 @@ export default class ModelView{
     }
 
     readonly SyncFun = (attr: SynchronizedAttributes)=>{
+        SynchronizedTasks.setCameraPosition(attr, this.camera)
+        SynchronizedTasks.setCameraTarget(attr, this.controls)
+        //SynchronizedTasks.setCursorPosition(attr, this.raycaster, this.camera, this.line)
 
-        if(attr.cameraPosition)
-            this.camera?.position.set(attr.cameraPosition.x, attr.cameraPosition.y, attr.cameraPosition.z)
+        if(attr.cursorPosition)
+            CursorHandler.setCursor(attr.cursorPosition, this.raycaster, this.camera, this.line, this.loadedModel)
+    }
 
-        if(attr.cameraTarget)
-            this.controls?.target.set(attr.cameraTarget.x, attr.cameraTarget.y, attr.cameraTarget.z)
+    readonly onPointerMove = ( event: { clientX: number; clientY: number; } ) => {
+
+        const pointer = new THREE.Vector2(0,0);
+
+        const bounding = this.canvas.getBoundingClientRect()
+
+        pointer.x = ( (event.clientX - bounding.left) / bounding.width ) * 2 - 1;
+        pointer.y = - ( (event.clientY + bounding.top) / bounding.height ) * 2 + 1;
+
+        CursorHandler.setCursor(pointer, this.raycaster, this.camera, this.line, this.loadedModel)
+
+        this.synchronizer?.update(this.id, {cursorPosition: pointer})
     }
 
     init(){
@@ -41,7 +60,16 @@ export default class ModelView{
         this.camera = SceneBuilder.buildCamera(this.parentElement.clientWidth, this.parentElement.clientHeight);
         this.controls = ControlsBuilder.build(this.canvas, this.camera)
 
+        const geometry = new THREE.BufferGeometry();
+        geometry.setFromPoints( [ new THREE.Vector3(), new THREE.Vector3() ] );
+
+        this.line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x00ff00}) );
+        this.line.visible = false;
+        this.scene.add( this.line );
+
         RendererBuilder.enableResizing(this.canvas, this.camera, this.renderer);
+
+        this.canvas.addEventListener( 'pointermove', this.onPointerMove );
 
         this.animate()
     }
@@ -79,6 +107,6 @@ export default class ModelView{
             throw new Error('Unable to load. Scene is undefined.')
 
         ModelLoader.removeLoaded(this.scene);
-        await ModelLoader.loadGLTF(url, requestHeaders, this.scene, onProgress);
+        this.loadedModel = await ModelLoader.loadGLTF(url, requestHeaders, this.scene, onProgress);
     }
 }

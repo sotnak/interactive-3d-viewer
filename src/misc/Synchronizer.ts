@@ -3,6 +3,7 @@ import * as THREE from "three";
 export interface SynchronizedAttributes{
     cameraPosition?: THREE.Vector3
     cameraTarget?: THREE.Vector3
+    cursorPosition?: THREE.Vector2
 }
 
 interface Target {

@@ -25,6 +25,7 @@ export async function loadGLTF(url: string, requestHeaders: {[p: string]: string
 
     removeLoaded(scene);
     scene.add( group );
+    return group;
 }
 
 export function removeLoaded(scene: THREE.Scene){
