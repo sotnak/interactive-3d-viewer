@@ -1,6 +1,6 @@
 import ModelView from "./ModelView";
 import React, {useState} from "react";
-import {Synchronizer} from "./misc/Synchronizer";
+import {Synchronizer} from "./synchronization/Synchronizer";
 
 interface Props{
     requestHeaders?: {[p: string]: string}
@@ -23,7 +23,8 @@ const ModelCompare = ({
 
     return<div>
         {props.urls.map((url, index)=>
-            <ModelView style={props.styles?.at(index)}
+            <ModelView key={index}
+                       style={props.styles?.at(index)}
                        cursorEnabled={props.cursorEnabled}
                        url={url}
                        requestHeaders={props.requestHeaders}

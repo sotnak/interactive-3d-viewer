@@ -6,9 +6,9 @@ import * as ControlsBuilder from "../builders/ControlsBuilder";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "./ModelLoader";
-import * as CursorHandler from "./CursorHandler";
-import * as SynchronizedTasks from "./SynchronizedTasks"
-import {SynchronizedAttributes, Synchronizer} from "./Synchronizer";
+import * as SynchronizedTasks from "../synchronization/SynchronizedTasks"
+import {SynchronizedAttributes, Synchronizer} from "../synchronization/Synchronizer";
+import Cursor, {setCursor} from "../cursors/Cursor";
 
 
 export default class ModelView{
@@ -22,7 +22,7 @@ export default class ModelView{
     private camera?: THREE.PerspectiveCamera;
     private controls?: OrbitControls | TrackballControls;
     private loadedModel?: THREE.Group;
-    private cursor?: SceneBuilder.Cursor;
+    private cursor?: Cursor;
 
     constructor(canvas: HTMLCanvasElement, id: number, synchronizer?: Synchronizer) {
         this.canvas = canvas
@@ -31,7 +31,7 @@ export default class ModelView{
         this.synchronizer = synchronizer
     }
 
-    readonly SyncFun = (attr: SynchronizedAttributes)=>{
+    private readonly SyncFun = (attr: SynchronizedAttributes)=>{
         SynchronizedTasks.setCameraPosition(attr, this.camera)
         SynchronizedTasks.setCameraTarget(attr, this.controls)
         SynchronizedTasks.setCursorPosition(attr, this.raycaster, this.camera, this.cursor, this.loadedModel)
@@ -44,9 +44,9 @@ export default class ModelView{
         const bounding = this.canvas.getBoundingClientRect()
 
         pointer.x = ( (event.clientX - bounding.left) / bounding.width ) * 2 - 1;
-        pointer.y = - ( (event.clientY + bounding.top) / bounding.height ) * 2 + 1;
+        pointer.y = - ( (event.clientY - bounding.top) / bounding.height ) * 2 + 1;
 
-        CursorHandler.setCursor(pointer, this.raycaster, this.camera, this.cursor, this.loadedModel)
+        setCursor(pointer, this.raycaster, this.camera, this.cursor, this.loadedModel)
 
         this.synchronizer?.update(this.id, {cursorPosition: pointer})
     }
@@ -62,6 +62,17 @@ export default class ModelView{
         RendererBuilder.enableResizing(this.canvas, this.camera, this.renderer);
 
         this.animate()
+        console.log(this.id, "setup scene")
+    }
+
+    useSynchronizer(synchronizer: Synchronizer){
+        synchronizer.register(this.id, this.SyncFun)
+        console.log(this.id, "use synchronizer")
+    }
+
+    removeSynchronizer(synchronizer: Synchronizer){
+        synchronizer.remove(this.id)
+        console.log(this.id, "remove synchronizer")
     }
 
     setCursorState(enabled: boolean){
@@ -70,8 +81,9 @@ export default class ModelView{
         }else{
             this.canvas.removeEventListener( 'pointermove', this.onPointerMove );
             if(this.cursor)
-                this.cursor.visible=false
+                this.cursor.hideCursor()
         }
+        console.log(this.id, "set cursor:", enabled)
     }
 
     setControls(option: ControlsBuilder.ControlsOption){
@@ -83,11 +95,11 @@ export default class ModelView{
         oldControls?.dispose()
 
         this.controls = ControlsBuilder.build(this.canvas, this.camera, option)
-        this.controls.zoomSpeed = 1;
 
         this.controls.addEventListener('change',()=>{
             this.synchronizer?.update(this.id, {cameraPosition: this.camera?.position, cameraTarget: this.controls?.target})
         })
+        console.log(this.id, "set controls:", ControlsBuilder.ControlsOption[option])
     }
 
     private animate = ()=>{
@@ -101,7 +113,7 @@ export default class ModelView{
         this.renderer?.render(this.scene, this.camera)
     }
 
-    async load(url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void){
+    async load(url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void): Promise<THREE.Group> {
         this.loadedModel = undefined
 
         if(!this.scene)
@@ -109,5 +121,7 @@ export default class ModelView{
 
         ModelLoader.removeLoaded(this.scene);
         this.loadedModel = await ModelLoader.loadGLTF(url, requestHeaders, this.scene, onProgress);
+        console.log(this.id, "loaded model:", url)
+        return this.loadedModel;
     }
 }

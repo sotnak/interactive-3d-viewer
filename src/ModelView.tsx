@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import * as ControlsBuilder from './builders/ControlsBuilder'
 import * as IDAuthority from './misc/IDAuthority'
 import MV from "./misc/ModelView";
-import {Synchronizer} from "./misc/Synchronizer";
+import {Synchronizer} from "./synchronization/Synchronizer";
 
 interface Props {
     style?: React.CSSProperties
@@ -27,7 +27,6 @@ const ModelView = ({
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const [id] = useState<number>(IDAuthority.getId())
     const [mv, setMv] = useState<MV>()
     const [loadPercentage, setLP] = useState<number>(0)
 
@@ -41,7 +40,9 @@ const ModelView = ({
         if(canvasAttr)
             return;
 
-        console.log(id, "init")
+        const id = IDAuthority.getId()
+
+        canvasRef.current.setAttribute('id', id.toString())
 
         const n_mv = new MV(canvasRef.current, id, props.synchronizer)
         n_mv.init()
@@ -55,21 +56,21 @@ const ModelView = ({
             return;
 
         if(props.synchronizer) {
-            console.log(id, "register for synchronization")
-            props.synchronizer?.register(id, mv.SyncFun)
+            mv.useSynchronizer(props.synchronizer)
         }
 
         //cleanup function
         return ()=>{
             if(props.synchronizer) {
-                console.log(id, "synchronizer cleanup")
-                props.synchronizer.remove(id)
+                mv.removeSynchronizer(props.synchronizer)
             }
         }
     },[props.synchronizer, mv])
 
     useEffect(()=>{
-        mv?.setCursorState(cursorEnabled)
+        if(!mv)
+            return;
+        mv.setCursorState(cursorEnabled)
     }, [cursorEnabled, mv])
 
     // set controls, when mv is ready / controlsOption changes
@@ -77,7 +78,6 @@ const ModelView = ({
         if(!mv)
             return;
 
-        console.log(id, "set controls:", ControlsBuilder.ControlsOption[controlsOption])
         mv?.setControls(controlsOption)
     },[mv, controlsOption])
 
@@ -85,8 +85,6 @@ const ModelView = ({
     useEffect(()=>{
         if(!mv)
             return;
-
-        console.log(id, "loading: ", props.url)
         setLP(0)
 
         mv.load(props.url, requestHeaders, (progress)=>{

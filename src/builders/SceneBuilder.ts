@@ -1,24 +1,35 @@
 import * as THREE from "three";
+import Cursor, {CursorOption} from "../cursors/Cursor";
+import {LineCursor} from "../cursors/LineCursor";
 
-function buildGround(scene: THREE.Scene){
+function buildGround(): THREE.Group{
+
+    const group = new THREE.Group()
+    group.name = "BUILDER_ground"
+
     const grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
     //@ts-ignore
     grid.material.opacity = 0.2;
     //@ts-ignore
     grid.material.transparent = true;
 
-    scene.add( grid );
+    group.add( grid );
 
     const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
     mesh.rotation.x = - Math.PI / 2;
     mesh.receiveShadow = true;
-    scene.add( mesh );
+    group.add( mesh );
+
+    return group;
 }
 
-function buildLight(scene: THREE.Scene){
+function buildLights(): THREE.Group {
+    const group = new THREE.Group()
+    group.name = "BUILDER_lights"
+
     const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x999999 );
     hemiLight.position.set( 0, 200, 0 );
-    scene.add( hemiLight );
+    group.add( hemiLight );
 
     const dirLight = new THREE.DirectionalLight( 0xffffff );
     dirLight.position.set( 0, 200, 100 );
@@ -29,24 +40,26 @@ function buildLight(scene: THREE.Scene){
     dirLight.shadow.camera.bottom = - 100;
     dirLight.shadow.camera.left = - 120;
     dirLight.shadow.camera.right = 120;
-    scene.add( dirLight );
+    group.add( dirLight );
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.3))
+    group.add(new THREE.AmbientLight(0xffffff, 0.3))
+
+    return group;
 }
 
-export function build(){
+export function build(): THREE.Scene{
     const scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xa0a0a0 );
     scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
 
-    buildGround(scene)
+    scene.add(buildGround())
 
-    buildLight(scene)
+    scene.add(buildLights())
 
     return scene
 }
 
-export function buildCamera(width: number, height: number){
+export function buildCamera(width: number, height: number): THREE.PerspectiveCamera{
     const camera = new THREE.PerspectiveCamera( 50, width / height, 1, 1000 );
     camera.position.y = 150;
     camera.position.z = 500;
@@ -54,15 +67,23 @@ export function buildCamera(width: number, height: number){
     return camera
 }
 
-export function buildCursor(scene: THREE.Scene){
+export function buildCursor(scene: THREE.Scene, option: CursorOption = CursorOption.line): Cursor{
     const geometry = new THREE.BufferGeometry();
     geometry.setFromPoints( [ new THREE.Vector3(), new THREE.Vector3() ] );
 
-    const cursor: Cursor = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x00ff00}) );
-    cursor.visible = false;
+    let cursor: Cursor
 
-    scene.add(cursor);
+    switch (option){
+        case CursorOption.line:
+           cursor = new LineCursor(new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x00ff00}) ));
+           break;
+
+        default:
+            throw new Error("unknown cursor option")
+    }
+
+    cursor.hideCursor()
+
+    scene.add(cursor.getObject3D());
     return cursor;
 }
-
-export class Cursor extends THREE.Line<any, THREE.LineBasicMaterial>{}
