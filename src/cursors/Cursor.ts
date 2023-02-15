@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import Intersection from "../Intersection";
+import Intersection from "../misc/Intersection";
 
 export default interface Cursor{
     projectCursor(intersects:  THREE.Intersection<THREE.Object3D<THREE.Event>>[], intersection: Intersection, loadedModel: THREE.Group): void

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import Intersection from "../Intersection";
+import Intersection from "../misc/Intersection";
 import Cursor from "./Cursor";
 
 export class LineCursor implements Cursor{
