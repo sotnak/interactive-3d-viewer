@@ -31,13 +31,24 @@ export default class ModelView{
         this.synchronizer = synchronizer
     }
 
+    private readonly animate = ()=>{
+        requestAnimationFrame(this.animate)
+
+        if(!this.scene || !this.camera)
+            return;
+
+        this.controls?.update();
+
+        this.renderer?.render(this.scene, this.camera)
+    }
+
     private readonly SyncFun = (attr: SynchronizedAttributes)=>{
         SynchronizedTasks.setCameraPosition(attr, this.camera)
         SynchronizedTasks.setCameraTarget(attr, this.controls)
         SynchronizedTasks.setCursorPosition(attr, this.raycaster, this.camera, this.cursor, this.loadedModel)
     }
 
-    readonly onPointerMove = ( event: { clientX: number; clientY: number; } ) => {
+    private readonly onPointerMove = ( event: { clientX: number; clientY: number; } ) => {
 
         const pointer = new THREE.Vector2(0,0);
 
@@ -100,17 +111,6 @@ export default class ModelView{
             this.synchronizer?.update(this.id, {cameraPosition: this.camera?.position, cameraTarget: this.controls?.target})
         })
         console.log(this.id, "set controls:", ControlsBuilder.ControlsOption[option])
-    }
-
-    private animate = ()=>{
-        requestAnimationFrame(this.animate)
-
-        if(!this.scene || !this.camera)
-            return;
-
-        this.controls?.update();
-
-        this.renderer?.render(this.scene, this.camera)
     }
 
     async load(url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void): Promise<THREE.Group> {
