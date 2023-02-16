@@ -3,6 +3,7 @@ import * as ControlsBuilder from './builders/ControlsBuilder'
 import * as IDAuthority from './misc/IDAuthority'
 import MV from "./misc/ModelView";
 import {Synchronizer} from "./synchronization/Synchronizer";
+import {CursorOption} from "./cursors/Cursor";
 
 interface Props {
     style?: React.CSSProperties
@@ -10,14 +11,14 @@ interface Props {
     url: string,
     controlsOption?: ControlsBuilder.ControlsOption
     synchronizer?: Synchronizer
-    cursorEnabled?: boolean
+    cursorOption?: CursorOption
 }
 
 const ModelView = ({
                        style = {},
                        requestHeaders = {},
                        controlsOption = ControlsBuilder.ControlsOption.Orbit,
-                       cursorEnabled = false,
+                       cursorOption = CursorOption.disabled,
                        ...props
                     }: Props) => {
 
@@ -70,8 +71,8 @@ const ModelView = ({
     useEffect(()=>{
         if(!mv)
             return;
-        mv.setCursorState(cursorEnabled)
-    }, [cursorEnabled, mv])
+        mv.useCursor(cursorOption)
+    }, [cursorOption, mv])
 
     // set controls, when mv is ready / controlsOption changes
     useEffect(()=>{

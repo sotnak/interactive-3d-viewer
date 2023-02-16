@@ -11,29 +11,24 @@ export class LineCursor implements Cursor{
         return this.line
     }
 
-    projectCursor(intersects:  THREE.Intersection<THREE.Object3D<THREE.Event>>[], intersection: Intersection, loadedModel: THREE.Group){
+    projectCursor(intersection: Intersection, loadedModel: THREE.Group){
 
-        if(!intersection.point || !intersection.normal)
-            throw new Error('unable to project cursor')
+        if(!intersection.point || !intersection.normal) {
+            console.warn("unable to project cursor")
+            return;
+        }
 
-        const p = intersects[ 0 ].point;
-        intersection.point?.copy( p );
+        const p = intersection.point.clone();
+        let n = intersection.normal.clone()
 
-        // @ts-ignore
-        const n = intersects[0].face.normal.clone();
         n.transformDirection( loadedModel.matrixWorld );
         n.multiplyScalar( 10 );
-        n.add( intersects[ 0 ].point );
-
-        // @ts-ignore
-        intersection.normal.copy( intersects[ 0 ].face.normal );
+        n.add( p );
 
         const positions = this.line.geometry.attributes.position;
         positions.setXYZ( 0, p.x, p.y, p.z );
         positions.setXYZ( 1, n.x, n.y, n.z );
         positions.needsUpdate = true;
-
-        intersects.length = 0;
 
         this.line.visible = true;
     }

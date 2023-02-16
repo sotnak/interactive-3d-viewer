@@ -1,12 +1,13 @@
 import ModelView from "./ModelView";
 import React, {useState} from "react";
 import {Synchronizer} from "./synchronization/Synchronizer";
+import {CursorOption} from "./cursors/Cursor";
 
 interface Props{
     requestHeaders?: {[p: string]: string}
     urls: string[]
     styles?: React.CSSProperties[]
-    cursorEnabled?: boolean
+    cursorOption?: CursorOption
 }
 
 const ModelCompare = ({
@@ -25,7 +26,7 @@ const ModelCompare = ({
         {props.urls.map((url, index)=>
             <ModelView key={index}
                        style={props.styles?.at(index)}
-                       cursorEnabled={props.cursorEnabled}
+                       cursorOption={props.cursorOption}
                        url={url}
                        requestHeaders={props.requestHeaders}
                        synchronizer={synchronizer}

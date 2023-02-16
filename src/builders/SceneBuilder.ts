@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import Cursor, {CursorOption} from "../cursors/Cursor";
 import {LineCursor} from "../cursors/LineCursor";
+import SphereCursor from "../cursors/SphereCursor";
 
 function buildGround(): THREE.Group{
 
@@ -61,22 +62,33 @@ export function build(): THREE.Scene{
 
 export function buildCamera(width: number, height: number): THREE.PerspectiveCamera{
     const camera = new THREE.PerspectiveCamera( 50, width / height, 1, 1000 );
-    camera.position.y = 150;
-    camera.position.z = 500;
+    camera.position.y = 50;
+    camera.position.z = 200;
 
     return camera
 }
 
-export function buildCursor(scene: THREE.Scene, option: CursorOption = CursorOption.line): Cursor{
-    const geometry = new THREE.BufferGeometry();
-    geometry.setFromPoints( [ new THREE.Vector3(), new THREE.Vector3() ] );
+export function buildCursor(scene: THREE.Scene, option: CursorOption): Cursor{
 
+    let geometry
+    let material
     let cursor: Cursor
 
     switch (option){
         case CursorOption.line:
-           cursor = new LineCursor(new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x00ff00}) ));
-           break;
+            geometry = new THREE.BufferGeometry();
+            geometry.setFromPoints( [ new THREE.Vector3(), new THREE.Vector3() ] );
+            material = new THREE.LineBasicMaterial({color: 0x00ff00})
+
+            cursor = new LineCursor(new THREE.Line( geometry, material ));
+            break;
+
+        case CursorOption.sphere:
+            geometry = new THREE.SphereGeometry( 1, 32, 16 );
+            material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+
+            cursor = new SphereCursor(new THREE.Mesh( geometry, material ))
+            break;
 
         default:
             throw new Error("unknown cursor option")

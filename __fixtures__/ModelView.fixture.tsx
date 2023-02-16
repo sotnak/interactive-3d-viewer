@@ -1,6 +1,8 @@
 import React from "react";
 import ModelView from "../src/ModelView";
 import {ControlsOption} from "../src/builders/ControlsBuilder";
+import {CursorOption} from "../src/cursors/Cursor";
+
 const env = require('../env.json')
 
 if(!env.token){
@@ -24,8 +26,13 @@ export default {
     noStyle: <ModelView url={'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'}
                      requestHeaders={{'Authorization': env.token}}
     />,
-    withCursor: <ModelView style={{width: '99%', height: '98%', position: 'absolute'}}
-                           cursorEnabled={true}
+    lineCursor: <ModelView style={{width: '99%', height: '98%', position: 'absolute'}}
+                           cursorOption={CursorOption.line}
+                           url={'http://109.123.202.213:3000/models/62556f89d41c1c0038689e4d'}
+                           requestHeaders={{'Authorization': env.token}}
+    />,
+    sphereCursor: <ModelView style={{width: '99%', height: '98%', position: 'absolute'}}
+                           cursorOption={CursorOption.sphere}
                            url={'http://109.123.202.213:3000/models/62556f89d41c1c0038689e4d'}
                            requestHeaders={{'Authorization': env.token}}
     />

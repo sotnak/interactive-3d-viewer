@@ -53,8 +53,6 @@ export function init(c: HTMLCanvasElement) {
 
 function onWindowResize() {
 
-    console.log(parent.clientWidth, parent.clientHeight)
-
     camera.aspect = parent.clientWidth / parent.clientHeight;
     camera.updateProjectionMatrix();
 
