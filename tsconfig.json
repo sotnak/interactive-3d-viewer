@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "types",
     "noImplicitAny": true,
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "target": "es2016",
+    "target": "es2020",
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ES2020",
     "declaration": true,
-    "declarationDir": "dist"
+    "declarationDir": "types"
 
   }
 }

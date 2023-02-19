@@ -22,14 +22,14 @@ export default {
         peerDepsExternal(),
         resolve(),
         typescript({
-            exclude:["__fixtures__/*.fixture.*"]
+            include:["src/**", "index.ts"],
         }),
-        postcss({
+        /*postcss({
             extensions: ['.css']
-        }),
+        }),*/
         uglify(),
         babel({
-            exclude: 'node_modules/**'
+            include:["src/**", "index.ts"]
         }),
     ]
 }
