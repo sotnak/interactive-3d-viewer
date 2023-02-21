@@ -1,7 +1,7 @@
 import React from "react";
 import ModelView from "../src/ModelView";
 import {ControlsOption} from "../src/builders/ControlsBuilder";
-import {CursorOption} from "../src/cursors/Cursor";
+import {CursorEventOption, CursorStyleOption} from "../src/cursors/Enums";
 
 const env = require('../env.json')
 
@@ -27,13 +27,21 @@ export default {
                      requestHeaders={{'Authorization': env.token}}
     />,
     lineCursor: <ModelView style={{width: '99%', height: '98%', position: 'absolute'}}
-                           cursorOption={CursorOption.line}
+                           cursorOption={{style: CursorStyleOption.line}}
                            url={'http://109.123.202.213:3000/models/62556f89d41c1c0038689e4d'}
                            requestHeaders={{'Authorization': env.token}}
     />,
     sphereCursor: <ModelView style={{width: '99%', height: '98%', position: 'absolute'}}
-                           cursorOption={CursorOption.sphere}
+                           cursorOption={{style: CursorStyleOption.sphere}}
                            url={'http://109.123.202.213:3000/models/62556f89d41c1c0038689e4d'}
                            requestHeaders={{'Authorization': env.token}}
-    />
+    />,
+    lineMoveCursor: <ModelView style={{width: '99%', height: '98%', position: 'absolute'}}
+                               cursorOption={{
+                                   style: CursorStyleOption.line,
+                                   event: CursorEventOption.pointermove
+                               }}
+                               url={'http://109.123.202.213:3000/models/62556f89d41c1c0038689e4d'}
+                               requestHeaders={{'Authorization': env.token}}
+    />,
 }

@@ -1,13 +1,13 @@
 import ModelView from "./ModelView";
 import React, {useState} from "react";
 import {Synchronizer} from "./synchronization/Synchronizer";
-import {CursorOption} from "./cursors/Cursor";
+import {CursorEventOption, CursorStyleOption} from "./cursors/Enums";
 
 interface Props{
     requestHeaders?: {[p: string]: string}
     urls: string[]
     styles?: React.CSSProperties[]
-    cursorOption?: CursorOption
+    cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
 }
 
 const ModelCompare = ({

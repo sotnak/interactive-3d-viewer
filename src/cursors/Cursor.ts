@@ -7,12 +7,6 @@ export default interface Cursor{
     getObject3D(): THREE.Object3D
 }
 
-export enum CursorOption{
-    disabled,
-    line,
-    sphere
-}
-
 function getIntersection(intersects: THREE.Intersection<THREE.Object3D<THREE.Event>>[]): Intersection{
 
     if(intersects.length == 0)
@@ -35,7 +29,7 @@ function getIntersection(intersects: THREE.Intersection<THREE.Object3D<THREE.Eve
     return intersection;
 }
 
-export const setCursorFromPointer = (pointer: THREE.Vector2, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group): Intersection => {
+export const setCursorFromPointer = (pointer: THREE.Vector2, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group, hideOnMiss: boolean = true): Intersection => {
 
     if(!camera || !loadedModel || !cursor)
         return {};
@@ -50,14 +44,14 @@ export const setCursorFromPointer = (pointer: THREE.Vector2, camera?: THREE.Pers
 
     if ( intersection.point ) {
         cursor.projectCursor(intersection, loadedModel)
-    } else {
+    } else if(hideOnMiss) {
         cursor.hideCursor()
     }
 
     return intersection
 }
 
-export const setCursorFrom3DPoint = (position: THREE.Vector3, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group): Intersection => {
+export const setCursorFrom3DPoint = (position: THREE.Vector3, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group, hideOnMiss: boolean = true): Intersection => {
 
     if(!camera || !loadedModel || !cursor)
         return {};
@@ -66,7 +60,7 @@ export const setCursorFrom3DPoint = (position: THREE.Vector3, camera?: THREE.Per
 
     if ( intersection.point ) {
         cursor.projectCursor(intersection, loadedModel)
-    } else {
+    } else if(hideOnMiss) {
         cursor.hideCursor()
     }
 

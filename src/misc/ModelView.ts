@@ -8,10 +8,11 @@ import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "./ModelLoader";
 import * as SynchronizedTasks from "../synchronization/SynchronizedTasks";
 import {SynchronizedAttributes, Synchronizer} from "../synchronization/Synchronizer";
-import Cursor, {CursorOption, setCursorFromPointer} from "../cursors/Cursor";
+import Cursor, {setCursorFromPointer} from "../cursors/Cursor";
 import {LineCursor} from "../cursors/LineCursor";
 import SphereCursor from "../cursors/SphereCursor";
-import {buildCursor} from "../builders/SceneBuilder";
+import * as CursorBuilder from "../builders/CursorBuilder"
+import {CursorEventOption, CursorStyleOption} from "../cursors/Enums";
 
 
 export default class ModelView{
@@ -25,6 +26,7 @@ export default class ModelView{
     private controls?: OrbitControls | TrackballControls;
     private loadedModel?: THREE.Group;
     private cursor?: Cursor;
+    private cursorEvent: CursorEventOption = CursorEventOption.click
 
     constructor(canvas: HTMLCanvasElement, id: number, synchronizer?: Synchronizer) {
         this.canvas = canvas
@@ -50,7 +52,7 @@ export default class ModelView{
         SynchronizedTasks.setCursor(attr, this.camera, this.cursor, this.loadedModel)
     }
 
-    private readonly onPointerMove = ( event: { clientX: number; clientY: number; } ) => {
+    private readonly onPointerEvent = ( event: { clientX: number; clientY: number; } ) => {
 
         const cursor = this.cursor?.getObject3D()
         if(!cursor)
@@ -63,7 +65,13 @@ export default class ModelView{
         pointer.x = ( (event.clientX - bounding.left) / bounding.width ) * 2 - 1;
         pointer.y = - ( (event.clientY - bounding.top) / bounding.height ) * 2 + 1;
 
-        setCursorFromPointer(pointer, this.camera, this.cursor, this.loadedModel)
+        const hideOnMiss = this.cursorEvent === CursorEventOption.pointermove
+
+        const intersection = setCursorFromPointer(pointer, this.camera, this.cursor, this.loadedModel, hideOnMiss)
+
+        // if hide on miss disabled and missed don't synchronize (issue with synchronizing 2D cursor on camera move)
+        if(!hideOnMiss && !intersection.point)
+            return;
 
         if(this.cursor?.constructor === LineCursor){
             this.synchronizer?.update(this.id, {cursor2D:{position: pointer, visible: cursor?.visible}})
@@ -83,7 +91,7 @@ export default class ModelView{
 
         RendererBuilder.enableResizing(this.canvas, this.camera, this.renderer);
 
-        this.canvas.addEventListener( 'pointermove', this.onPointerMove );
+        this.canvas.addEventListener( this.cursorEvent, this.onPointerEvent );
 
         this.animate()
     }
@@ -98,13 +106,20 @@ export default class ModelView{
         synchronizer.remove(this.id)
     }
 
-    useCursor(option: CursorOption){
+    useCursor(style: CursorStyleOption, event?: CursorEventOption){
         if(!this.scene)
             return;
 
-        console.log(this.id, "use cursor:", CursorOption[option])
+        if(event){
+            console.log(this.id, "use cursor event:", CursorEventOption[event])
+            this.canvas.removeEventListener(this.cursorEvent, this.onPointerEvent);
+            this.cursorEvent = event
+            this.canvas.addEventListener( this.cursorEvent, this.onPointerEvent );
+        }
 
-        if(option === CursorOption.disabled){
+        console.log(this.id, "use cursor style:", CursorStyleOption[style])
+
+        if(style === CursorStyleOption.disabled){
             if(this.cursor){
                 this.scene.remove(this.cursor.getObject3D());
                 this.cursor = undefined;
@@ -112,7 +127,7 @@ export default class ModelView{
             return;
         }
 
-        this.cursor = buildCursor(this.scene, option)
+        this.cursor = CursorBuilder.build(this.scene, style)
     }
 
     setControls(option: ControlsBuilder.ControlsOption){
