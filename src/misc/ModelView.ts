@@ -26,7 +26,7 @@ export default class ModelView{
     private controls?: OrbitControls | TrackballControls;
     private loadedModel?: THREE.Group;
     private cursor?: Cursor;
-    private cursorEvent: CursorEventOption = CursorEventOption.click
+    private cursorEvent: CursorEventOption = CursorEventOption.pointerdown
 
     constructor(canvas: HTMLCanvasElement, id: number, synchronizer?: Synchronizer) {
         this.canvas = canvas
