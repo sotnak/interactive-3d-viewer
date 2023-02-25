@@ -1,6 +1,6 @@
 import React from "react";
 import ModelCompare from '../src/ModelCompare'
-import {CursorEventOption, CursorStyleOption} from "../src/cursors/Enums";
+import {CursorEventOption, CursorStyleOption} from "../src/cursors/CursorOptions";
 
 const env = require('../env.json')
 

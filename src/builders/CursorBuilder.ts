@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import {LineCursor} from "../cursors/LineCursor";
 import SphereCursor from "../cursors/SphereCursor";
-import {CursorStyleOption} from "../cursors/Enums";
+import {CursorStyleOption} from "../cursors/CursorOptions";
 import {Cursor} from "../cursors/Cursor";
 
 export function build(scene: THREE.Scene, option: CursorStyleOption): Cursor{

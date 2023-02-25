@@ -1,7 +1,7 @@
 import React from "react";
 import ModelView from "../src/ModelView";
 import {ControlsOption} from "../src/builders/ControlsBuilder";
-import {CursorEventOption, CursorStyleOption} from "../src/cursors/Enums";
+import {CursorEventOption, CursorStyleOption} from "../src/cursors/CursorOptions";
 
 const env = require('../env.json')
 

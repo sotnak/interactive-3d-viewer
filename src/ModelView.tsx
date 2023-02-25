@@ -3,7 +3,7 @@ import {ControlsOption} from "./builders/ControlsBuilder";
 import * as IDAuthority from './misc/IDAuthority'
 import MV from "./misc/ModelView";
 import Synchronizer from "./synchronization/Synchronizer";
-import {CursorEventOption, CursorStyleOption} from "./cursors/Enums";
+import {CursorEventOption, CursorStyleOption} from "./cursors/CursorOptions";
 
 interface Props {
     style?: React.CSSProperties

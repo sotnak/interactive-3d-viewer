@@ -1,7 +1,7 @@
 import ModelView from "./ModelView";
 import React, {useState} from "react";
 import Synchronizer from "./synchronization/Synchronizer";
-import {CursorEventOption, CursorStyleOption} from "./cursors/Enums";
+import {CursorEventOption, CursorStyleOption} from "./cursors/CursorOptions";
 import SynchronizerImpl from "./synchronization/SynchronizerImpl";
 
 interface Props{

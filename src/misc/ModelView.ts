@@ -12,7 +12,7 @@ import {setCursorFromPointer} from "../cursors/CursorHelpers";
 import {LineCursor} from "../cursors/LineCursor";
 import SphereCursor from "../cursors/SphereCursor";
 import * as CursorBuilder from "../builders/CursorBuilder"
-import {CursorEventOption, CursorStyleOption} from "../cursors/Enums";
+import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import {Cursor} from "../cursors/Cursor";
 
 
