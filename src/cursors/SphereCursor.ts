@@ -1,13 +1,15 @@
 import * as THREE from "three";
-import Cursor from "./Cursor";
 import Intersection from "../misc/Intersection";
+import {Cursor3D} from "./Cursor";
 
 
-export default class SphereCursor implements Cursor{
+export default class SphereCursor extends Cursor3D{
     private readonly sphere: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>;
     constructor(sphere: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>) {
+        super();
         this.sphere = sphere
     }
+
     getObject3D(): THREE.Object3D {
         return this.sphere;
     }

@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import Intersection from "../misc/Intersection";
-import Cursor from "./Cursor";
+import {Cursor2D} from "./Cursor";
 
-export class LineCursor implements Cursor{
+export class LineCursor extends Cursor2D{
     private readonly line: THREE.Line<any, THREE.LineBasicMaterial>;
     constructor(line: THREE.Line<any, THREE.LineBasicMaterial>) {
+        super()
         this.line = line
     }
     getObject3D(): THREE.Object3D {

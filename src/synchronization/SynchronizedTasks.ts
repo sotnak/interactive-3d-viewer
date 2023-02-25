@@ -2,9 +2,8 @@ import * as THREE from "three";
 import {SynchronizedAttributes} from "./Synchronizer";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
-import Cursor, * as CursorHelpers from "../cursors/Cursor";
-import {LineCursor} from "../cursors/LineCursor";
-import SphereCursor from "../cursors/SphereCursor";
+import * as CursorHelpers from "../cursors/CursorHelpers";
+import {Cursor, CursorType} from "../cursors/Cursor";
 
 export const setCameraPosition = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCamera) => {
     if(attr.cameraPosition)
@@ -43,12 +42,12 @@ const setCursor3D = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCam
 }
 
 export const setCursor = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group) => {
-    switch (cursor?.constructor){
-        case LineCursor:
+    switch (cursor?.type){
+        case CursorType.cursor2D:
             setCursor2D(attr, camera, cursor, loadedModel)
             break;
 
-        case SphereCursor:
+        case CursorType.cursor3D:
             setCursor3D(attr, camera, cursor, loadedModel)
             break;
 

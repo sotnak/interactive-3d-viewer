@@ -1,68 +1,32 @@
-import * as THREE from "three";
 import Intersection from "../misc/Intersection";
+import * as THREE from "three";
 
-export default interface Cursor{
+export enum CursorType{
+    cursor3D,
+    cursor2D
+}
+
+export interface Cursor{
     projectCursor(intersection: Intersection, loadedModel: THREE.Group): void
     hideCursor(): void
     getObject3D(): THREE.Object3D
+    type: CursorType
 }
 
-function getIntersection(intersects: THREE.Intersection<THREE.Object3D<THREE.Event>>[]): Intersection{
+export abstract class Cursor3D implements Cursor{
+    type: CursorType = CursorType.cursor3D;
+    abstract getObject3D(): THREE.Object3D;
 
-    if(intersects.length == 0)
-        return {};
+    abstract hideCursor(): void;
 
-    const intersection: Intersection = {
-        point: new THREE.Vector3(),
-        normal: new THREE.Vector3()
-    }
-
-    const p = intersects[0].point;
-    intersection.point?.copy( p );
-
-    //@ts-ignore
-    const n = intersects[0].face.normal
-    intersection.normal?.copy( n );
-
-    intersects.length=0;
-
-    return intersection;
+    abstract projectCursor(intersection: Intersection, loadedModel: THREE.Group): void;
 }
 
-export const setCursorFromPointer = (pointer: THREE.Vector2, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group, hideOnMiss: boolean = true): Intersection => {
+export abstract class Cursor2D implements Cursor{
+    type: CursorType = CursorType.cursor2D;
+    abstract getObject3D(): THREE.Object3D;
 
-    if(!camera || !loadedModel || !cursor)
-        return {};
+    abstract hideCursor(): void;
 
-    const raycaster = new THREE.Raycaster()
-
-    raycaster.setFromCamera( pointer, camera );
-
-    // See if the ray from the camera into the world hits one of our meshes
-    const intersects = raycaster.intersectObject( loadedModel );
-    const intersection = getIntersection(intersects)
-
-    if ( intersection.point ) {
-        cursor.projectCursor(intersection, loadedModel)
-    } else if(hideOnMiss) {
-        cursor.hideCursor()
-    }
-
-    return intersection
-}
-
-export const setCursorFrom3DPoint = (position: THREE.Vector3, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group, hideOnMiss: boolean = true): Intersection => {
-
-    if(!camera || !loadedModel || !cursor)
-        return {};
-
-    const intersection = {point: position}
-
-    if ( intersection.point ) {
-        cursor.projectCursor(intersection, loadedModel)
-    } else if(hideOnMiss) {
-        cursor.hideCursor()
-    }
-
-    return intersection
+    abstract projectCursor(intersection: Intersection, loadedModel: THREE.Group): void;
 }
