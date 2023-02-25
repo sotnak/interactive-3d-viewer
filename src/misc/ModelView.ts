@@ -7,7 +7,7 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "./ModelLoader";
 import * as SynchronizedTasks from "../synchronization/SynchronizedTasks";
-import {SynchronizedAttributes, Synchronizer} from "../synchronization/Synchronizer";
+import Synchronizer, {SynchronizedAttributes} from "../synchronization/Synchronizer";
 import {setCursorFromPointer} from "../cursors/CursorHelpers";
 import {LineCursor} from "../cursors/LineCursor";
 import SphereCursor from "../cursors/SphereCursor";

@@ -1,7 +1,8 @@
 import ModelView from "./ModelView";
 import React, {useState} from "react";
-import {Synchronizer} from "./synchronization/Synchronizer";
+import Synchronizer from "./synchronization/Synchronizer";
 import {CursorEventOption, CursorStyleOption} from "./cursors/Enums";
+import SynchronizerImpl from "./synchronization/SynchronizerImpl";
 
 interface Props{
     requestHeaders?: {[p: string]: string}
@@ -20,7 +21,7 @@ const ModelCompare = ({
     if(props.styles && props.styles?.length != 2)
         throw new Error('Exactly 2 styles must be provided.')
 
-    const[synchronizer] = useState<Synchronizer>(new Synchronizer)
+    const[synchronizer] = useState<Synchronizer>(new SynchronizerImpl)
 
     return<div>
         {props.urls.map((url, index)=>

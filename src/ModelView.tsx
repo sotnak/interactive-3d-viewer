@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {ControlsOption} from "./builders/ControlsBuilder";
 import * as IDAuthority from './misc/IDAuthority'
 import MV from "./misc/ModelView";
-import {Synchronizer} from "./synchronization/Synchronizer";
+import Synchronizer from "./synchronization/Synchronizer";
 import {CursorEventOption, CursorStyleOption} from "./cursors/Enums";
 
 interface Props {
