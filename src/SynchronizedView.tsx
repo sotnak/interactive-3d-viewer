@@ -11,7 +11,7 @@ interface Props{
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
 }
 
-const ModelCompare = ({
+const SynchronizedView = ({
                           //styles = [{},{}],
                           ...props}: Props)=>{
 
@@ -36,4 +36,4 @@ const ModelCompare = ({
     </div>
 }
 
-export default ModelCompare
+export default SynchronizedView
