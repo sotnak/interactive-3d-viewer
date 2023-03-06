@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {ControlsOption} from "./builders/ControlsBuilder";
 import * as IDAuthority from './misc/IDAuthority'
-import MV from "./misc/ModelView";
+import ModelViewLogic from "./misc/ModelViewLogic";
 import Synchronizer from "./synchronization/Synchronizer";
 import {CursorEventOption, CursorStyleOption} from "./cursors/CursorOptions";
 
@@ -28,7 +28,7 @@ const ModelView = ({
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const [mv, setMv] = useState<MV>()
+    const [mvl, setMvl] = useState<ModelViewLogic>()
     const [loadPercentage, setLP] = useState<number>(0)
 
     // setup scene, when canvas is ready
@@ -45,57 +45,57 @@ const ModelView = ({
 
         canvasRef.current.setAttribute('id', id.toString())
 
-        const n_mv = new MV(canvasRef.current, id, props.synchronizer)
-        n_mv.init()
+        const n_mvl = new ModelViewLogic(canvasRef.current, id, props.synchronizer)
+        n_mvl.init()
 
-        setMv(n_mv)
+        setMvl(n_mvl)
     },[canvasRef.current])
 
     // setup / cleanup synchronization, when mv is ready and synchronizer is provided
     useEffect(()=>{
-        if(!mv)
+        if(!mvl)
             return;
 
         if(props.synchronizer) {
-            mv.useSynchronizer(props.synchronizer)
+            mvl.useSynchronizer(props.synchronizer)
         }
 
         //cleanup function
         return ()=>{
             if(props.synchronizer) {
-                mv.removeSynchronizer(props.synchronizer)
+                mvl.removeSynchronizer(props.synchronizer)
             }
         }
-    },[props.synchronizer, mv])
+    },[props.synchronizer, mvl])
 
     useEffect(()=>{
-        if(!mv)
+        if(!mvl)
             return;
-        mv.useCursor(cursorOption.style, cursorOption.event)
-    }, [cursorOption, mv])
+        mvl.useCursor(cursorOption.style, cursorOption.event)
+    }, [cursorOption, mvl])
 
     // set controls, when mv is ready / controlsOption changes
     useEffect(()=>{
-        if(!mv)
+        if(!mvl)
             return;
 
-        mv?.setControls(controlsOption)
-    },[mv, controlsOption])
+        mvl?.setControls(controlsOption)
+    },[mvl, controlsOption])
 
     // load model, when mv is ready / url or requestHeaders changes
     useEffect(()=>{
-        if(!mv)
+        if(!mvl)
             return;
         setLP(0)
 
-        mv.load(props.url, requestHeaders, (progress)=>{
+        mvl.load(props.url, requestHeaders, (progress)=>{
             //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
             //console.log(progress.loaded, progress.total)
             setLP(progress.loaded/progress.total)
         }).then(()=>{
             setLP(100)
         })
-    },[mv, props.url, requestHeaders])
+    },[mvl, props.url, requestHeaders])
 
     return (
         <div style={style}>

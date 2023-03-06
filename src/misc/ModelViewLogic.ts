@@ -16,7 +16,7 @@ import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import {Cursor} from "../cursors/Cursor";
 
 
-export default class ModelView{
+export default class ModelViewLogic {
     private readonly canvas: HTMLCanvasElement;
     private readonly id: number;
     private readonly synchronizer?: Synchronizer;
