@@ -5,10 +5,8 @@ import * as ControlsBuilder from "../builders/ControlsBuilder";
 import * as THREE from "three";
 import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import {setCursorFromPointer} from "../cursors/CursorHelpers";
-import {LineCursor} from "../cursors/LineCursor";
-import SphereCursor from "../cursors/SphereCursor";
 import * as CursorBuilder from "../builders/CursorBuilder";
-import {Cursor} from "../cursors/Cursor";
+import {Cursor, CursorType} from "../cursors/Cursor";
 
 
 export class SynchronizedViewLogic extends ModelViewLogic{
@@ -49,9 +47,9 @@ export class SynchronizedViewLogic extends ModelViewLogic{
         if(!hideOnMiss && !intersection.point)
             return;
 
-        if(this.cursor?.constructor === LineCursor){
+        if(this.cursor?.type === CursorType.cursor2D){
             this.synchronizer?.update(this.id, {cursor2D:{position: pointer, visible: cursorObject.visible}})
-        } else if(this.cursor?.constructor === SphereCursor) {
+        } else if(this.cursor?.type === CursorType.cursor3D) {
             this.synchronizer?.update(this.id, {cursor3D:{position: cursorObject.position, visible: cursorObject.visible}})
         }
 
