@@ -9,7 +9,7 @@ import * as CursorBuilder from "../builders/CursorBuilder";
 import {Cursor, CursorType} from "../cursors/Cursor";
 
 
-export class SynchronizedViewLogic extends ModelViewLogic{
+export default class SynchronizedViewLogic extends ModelViewLogic{
 
     protected readonly synchronizer?: Synchronizer;
     protected cursor?: Cursor;

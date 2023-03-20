@@ -3,7 +3,7 @@ import {ControlsOption} from "../builders/ControlsBuilder";
 import * as IDAuthority from '../misc/IDAuthority'
 import Synchronizer from "../synchronization/Synchronizer";
 import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
-import {SynchronizedViewLogic} from "../logic/SynchronizedViewLogic";
+import SynchronizedViewLogic from "../logic/SynchronizedViewLogic";
 
 interface Props {
     style?: React.CSSProperties
