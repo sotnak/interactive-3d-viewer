@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
-import {ControlsOption} from "./builders/ControlsBuilder";
-import * as IDAuthority from './misc/IDAuthority'
-import ModelViewLogic from "./misc/ModelViewLogic";
-import Synchronizer from "./synchronization/Synchronizer";
-import {CursorEventOption, CursorStyleOption} from "./cursors/CursorOptions";
+import {ControlsOption} from "../builders/ControlsBuilder";
+import * as IDAuthority from '../misc/IDAuthority'
+import Synchronizer from "../synchronization/Synchronizer";
+import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
+import {SynchronizedViewLogic} from "../logic/SynchronizedViewLogic";
 
 interface Props {
     style?: React.CSSProperties
@@ -14,13 +14,13 @@ interface Props {
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
 }
 
-const ModelView = ({
+const SynchronizedView = ({
                        style = {},
                        requestHeaders = {},
                        controlsOption = ControlsOption.Orbit,
                        cursorOption = {style: CursorStyleOption.disabled},
                        ...props
-                    }: Props) => {
+                   }: Props) => {
 
     if( style.height || (style.top && style.bottom) ){} else {
         style.height = 450
@@ -28,7 +28,7 @@ const ModelView = ({
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const [mvl, setMvl] = useState<ModelViewLogic>()
+    const [svl, setSvl] = useState<SynchronizedViewLogic>()
     const [loadPercentage, setLP] = useState<number>(0)
 
     // setup scene, when canvas is ready
@@ -45,57 +45,57 @@ const ModelView = ({
 
         canvasRef.current.setAttribute('id', id.toString())
 
-        const n_mvl = new ModelViewLogic(canvasRef.current, id, props.synchronizer)
-        n_mvl.init()
+        const n_svl = new SynchronizedViewLogic(canvasRef.current, id, props.synchronizer)
+        n_svl.init()
 
-        setMvl(n_mvl)
+        setSvl(n_svl)
     },[canvasRef.current])
 
     // setup / cleanup synchronization, when mv is ready and synchronizer is provided
     useEffect(()=>{
-        if(!mvl)
+        if(!svl)
             return;
 
         if(props.synchronizer) {
-            mvl.useSynchronizer(props.synchronizer)
+            svl.useSynchronizer(props.synchronizer)
         }
 
         //cleanup function
         return ()=>{
             if(props.synchronizer) {
-                mvl.removeSynchronizer(props.synchronizer)
+                svl.removeSynchronizer(props.synchronizer)
             }
         }
-    },[props.synchronizer, mvl])
+    },[props.synchronizer, svl])
 
     useEffect(()=>{
-        if(!mvl)
+        if(!svl)
             return;
-        mvl.useCursor(cursorOption.style, cursorOption.event)
-    }, [cursorOption, mvl])
+        svl.useCursor(cursorOption.style, cursorOption.event)
+    }, [cursorOption, svl])
 
     // set controls, when mv is ready / controlsOption changes
     useEffect(()=>{
-        if(!mvl)
+        if(!svl)
             return;
 
-        mvl?.setControls(controlsOption)
-    },[mvl, controlsOption])
+        svl?.setControls(controlsOption)
+    },[svl, controlsOption])
 
     // load model, when mv is ready / url or requestHeaders changes
     useEffect(()=>{
-        if(!mvl)
+        if(!svl)
             return;
         setLP(0)
 
-        mvl.load(props.url, requestHeaders, (progress)=>{
+        svl.load(props.url, requestHeaders, (progress)=>{
             //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
             //console.log(progress.loaded, progress.total)
             setLP(progress.loaded/progress.total)
         }).then(()=>{
             setLP(100)
         })
-    },[mvl, props.url, requestHeaders])
+    },[svl, props.url, requestHeaders])
 
     return (
         <div style={style}>
@@ -105,4 +105,4 @@ const ModelView = ({
     );
 }
 
-export default ModelView
+export default SynchronizedView;

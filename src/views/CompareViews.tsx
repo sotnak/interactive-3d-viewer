@@ -1,8 +1,8 @@
-import ModelView from "./ModelView";
 import React, {useState} from "react";
-import Synchronizer from "./synchronization/Synchronizer";
-import {CursorEventOption, CursorStyleOption} from "./cursors/CursorOptions";
-import SynchronizerImpl from "./synchronization/SynchronizerImpl";
+import Synchronizer from "../synchronization/Synchronizer";
+import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
+import SynchronizerImpl from "../synchronization/SynchronizerImpl";
+import SynchronizedView from "./SynchronizedView";
 
 interface Props{
     requestHeaders?: {[p: string]: string}
@@ -11,7 +11,7 @@ interface Props{
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
 }
 
-const SynchronizedView = ({
+const CompareViews = ({
                           //styles = [{},{}],
                           ...props}: Props)=>{
 
@@ -25,7 +25,7 @@ const SynchronizedView = ({
 
     return<div>
         {props.urls.map((url, index)=>
-            <ModelView key={index}
+            <SynchronizedView key={index}
                        style={props.styles?.at(index)}
                        cursorOption={props.cursorOption}
                        url={url}
@@ -36,4 +36,4 @@ const SynchronizedView = ({
     </div>
 }
 
-export default SynchronizedView
+export default CompareViews

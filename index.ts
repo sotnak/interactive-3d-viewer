@@ -1,6 +1,6 @@
-import SynchronizedView from "./src/SynchronizedView";
-import ModelView from "./src/ModelView";
+import CompareViews from "./src/views/CompareViews";
+import ModelView from "./src/views/ModelView";
 import {CursorStyleOption, CursorEventOption} from "./src/cursors/CursorOptions"
 import {ControlsOption} from "./src/builders/ControlsBuilder";
 
-export {SynchronizedView, ModelView, CursorStyleOption, CursorEventOption, ControlsOption}
+export {CompareViews, ModelView, CursorStyleOption, CursorEventOption, ControlsOption}
