@@ -17,7 +17,7 @@ export default class SynchronizerImpl implements Synchronizer{
         this.targets = this.targets.filter(t => t.id != id)
     }
 
-    update( id: number, msg: SynchronizedAttributes ){
+    update( msg: SynchronizedAttributes, id?: number ){
         this.attributes = msg
 
         for(const t of this.targets){

@@ -48,9 +48,9 @@ export default class SynchronizedViewLogic extends ModelViewLogic{
             return;
 
         if(this.cursor?.type === CursorType.cursor2D){
-            this.synchronizer?.update(this.id, {cursor2D:{position: pointer, visible: cursorObject.visible}})
+            this.synchronizer?.update( {cursor2D:{position: pointer, visible: cursorObject.visible}}, this.id )
         } else if(this.cursor?.type === CursorType.cursor3D) {
-            this.synchronizer?.update(this.id, {cursor3D:{position: cursorObject.position, visible: cursorObject.visible}})
+            this.synchronizer?.update( {cursor3D:{position: cursorObject.position, visible: cursorObject.visible}}, this.id)
         }
 
     }
@@ -74,7 +74,7 @@ export default class SynchronizedViewLogic extends ModelViewLogic{
         super.setControls(option)
 
         this.controls?.addEventListener('change',()=>{
-            this.synchronizer?.update(this.id, {cameraPosition: this.camera?.position, cameraTarget: this.controls?.target})
+            this.synchronizer?.update( {cameraPosition: this.camera?.position, cameraTarget: this.controls?.target}, this.id )
         })
     }
 

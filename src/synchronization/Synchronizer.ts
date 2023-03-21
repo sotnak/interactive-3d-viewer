@@ -18,5 +18,5 @@ export default interface Synchronizer{
 
     remove(id:number): void
 
-    update( id: number, attributes: SynchronizedAttributes ): void
+    update( msg: SynchronizedAttributes, id?: number ): void
 }
