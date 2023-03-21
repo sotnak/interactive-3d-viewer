@@ -1,6 +1,6 @@
 import ModelViewLogic from "./ModelViewLogic";
 import Synchronizer, {SynchronizedAttributes} from "../synchronization/Synchronizer";
-import * as SynchronizedTasks from "../synchronization/SynchronizedTasks";
+import * as SynchronizingTasks from "../synchronization/SynchronizingTasks";
 import * as ControlsBuilder from "../builders/ControlsBuilder";
 import * as THREE from "three";
 import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
@@ -21,9 +21,9 @@ export default class SynchronizedViewLogic extends ModelViewLogic{
     }
 
     private readonly SyncFun = (msg: SynchronizedAttributes)=>{
-        SynchronizedTasks.setCameraPosition(msg, this.camera)
-        SynchronizedTasks.setCameraTarget(msg, this.controls)
-        SynchronizedTasks.setCursorPosition(msg, this.camera, this.cursor, this.loadedModel)
+        SynchronizingTasks.setCameraPosition(msg, this.camera)
+        SynchronizingTasks.setCameraTarget(msg, this.controls)
+        SynchronizingTasks.setCursorPosition(msg, this.camera, this.cursor, this.loadedModel)
     }
 
     protected readonly onPointerEvent = ( event: { clientX: number; clientY: number; } ) => {
