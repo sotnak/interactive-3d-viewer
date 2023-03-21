@@ -14,7 +14,7 @@ export interface SynchronizedAttributes{
 }
 
 export default interface Synchronizer{
-    register( id: number, synchronize: (attr: SynchronizedAttributes) => void ): void
+    register( id: number, synchronize: (msg: SynchronizedAttributes) => void ): void
 
     remove(id:number): void
 

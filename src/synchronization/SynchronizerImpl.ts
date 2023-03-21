@@ -2,14 +2,14 @@ import Synchronizer, {SynchronizedAttributes} from "./Synchronizer";
 
 interface Target {
     id: number
-    synchronize: (attr: SynchronizedAttributes) => void
+    synchronize: (msg: SynchronizedAttributes) => void
 }
 
 export default class SynchronizerImpl implements Synchronizer{
     private targets: Target[] = []
     private attributes?: SynchronizedAttributes
 
-    register( id: number, synchronize: (attr: SynchronizedAttributes) => void ){
+    register( id: number, synchronize: (msg: SynchronizedAttributes) => void ){
         this.targets.push({id, synchronize})
     }
 
@@ -17,12 +17,12 @@ export default class SynchronizerImpl implements Synchronizer{
         this.targets = this.targets.filter(t => t.id != id)
     }
 
-    update( id: number, attributes: SynchronizedAttributes ){
-        this.attributes = attributes
+    update( id: number, msg: SynchronizedAttributes ){
+        this.attributes = msg
 
         for(const t of this.targets){
             if(id !== t.id)
-                t.synchronize(attributes)
+                t.synchronize(msg)
         }
     }
 

@@ -20,10 +20,10 @@ export default class SynchronizedViewLogic extends ModelViewLogic{
         this.synchronizer = synchronizer
     }
 
-    private readonly SyncFun = (attr: SynchronizedAttributes)=>{
-        SynchronizedTasks.setCameraPosition(attr, this.camera)
-        SynchronizedTasks.setCameraTarget(attr, this.controls)
-        SynchronizedTasks.setCursor(attr, this.camera, this.cursor, this.loadedModel)
+    private readonly SyncFun = (msg: SynchronizedAttributes)=>{
+        SynchronizedTasks.setCameraPosition(msg, this.camera)
+        SynchronizedTasks.setCameraTarget(msg, this.controls)
+        SynchronizedTasks.setCursorPosition(msg, this.camera, this.cursor, this.loadedModel)
     }
 
     protected readonly onPointerEvent = ( event: { clientX: number; clientY: number; } ) => {
