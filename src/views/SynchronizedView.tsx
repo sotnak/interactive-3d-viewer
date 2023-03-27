@@ -102,6 +102,10 @@ const SynchronizedView = ({
         }).then(()=>{
             setLP(100)
         })
+
+        return ()=>{
+            svl.removeLoaded()
+        }
     },[svl, props.url, requestHeaders])
 
     return (

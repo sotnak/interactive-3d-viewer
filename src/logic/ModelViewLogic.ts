@@ -86,9 +86,15 @@ export default class ModelViewLogic {
 
         console.log(this.id, "loading model:", url)
 
-        ModelLoader.removeLoaded(this.scene);
         this.loadedModel = await ModelLoader.loadGLTF(url, requestHeaders, this.scene, onProgress);
 
         return this.loadedModel;
+    }
+
+    removeLoaded(){
+        if(this.scene) {
+            ModelLoader.removeLoaded(this.scene);
+            this.loadedModel = undefined;
+        }
     }
 }

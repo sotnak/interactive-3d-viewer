@@ -23,7 +23,7 @@ export async function loadGLTF(url: string, requestHeaders: {[p: string]: string
         group.add(object)
     } );
 
-    removeLoaded(scene);
+    //removeLoaded(scene);
     scene.add( group );
     return group;
 }

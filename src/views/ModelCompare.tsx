@@ -1,24 +1,30 @@
 import React, {useEffect, useRef, useState} from "react";
 import {ControlsOption} from "../builders/ControlsBuilder";
-import * as IDAuthority from '../misc/IDAuthority'
-import ModelViewLogic from "../logic/ModelViewLogic";
 import {CameraOption} from "../builders/CameraBuilder";
+import * as IDAuthority from "../misc/IDAuthority";
+import ModelCompareLogic from "../logic/ModelCompareLogic";
+
 
 interface Props {
     style?: React.CSSProperties
     requestHeaders?: {[p: string]: string}
-    url: string,
+    urls: string[],
     controlsOption?: ControlsOption,
     cameraOption?: CameraOption
+    activeModelIndex?: number
 }
 
-const ModelView = ({
-                       style = {},
-                       requestHeaders = {},
-                       controlsOption = ControlsOption.Orbit,
-                       cameraOption = CameraOption.perspective,
+const ModelCompare = ({
+                          style = {},
+                          requestHeaders = {},
+                          controlsOption = ControlsOption.Orbit,
+                          cameraOption = CameraOption.perspective,
+                          activeModelIndex = 0,
                        ...props
-                    }: Props) => {
+                   }: Props) => {
+
+    if(props.urls.length!=2)
+        throw new Error("2 urls must be supplied")
 
     if( style.height || (style.top && style.bottom) ){} else {
         style.height = 450
@@ -26,7 +32,7 @@ const ModelView = ({
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const [mvl, setMvl] = useState<ModelViewLogic>()
+    const [mcl, setMcl] = useState<ModelCompareLogic>()
     const [loadPercentage, setLP] = useState<number>(0)
 
     // setup scene, when canvas is ready
@@ -43,28 +49,32 @@ const ModelView = ({
 
         canvasRef.current.setAttribute('id', id.toString())
 
-        const n_mvl = new ModelViewLogic(canvasRef.current, id)
-        n_mvl.init()
+        const n_mcl = new ModelCompareLogic(canvasRef.current, id)
+        n_mcl.init()
 
-        setMvl(n_mvl)
+        setMcl(n_mcl)
     },[canvasRef.current])
 
     // set controls, when mv is ready / controlsOption changes
     useEffect(()=>{
-        mvl?.setControls(controlsOption)
-    },[mvl, controlsOption])
+        mcl?.setControls(controlsOption)
+    },[mcl, controlsOption])
 
     useEffect(()=>{
-        mvl?.setCamera(cameraOption, controlsOption)
-    }, [mvl, cameraOption])
+        mcl?.setCamera(cameraOption, controlsOption)
+    }, [mcl, cameraOption])
+
+    useEffect(()=>{
+        mcl?.setActive(activeModelIndex)
+    },[mcl, activeModelIndex])
 
     // load model, when mv is ready / url or requestHeaders changes
     useEffect(()=>{
-        if(!mvl)
+        if(!mcl)
             return;
         setLP(0)
 
-        mvl.load(props.url, requestHeaders, (progress)=>{
+        mcl.loadBoth(props.urls, requestHeaders, (progress)=>{
             //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
             //console.log(progress.loaded, progress.total)
             setLP(progress.loaded/progress.total)
@@ -73,9 +83,9 @@ const ModelView = ({
         })
 
         return ()=>{
-            mvl.removeLoaded()
+            mcl.removeLoaded()
         }
-    },[mvl, props.url, requestHeaders])
+    },[mcl, props.urls, requestHeaders])
 
     return (
         <div style={style}>
@@ -85,4 +95,4 @@ const ModelView = ({
     );
 }
 
-export default ModelView
+export default ModelCompare
