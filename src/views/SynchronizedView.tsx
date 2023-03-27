@@ -4,12 +4,14 @@ import * as IDAuthority from '../misc/IDAuthority'
 import Synchronizer from "../synchronization/Synchronizer";
 import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import SynchronizedViewLogic from "../logic/SynchronizedViewLogic";
+import {CameraOption} from "../builders/CameraBuilder";
 
 interface Props {
     style?: React.CSSProperties
     requestHeaders?: {[p: string]: string}
     url: string,
     controlsOption?: ControlsOption
+    cameraOption?: CameraOption
     synchronizer?: Synchronizer
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
 }
@@ -19,6 +21,7 @@ const SynchronizedView = ({
                        requestHeaders = {},
                        controlsOption = ControlsOption.Orbit,
                        cursorOption = {style: CursorStyleOption.disabled},
+                       cameraOption = CameraOption.perspective,
                        ...props
                    }: Props) => {
 
@@ -72,7 +75,7 @@ const SynchronizedView = ({
         if(!svl)
             return;
         svl.useCursor(cursorOption.style, cursorOption.event)
-    }, [cursorOption, svl])
+    }, [cursorOption?.style, cursorOption?.event, svl])
 
     // set controls, when mv is ready / controlsOption changes
     useEffect(()=>{
@@ -81,6 +84,10 @@ const SynchronizedView = ({
 
         svl?.setControls(controlsOption)
     },[svl, controlsOption])
+
+    useEffect(()=>{
+        svl?.setCamera(cameraOption, controlsOption)
+    }, [svl, cameraOption])
 
     // load model, when mv is ready / url or requestHeaders changes
     useEffect(()=>{

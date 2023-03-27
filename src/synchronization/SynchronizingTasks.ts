@@ -5,7 +5,7 @@ import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as CursorHelpers from "../cursors/CursorHelpers";
 import {Cursor, CursorType} from "../cursors/Cursor";
 
-export const setCameraPosition = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCamera) => {
+export const setCameraPosition = (attr: SynchronizedAttributes, camera?: THREE.Camera) => {
     if(attr.cameraPosition)
         camera?.position.set(attr.cameraPosition.x, attr.cameraPosition.y, attr.cameraPosition.z)
 }
@@ -15,7 +15,14 @@ export const setCameraTarget = (attr: SynchronizedAttributes, controls?: OrbitCo
         controls?.target.set(attr.cameraTarget.x, attr.cameraTarget.y, attr.cameraTarget.z)
 }
 
-const setCursor2D = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group) => {
+export const setCameraZoom = (attr: SynchronizedAttributes, camera?: THREE.Camera)=>{
+    if(attr.cameraZoom && camera instanceof THREE.OrthographicCamera){
+        camera.zoom = attr.cameraZoom;
+        camera.updateProjectionMatrix();
+    }
+}
+
+const setCursor2D = (attr: SynchronizedAttributes, camera?: THREE.Camera, cursor?: Cursor, loadedModel?: THREE.Group) => {
     if(!attr.cursor2D)
         return;
 
@@ -28,7 +35,7 @@ const setCursor2D = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCam
         CursorHelpers.setCursorFromPointer(attr.cursor2D.position, camera, cursor, loadedModel)
 }
 
-const setCursor3D = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group) => {
+const setCursor3D = (attr: SynchronizedAttributes, camera?: THREE.Camera, cursor?: Cursor, loadedModel?: THREE.Group) => {
     if(!attr.cursor3D)
         return;
 
@@ -41,7 +48,7 @@ const setCursor3D = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCam
         CursorHelpers.setCursorFrom3DPoint(attr.cursor3D.position, camera, cursor, loadedModel)
 }
 
-export const setCursorPosition = (attr: SynchronizedAttributes, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group) => {
+export const setCursorPosition = (attr: SynchronizedAttributes, camera?: THREE.Camera, cursor?: Cursor, loadedModel?: THREE.Group) => {
     switch (cursor?.type){
         case CursorType.cursor2D:
             setCursor2D(attr, camera, cursor, loadedModel)

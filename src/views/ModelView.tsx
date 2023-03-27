@@ -2,18 +2,21 @@ import React, {useEffect, useRef, useState} from "react";
 import {ControlsOption} from "../builders/ControlsBuilder";
 import * as IDAuthority from '../misc/IDAuthority'
 import ModelViewLogic from "../logic/ModelViewLogic";
+import {CameraOption} from "../builders/CameraBuilder";
 
 interface Props {
     style?: React.CSSProperties
     requestHeaders?: {[p: string]: string}
     url: string,
-    controlsOption?: ControlsOption
+    controlsOption?: ControlsOption,
+    cameraOption?: CameraOption
 }
 
 const ModelView = ({
                        style = {},
                        requestHeaders = {},
                        controlsOption = ControlsOption.Orbit,
+                       cameraOption = CameraOption.perspective,
                        ...props
                     }: Props) => {
 
@@ -48,11 +51,12 @@ const ModelView = ({
 
     // set controls, when mv is ready / controlsOption changes
     useEffect(()=>{
-        if(!mvl)
-            return;
-
         mvl?.setControls(controlsOption)
     },[mvl, controlsOption])
+
+    useEffect(()=>{
+        mvl?.setCamera(cameraOption, controlsOption)
+    }, [mvl, cameraOption])
 
     // load model, when mv is ready / url or requestHeaders changes
     useEffect(()=>{

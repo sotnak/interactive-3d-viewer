@@ -24,7 +24,7 @@ function getIntersection(intersects: THREE.Intersection<THREE.Object3D<THREE.Eve
     return intersection;
 }
 
-export const setCursorFromPointer = (pointer: THREE.Vector2, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group, hideOnMiss: boolean = true): Intersection => {
+export const setCursorFromPointer = (pointer: THREE.Vector2, camera?: THREE.Camera, cursor?: Cursor, loadedModel?: THREE.Group, hideOnMiss: boolean = true): Intersection => {
 
     if(!camera || !loadedModel || !cursor)
         return {};
@@ -46,7 +46,7 @@ export const setCursorFromPointer = (pointer: THREE.Vector2, camera?: THREE.Pers
     return intersection
 }
 
-export const setCursorFrom3DPoint = (position: THREE.Vector3, camera?: THREE.PerspectiveCamera, cursor?: Cursor, loadedModel?: THREE.Group, hideOnMiss: boolean = true): Intersection => {
+export const setCursorFrom3DPoint = (position: THREE.Vector3, camera?: THREE.Camera, cursor?: Cursor, loadedModel?: THREE.Group, hideOnMiss: boolean = true): Intersection => {
 
     if(!camera || !loadedModel || !cursor)
         return {};

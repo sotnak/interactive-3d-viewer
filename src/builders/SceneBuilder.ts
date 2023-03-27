@@ -56,11 +56,3 @@ export function build(): THREE.Scene{
 
     return scene
 }
-
-export function buildCamera(width: number, height: number): THREE.PerspectiveCamera{
-    const camera = new THREE.PerspectiveCamera( 50, width / height, 1, 1000 );
-    camera.position.y = 50;
-    camera.position.z = 200;
-
-    return camera
-}

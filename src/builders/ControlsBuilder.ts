@@ -7,7 +7,7 @@ export enum ControlsOption{
     Trackball
 }
 
-export function build(canvas: HTMLCanvasElement, camera: THREE.PerspectiveCamera, option: ControlsOption = ControlsOption.Orbit){
+export function build(canvas: HTMLCanvasElement, camera: THREE.Camera, option: ControlsOption = ControlsOption.Orbit){
     switch (option){
         case ControlsOption.Orbit:
             return new OrbitControls(camera, canvas);

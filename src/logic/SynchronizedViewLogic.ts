@@ -23,6 +23,7 @@ export default class SynchronizedViewLogic extends ModelViewLogic{
     private readonly SyncFun = (msg: SynchronizedAttributes)=>{
         SynchronizingTasks.setCameraPosition(msg, this.camera)
         SynchronizingTasks.setCameraTarget(msg, this.controls)
+        SynchronizingTasks.setCameraZoom(msg, this.camera)
         SynchronizingTasks.setCursorPosition(msg, this.camera, this.cursor, this.loadedModel)
     }
 
@@ -71,10 +72,16 @@ export default class SynchronizedViewLogic extends ModelViewLogic{
     }
 
     setControls(option: ControlsBuilder.ControlsOption){
+        if(!this.camera)
+            return;
+
         super.setControls(option)
 
         this.controls?.addEventListener('change',()=>{
             this.synchronizer?.update( {cameraPosition: this.camera?.position, cameraTarget: this.controls?.target}, this.id )
+            if(this.camera instanceof THREE.OrthographicCamera){
+                this.synchronizer?.update({cameraZoom: this.camera.zoom}, this.id)
+            }
         })
     }
 

@@ -1,6 +1,7 @@
 import React from "react";
 import CompareViews from '../src/views/CompareViews'
 import {CursorEventOption, CursorStyleOption} from "../src/cursors/CursorOptions";
+import {CameraOption} from "../src/builders/CameraBuilder";
 
 const env = require('../env.json')
 
@@ -13,36 +14,36 @@ const urls = ['http://109.123.202.213:3000/models/6371826358b03a003a9de77d', 'ht
 
 export default
 {
-    default: <CompareViews
-        styles={styles}
-        urls={urls}
-        requestHeaders={{'Authorization': env.token}}
+    default: <CompareViews styles={styles}
+                           urls={urls}
+                           requestHeaders={{'Authorization': env.token}}
     />,
 
-    noStyle: <CompareViews
-        urls={urls}
-        requestHeaders={{'Authorization': env.token}}
+    orthographic: <CompareViews styles={styles}
+                                urls={urls}
+                                requestHeaders={{'Authorization': env.token}}
+                                cameraOption={CameraOption.orthographic}
+    />,
+    noStyle: <CompareViews urls={urls}
+                           requestHeaders={{'Authorization': env.token}}
     />,
 
-    lineCursor: <CompareViews
-        styles={styles}
-        cursorOption={{style: CursorStyleOption.line}}
-        urls={urls}
-        requestHeaders={{'Authorization': env.token}}
+    lineCursor: <CompareViews styles={styles}
+                              cursorOption={{style: CursorStyleOption.line}}
+                              urls={urls}
+                              requestHeaders={{'Authorization': env.token}}
     />,
-    sphereCursor: <CompareViews
-        styles={styles}
-        cursorOption={{style: CursorStyleOption.sphere}}
-        urls={urls}
-        requestHeaders={{'Authorization': env.token}}
+    sphereCursor: <CompareViews styles={styles}
+                                cursorOption={{style: CursorStyleOption.sphere}}
+                                urls={urls}
+                                requestHeaders={{'Authorization': env.token}}
     />,
-    lineMoveCursor: <CompareViews
-        styles={styles}
-        cursorOption={{
-            style: CursorStyleOption.line,
-            event: CursorEventOption.pointermove
-        }}
-        urls={urls}
-        requestHeaders={{'Authorization': env.token}}
+    lineMoveCursor: <CompareViews styles={styles}
+                                  cursorOption={{
+                                      style: CursorStyleOption.line,
+                                      event: CursorEventOption.pointermove
+                                  }}
+                                  urls={urls}
+                                  requestHeaders={{'Authorization': env.token}}
     />,
 }
