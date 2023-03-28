@@ -1,7 +1,18 @@
 import * as THREE from "three"
 
+export enum ComparableState{
+    default,
+    active,
+    inactive
+}
+
+export interface ComparableModel{
+    model: THREE.Group,
+    state: ComparableState
+}
+
 export default interface ModelSelector{
-    activateModel(model: THREE.Group): void
-    deactivateModel(model: THREE.Group): void
-    resetModel(model: THREE.Group): void
+    activateModel(model: ComparableModel): void
+    deactivateModel(model: ComparableModel): void
+    resetModel(model: ComparableModel): void
 }

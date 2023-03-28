@@ -5,7 +5,7 @@ export enum CameraOption{
     orthographic
 }
 
-export const defaultPosition = new THREE.Vector3(0,50, 200)
+export const defaultPosition = new THREE.Vector3(0,25, 125)
 
 export function build(cameraOption: CameraOption = CameraOption.perspective): THREE.Camera{
 
@@ -16,20 +16,22 @@ export function build(cameraOption: CameraOption = CameraOption.perspective): TH
             camera = new THREE.PerspectiveCamera( 50 );
             //@ts-ignore
             camera.far = 1000; camera.near = 1;
+            camera.position.x = defaultPosition.x;
+            camera.position.y = defaultPosition.y;
+            camera.position.z = defaultPosition.z;
             break;
         case CameraOption.orthographic:
             camera = new THREE.OrthographicCamera();
             //@ts-ignore
-            camera.zoom = 0.1
+            camera.zoom = 0.05
+            camera.position.x = defaultPosition.x;
+            //camera.position.y = defaultPosition.y;
+            camera.position.z = defaultPosition.z;
             break;
 
         default:
             throw new Error("Unknown camera option");
     }
-
-    camera.position.x = defaultPosition.x;
-    camera.position.y = defaultPosition.y;
-    camera.position.z = defaultPosition.z;
 
     return camera
 }

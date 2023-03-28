@@ -15,6 +15,12 @@ export default
                            style={style}
                            activeModelIndex={0}
     />,
+    opacity: <ModelCompare urls={urls}
+                           requestHeaders={{'Authorization': env.token}}
+                           style={style}
+                           activeModelIndex={0}
+                           selectorOption={1}
+    />,
     trackball: <ModelCompare urls={urls}
                              requestHeaders={{'Authorization': env.token}}
                              style={style}

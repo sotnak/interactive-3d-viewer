@@ -20,6 +20,10 @@ export async function loadGLTF(url: string, requestHeaders: {[p: string]: string
         object.castShadow = true;
         object.receiveShadow = true;
 
+        //needed for switching between selectors
+        if(object instanceof THREE.Mesh)
+            object.material.transparent = true;
+
         group.add(object)
     } );
 

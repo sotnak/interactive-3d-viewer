@@ -3,6 +3,7 @@ import {ControlsOption} from "../builders/ControlsBuilder";
 import {CameraOption} from "../builders/CameraBuilder";
 import * as IDAuthority from "../misc/IDAuthority";
 import ModelCompareLogic from "../logic/ModelCompareLogic";
+import {SelectorOption} from "../builders/SelectorBuilder";
 
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
     urls: string[],
     controlsOption?: ControlsOption,
     cameraOption?: CameraOption
+    selectorOption?: SelectorOption
     activeModelIndex?: number
 }
 
@@ -19,6 +21,7 @@ const ModelCompare = ({
                           requestHeaders = {},
                           controlsOption = ControlsOption.Orbit,
                           cameraOption = CameraOption.perspective,
+                          selectorOption = SelectorOption.renderOrder,
                           activeModelIndex = 0,
                        ...props
                    }: Props) => {
@@ -63,6 +66,10 @@ const ModelCompare = ({
     useEffect(()=>{
         mcl?.setCamera(cameraOption, controlsOption)
     }, [mcl, cameraOption])
+
+    useEffect(()=>{
+        mcl?.setSelector(selectorOption)
+    },[mcl, selectorOption])
 
     useEffect(()=>{
         mcl?.setActive(activeModelIndex)

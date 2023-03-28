@@ -1,9 +1,13 @@
 import * as THREE from "three"
-import ModelSelector from "./ModelSelector";
+import ModelSelector, {ComparableModel, ComparableState} from "./ModelSelector";
 
 export default class RenderOrderSelector implements ModelSelector{
-    activateModel(model: THREE.Group): void {
-        model.traverse((obj)=>{
+    activateModel(model: ComparableModel): void {
+
+        if(model.state == ComparableState.active)
+            return
+
+        model.model.traverse((obj)=>{
             if(obj instanceof THREE.Mesh){
                 obj.renderOrder=999
 
@@ -14,10 +18,16 @@ export default class RenderOrderSelector implements ModelSelector{
                 obj.material.depthWrite = true
             }
         })
+
+        model.state = ComparableState.active
     }
 
-    deactivateModel(model: THREE.Group): void {
-        model.traverse((obj)=>{
+    deactivateModel(model: ComparableModel): void {
+
+        if(model.state == ComparableState.inactive)
+            return
+
+        model.model.traverse((obj)=>{
             if(obj instanceof THREE.Mesh){
                 obj.renderOrder=0
 
@@ -28,10 +38,16 @@ export default class RenderOrderSelector implements ModelSelector{
                 obj.material.depthWrite = false
             }
         })
+
+        model.state = ComparableState.inactive
     }
 
-    resetModel(model: THREE.Group): void {
-        model.traverse((obj)=>{
+    resetModel(model: ComparableModel): void {
+
+        if(model.state == ComparableState.default)
+            return
+
+        model.model.traverse((obj)=>{
             if(obj instanceof THREE.Mesh){
                 obj.renderOrder=0
 
@@ -42,5 +58,7 @@ export default class RenderOrderSelector implements ModelSelector{
                 obj.material.depthWrite = true
             }
         })
+
+        model.state = ComparableState.default
     }
 }
