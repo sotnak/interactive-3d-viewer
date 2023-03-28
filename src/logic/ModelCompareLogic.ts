@@ -26,7 +26,7 @@ export default class ModelCompareLogic extends ModelViewLogic{
 
         if(this.selector)
             for(const model of this.comparableModels){
-                this.selector.resetModel(model)
+                this.selector.reset(model)
             }
 
         console.log(this.id, "set selector:", SelectorBuilder.SelectorOption[option])
@@ -46,9 +46,9 @@ export default class ModelCompareLogic extends ModelViewLogic{
 
         for(let i = 0; i<this.comparableModels.length; i+=1){
             if(i == this.activeModel){
-                this.selector.activateModel(this.comparableModels[i])
+                this.selector.activate(this.comparableModels[i])
             } else {
-                this.selector.deactivateModel(this.comparableModels[i])
+                this.selector.deactivate(this.comparableModels[i])
             }
         }
     }

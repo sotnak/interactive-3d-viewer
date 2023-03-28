@@ -12,7 +12,7 @@ export interface ComparableModel{
 }
 
 export default interface ModelSelector{
-    activateModel(model: ComparableModel): void
-    deactivateModel(model: ComparableModel): void
-    resetModel(model: ComparableModel): void
+    activate(model: ComparableModel): void
+    deactivate(model: ComparableModel): void
+    reset(model: ComparableModel): void
 }

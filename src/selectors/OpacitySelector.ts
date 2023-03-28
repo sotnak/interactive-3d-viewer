@@ -5,7 +5,7 @@ const multiplier = 4
 
 export default class OpacitySelector implements ModelSelector{
 
-    protected makeSolid(mesh: THREE.Mesh){
+    protected makeOpaque(mesh: THREE.Mesh){
         //@ts-ignore
         mesh.material.opacity = mesh.material.opacity * multiplier;
 
@@ -21,7 +21,7 @@ export default class OpacitySelector implements ModelSelector{
         mesh.receiveShadow = false
     }
 
-    activateModel(model: ComparableModel): void {
+    activate(model: ComparableModel): void {
 
         switch (model.state) {
             case ComparableState.default:
@@ -33,7 +33,7 @@ export default class OpacitySelector implements ModelSelector{
             case ComparableState.inactive:
                 model.model.traverse((obj)=>{
                     if(obj instanceof THREE.Mesh){
-                        this.makeSolid(obj)
+                        this.makeOpaque(obj)
                     }
                 })
                 break;
@@ -42,7 +42,7 @@ export default class OpacitySelector implements ModelSelector{
         model.state = ComparableState.active
     }
 
-    deactivateModel(model: ComparableModel): void {
+    deactivate(model: ComparableModel): void {
         if(model.state == ComparableState.inactive)
             return;
 
@@ -55,7 +55,7 @@ export default class OpacitySelector implements ModelSelector{
         model.state = ComparableState.inactive
     }
 
-    resetModel(model: ComparableModel): void {
+    reset(model: ComparableModel): void {
 
         switch (model.state) {
             case ComparableState.default:
@@ -67,7 +67,7 @@ export default class OpacitySelector implements ModelSelector{
             case ComparableState.inactive:
                 model.model.traverse((obj)=>{
                     if(obj instanceof THREE.Mesh){
-                        this.makeSolid(obj)
+                        this.makeOpaque(obj)
                     }
                 })
                 break;

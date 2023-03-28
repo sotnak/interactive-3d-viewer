@@ -2,7 +2,7 @@ import * as THREE from "three"
 import ModelSelector, {ComparableModel, ComparableState} from "./ModelSelector";
 
 export default class RenderOrderSelector implements ModelSelector{
-    activateModel(model: ComparableModel): void {
+    activate(model: ComparableModel): void {
 
         if(model.state == ComparableState.active)
             return
@@ -22,7 +22,7 @@ export default class RenderOrderSelector implements ModelSelector{
         model.state = ComparableState.active
     }
 
-    deactivateModel(model: ComparableModel): void {
+    deactivate(model: ComparableModel): void {
 
         if(model.state == ComparableState.inactive)
             return
@@ -42,7 +42,7 @@ export default class RenderOrderSelector implements ModelSelector{
         model.state = ComparableState.inactive
     }
 
-    resetModel(model: ComparableModel): void {
+    reset(model: ComparableModel): void {
 
         if(model.state == ComparableState.default)
             return
