@@ -54,7 +54,7 @@ const SynchronizedView = ({
         setSvl(n_svl)
     },[canvasRef.current])
 
-    // setup / cleanup synchronization, when mv is ready and synchronizer is provided
+    // setup / cleanup synchronization, when svl is ready and synchronizer is provided
     useEffect(()=>{
         if(!svl)
             return;
@@ -71,13 +71,14 @@ const SynchronizedView = ({
         }
     },[props.synchronizer, svl])
 
+    // set cursor, when svl is ready / cursor style or cursor event changes
     useEffect(()=>{
         if(!svl)
             return;
         svl.useCursor(cursorOption.style, cursorOption.event)
     }, [cursorOption?.style, cursorOption?.event, svl])
 
-    // set controls, when mv is ready / controlsOption changes
+    // set controls, when svl is ready / controlsOption changes
     useEffect(()=>{
         if(!svl)
             return;
@@ -85,11 +86,12 @@ const SynchronizedView = ({
         svl?.setControls(controlsOption)
     },[svl, controlsOption])
 
+    // set camera, when mvl is ready / cameraOption changes
     useEffect(()=>{
         svl?.setCamera(cameraOption, controlsOption)
     }, [svl, cameraOption])
 
-    // load model, when mv is ready / url or requestHeaders changes
+    // load model, when svl is ready / url or requestHeaders changes
     useEffect(()=>{
         if(!svl)
             return;

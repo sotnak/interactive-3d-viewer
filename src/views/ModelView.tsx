@@ -54,6 +54,7 @@ const ModelView = ({
         mvl?.setControls(controlsOption)
     },[mvl, controlsOption])
 
+    // set camera, when mvl is ready / cameraOption changes
     useEffect(()=>{
         mvl?.setCamera(cameraOption, controlsOption)
     }, [mvl, cameraOption])

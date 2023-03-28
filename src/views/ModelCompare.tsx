@@ -58,19 +58,22 @@ const ModelCompare = ({
         setMcl(n_mcl)
     },[canvasRef.current])
 
-    // set controls, when mv is ready / controlsOption changes
+    // set controls, when mcl is ready / controlsOption changes
     useEffect(()=>{
         mcl?.setControls(controlsOption)
     },[mcl, controlsOption])
 
+    // set camera, when mcl is ready / cameraOption changes
     useEffect(()=>{
         mcl?.setCamera(cameraOption, controlsOption)
     }, [mcl, cameraOption])
 
+    // set selector, when mcl is ready / selectorOption changes
     useEffect(()=>{
         mcl?.setSelector(selectorOption)
     },[mcl, selectorOption])
 
+    // set index of active model, when mcl is ready / activeModelIndex changes
     useEffect(()=>{
         mcl?.setActive(activeModelIndex)
     },[mcl, activeModelIndex])
