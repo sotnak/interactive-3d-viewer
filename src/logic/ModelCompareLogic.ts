@@ -1,5 +1,4 @@
 import ModelViewLogic from "./ModelViewLogic";
-import RenderOrderSelector from "../selectors/RenderOrderSelector";
 import ModelSelector, {ComparableModel, ComparableState} from "../selectors/ModelSelector";
 import * as SelectorBuilder from "../builders/SelectorBuilder";
 
@@ -8,11 +7,6 @@ export default class ModelCompareLogic extends ModelViewLogic{
     protected comparableModels: ComparableModel[] = []
     protected activeModel: number = 0
     protected selector?: ModelSelector;
-
-    init() {
-        super.init();
-        this.selector = new RenderOrderSelector()
-    }
 
     async loadBoth(urls: string[], requestHeaders: { [p: string]: string }, onProgress?: (event: ProgressEvent<EventTarget>) => void) {
         this.comparableModels[0] = {model: await this.load(urls[0], requestHeaders, onProgress), state: ComparableState.default}
