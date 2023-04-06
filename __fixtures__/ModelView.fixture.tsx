@@ -30,4 +30,9 @@ export default
     noStyle: <ModelView url={'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'}
                         requestHeaders={{'Authorization': env.token}}
     />,
+    redAndBlue: <ModelView style={style}
+                           url={'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'}
+                           requestHeaders={{'Authorization': env.token}}
+                           environmentParams={ { fog:{color:{r:50,g:0,b:0}, near:1, far:150}, ground:{color:{r:0,g:0,b:50}}, grid:{color:{r:255,g:255,b:255}} } }
+    />,
 }

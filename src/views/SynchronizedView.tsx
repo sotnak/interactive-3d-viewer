@@ -5,6 +5,7 @@ import Synchronizer from "../synchronization/Synchronizer";
 import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import SynchronizedViewLogic from "../logic/SynchronizedViewLogic";
 import {CameraOption} from "../builders/CameraBuilder";
+import {EnvironmentParams} from "../builders/SceneBuilder";
 
 interface Props {
     style?: React.CSSProperties
@@ -14,6 +15,7 @@ interface Props {
     cameraOption?: CameraOption
     synchronizer?: Synchronizer
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
+    environmentParams?: EnvironmentParams
 }
 
 const SynchronizedView = ({
@@ -77,6 +79,11 @@ const SynchronizedView = ({
             return;
         svl.useCursor(cursorOption.style, cursorOption.event)
     }, [cursorOption?.style, cursorOption?.event, svl])
+
+    // set background and ground color, when mvl is ready / environmentParams changes
+    useEffect(()=>{
+        svl?.setEnvironment( props.environmentParams )
+    }, [svl, props.environmentParams])
 
     // set controls, when svl is ready / controlsOption changes
     useEffect(()=>{

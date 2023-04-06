@@ -9,6 +9,7 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "../misc/ModelLoader";
 import {getResizeObserver} from "../misc/CanvasResizeObserver";
+import {EnvironmentParams, rebuild} from "../builders/SceneBuilder";
 
 
 export default class ModelViewLogic {
@@ -48,6 +49,10 @@ export default class ModelViewLogic {
         this.animate()
     }
 
+    setEnvironment(envParams?: EnvironmentParams){
+        if(this.scene)
+            rebuild(this.scene, envParams)
+    }
     setControls(option: ControlsBuilder.ControlsOption){
         if(!this.camera)
             return

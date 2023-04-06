@@ -4,6 +4,7 @@ import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import SynchronizerImpl from "../synchronization/SynchronizerImpl";
 import SynchronizedView from "./SynchronizedView";
 import {CameraOption} from "../builders/CameraBuilder";
+import {EnvironmentParams} from "../builders/SceneBuilder";
 
 interface Props{
     requestHeaders?: {[p: string]: string}
@@ -11,6 +12,7 @@ interface Props{
     styles?: React.CSSProperties[]
     cameraOption?: CameraOption
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
+    environmentParams?: EnvironmentParams
 }
 
 const CompareViews = ({
@@ -35,6 +37,7 @@ const CompareViews = ({
                               url={url}
                               requestHeaders={props.requestHeaders}
                               synchronizer={synchronizer}
+                              environmentParams={props.environmentParams}
             />
         )}
     </div>

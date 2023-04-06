@@ -3,6 +3,7 @@ import {ControlsOption} from "../builders/ControlsBuilder";
 import * as IDAuthority from '../misc/IDAuthority'
 import ModelViewLogic from "../logic/ModelViewLogic";
 import {CameraOption} from "../builders/CameraBuilder";
+import {EnvironmentParams} from "../builders/SceneBuilder";
 
 interface Props {
     style?: React.CSSProperties
@@ -10,6 +11,7 @@ interface Props {
     url: string,
     controlsOption?: ControlsOption,
     cameraOption?: CameraOption
+    environmentParams?: EnvironmentParams
 }
 
 const ModelView = ({
@@ -48,6 +50,11 @@ const ModelView = ({
 
         setMvl(n_mvl)
     },[canvasRef.current])
+
+    // set background and ground color, when mvl is ready / environmentParams changes
+    useEffect(()=>{
+        mvl?.setEnvironment( props.environmentParams )
+    }, [mvl, props.environmentParams])
 
     // set controls, when mv is ready / controlsOption changes
     useEffect(()=>{

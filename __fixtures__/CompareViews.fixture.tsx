@@ -18,7 +18,6 @@ export default
                            urls={urls}
                            requestHeaders={{'Authorization': env.token}}
     />,
-
     orthographic: <CompareViews styles={styles}
                                 urls={urls}
                                 requestHeaders={{'Authorization': env.token}}
@@ -27,7 +26,6 @@ export default
     noStyle: <CompareViews urls={urls}
                            requestHeaders={{'Authorization': env.token}}
     />,
-
     lineCursor: <CompareViews styles={styles}
                               cursorOption={{style: CursorStyleOption.line}}
                               urls={urls}
@@ -45,5 +43,10 @@ export default
                                   }}
                                   urls={urls}
                                   requestHeaders={{'Authorization': env.token}}
+    />,
+    redAndBlue: <CompareViews styles={styles}
+                              urls={urls}
+                              requestHeaders={{'Authorization': env.token}}
+                              environmentParams={ { fog:{color:{r:50,g:0,b:0}, near:1, far:150}, ground:{color:{r:0,g:0,b:50}}, grid:{color:{r:255,g:255,b:255}} } }
     />,
 }

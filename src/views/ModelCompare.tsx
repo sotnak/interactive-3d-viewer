@@ -4,6 +4,7 @@ import {CameraOption} from "../builders/CameraBuilder";
 import * as IDAuthority from "../misc/IDAuthority";
 import ModelCompareLogic from "../logic/ModelCompareLogic";
 import {SelectorOption} from "../builders/SelectorBuilder";
+import {EnvironmentParams} from "../builders/SceneBuilder";
 
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
     cameraOption?: CameraOption
     selectorOption?: SelectorOption
     activeModelIndex?: number
+    environmentParams?: EnvironmentParams
 }
 
 const ModelCompare = ({
@@ -57,6 +59,11 @@ const ModelCompare = ({
 
         setMcl(n_mcl)
     },[canvasRef.current])
+
+    // set background and ground color, when mvl is ready / environmentParams changes
+    useEffect(()=>{
+        mcl?.setEnvironment( props.environmentParams )
+    }, [mcl, props.environmentParams])
 
     // set controls, when mcl is ready / controlsOption changes
     useEffect(()=>{

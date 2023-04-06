@@ -1,19 +1,19 @@
 import * as THREE from "three";
 
-function buildGround(): THREE.Group{
+function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
 
     const group = new THREE.Group()
     group.name = "BUILDER_ground"
 
-    const grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
+    const gridHelper = new THREE.GridHelper( 2000, 20, RGBToString(grid?.color) ?? 0x000000, RGBToString(grid?.color) ?? 0x000000 );
     //@ts-ignore
-    grid.material.opacity = 0.2;
+    gridHelper.material.opacity = 0.2;
     //@ts-ignore
-    grid.material.transparent = true;
+    gridHelper.material.transparent = true;
 
-    group.add( grid );
+    group.add( gridHelper );
 
-    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: RGBToString(ground?.color) ?? 0x999999, depthWrite: false } ) );
     mesh.rotation.x = - Math.PI / 2;
     mesh.receiveShadow = true;
     group.add( mesh );
@@ -45,14 +45,59 @@ function buildLights(): THREE.Group {
     return group;
 }
 
-export function build(): THREE.Scene{
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xa0a0a0 );
-    scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+function rebuildScene(scene: THREE.Scene, fog?:FogParams){
+    scene.background = new THREE.Color( RGBToString(fog?.color) ?? 0xa0a0a0 );
+    scene.fog = new THREE.Fog( RGBToString(fog?.color) ?? 0xa0a0a0, fog?.near ?? 200,  fog?.far ??1000 );
+}
 
-    scene.add(buildGround())
+function RGBToString(rgb?: RGBColor){
+    return rgb ? `rgb(${rgb.r},${rgb.g},${rgb.b})` : undefined
+}
+
+interface RGBColor{
+    r: number
+    g:number
+    b:number
+}
+
+interface FogParams{
+    color: RGBColor
+    near?: number
+    far?: number
+}
+
+interface GroundParams{
+    color: RGBColor
+}
+
+interface GridParams{
+    color: RGBColor
+}
+
+export interface EnvironmentParams{
+    fog?: FogParams
+    ground?: GroundParams
+    grid?: GridParams
+}
+
+export function build(): THREE.Scene{
+
+    const scene = new THREE.Scene();
+
+    rebuildScene(scene);
 
     scene.add(buildLights())
 
     return scene
+}
+
+export function rebuild(scene: THREE.Scene, envParam?: EnvironmentParams){
+    rebuildScene(scene, envParam?.fog)
+
+    const oldGround = scene.children.find( obj => obj.name === "BUILDER_ground" )
+
+    if(oldGround)
+        scene.remove(oldGround)
+
+    scene.add(buildGround( envParam?.ground, envParam?.grid ))
 }
