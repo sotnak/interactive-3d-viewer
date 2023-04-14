@@ -2,14 +2,15 @@ import * as THREE from "three";
 import * as RendererBuilder from "../builders/RendererBuilder";
 import getParentElement from "../misc/getParentElement";
 import * as SceneBuilder from "../builders/SceneBuilder";
+import {EnvironmentParams, rebuild} from "../builders/SceneBuilder";
 import * as CameraBuilder from "../builders/CameraBuilder";
 import * as ControlsBuilder from "../builders/ControlsBuilder";
 import {ControlsOption} from "../builders/ControlsBuilder";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "../misc/ModelLoader";
+import {ModelFormat} from "../misc/ModelLoader";
 import {getResizeObserver} from "../misc/CanvasResizeObserver";
-import {EnvironmentParams, rebuild} from "../builders/SceneBuilder";
 
 
 export default class ModelViewLogic {
@@ -91,7 +92,20 @@ export default class ModelViewLogic {
 
         console.log(this.id, "loading model:", url)
 
-        this.loadedModel = await ModelLoader.loadGLTF(url, requestHeaders, this.scene, onProgress);
+        this.loadedModel = await ModelLoader.load(ModelFormat.gltf, url, requestHeaders, this.scene, onProgress);
+
+        return this.loadedModel;
+    }
+
+    async loadModel(modelFormat: ModelFormat, url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void): Promise<THREE.Group> {
+        this.loadedModel = undefined
+
+        if(!this.scene)
+            throw new Error('Unable to load. Scene is undefined.')
+
+        console.log(this.id, "loading model:", url)
+
+        this.loadedModel = await ModelLoader.load(modelFormat, url, requestHeaders, this.scene, onProgress);
 
         return this.loadedModel;
     }

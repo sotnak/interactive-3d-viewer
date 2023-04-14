@@ -10,7 +10,7 @@ const styles: {[p: string]: string}[] = [
     {position: 'absolute', width:'49%', right: '0px', top: '0px', bottom: '10px'}
 ]
 
-const urls = ['http://109.123.202.213:3000/models/6371826358b03a003a9de77d', 'http://109.123.202.213:3000/models/62556f89d41c1c0038689e4d']
+const urls = ['http://109.123.202.213:3000/models/63074a95436ca90038a65720', 'http://109.123.202.213:3000/models/6307ec890f6bbd0038ff2471']
 
 export default
 {

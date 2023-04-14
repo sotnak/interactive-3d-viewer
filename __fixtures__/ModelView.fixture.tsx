@@ -2,6 +2,7 @@ import React from "react";
 import ModelView from "../src/views/ModelView";
 import {ControlsOption} from "../src/builders/ControlsBuilder";
 import {CameraOption} from "../src/builders/CameraBuilder";
+import {ModelFormat} from "../src/misc/ModelLoader";
 
 const env = require('../env.json')
 
@@ -34,5 +35,12 @@ export default
                            url={'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'}
                            requestHeaders={{'Authorization': env.token}}
                            environmentParams={ { fog:{color:{r:50,g:0,b:0}, near:1, far:150}, ground:{color:{r:0,g:0,b:50}}, grid:{color:{r:255,g:255,b:255}} } }
+    />,
+
+
+    format: <ModelView style={style}
+                       url={'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'}
+                       requestHeaders={{'Authorization': env.token}}
+                       modelFormat={ModelFormat.gltf}
     />,
 }
