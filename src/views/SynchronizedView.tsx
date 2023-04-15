@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
+import 'bootstrap/dist/css/bootstrap.css'
 import {ControlsOption} from "../builders/ControlsBuilder";
 import * as IDAuthority from '../misc/IDAuthority'
 import Synchronizer from "../synchronization/Synchronizer";
@@ -6,11 +7,13 @@ import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import SynchronizedViewLogic from "../logic/SynchronizedViewLogic";
 import {CameraOption} from "../builders/CameraBuilder";
 import {EnvironmentParams} from "../builders/SceneBuilder";
+import {Model} from "../misc/ModelLoader";
+import {ProgressBar} from "react-bootstrap";
 
 interface Props {
     style?: React.CSSProperties
     requestHeaders?: {[p: string]: string}
-    url: string,
+    model: Model
     controlsOption?: ControlsOption
     cameraOption?: CameraOption
     synchronizer?: Synchronizer
@@ -104,7 +107,7 @@ const SynchronizedView = ({
             return;
         setLP(0)
 
-        svl.load(props.url, requestHeaders, (progress)=>{
+        svl.loadModel(props.model, requestHeaders, (progress)=>{
             //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
             //console.log(progress.loaded, progress.total)
             setLP(progress.loaded/progress.total)
@@ -115,11 +118,11 @@ const SynchronizedView = ({
         return ()=>{
             svl.removeLoaded()
         }
-    },[svl, props.url, requestHeaders])
+    },[svl, props.model.format, props.model.url, requestHeaders])
 
     return (
         <div style={style}>
-            <span style={{ top: '0px', left: '0px'}}>{loadPercentage}</span>
+            <ProgressBar now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
             <canvas ref={canvasRef}/>
         </div>
     );

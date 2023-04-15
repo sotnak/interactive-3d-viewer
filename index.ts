@@ -4,5 +4,7 @@ import ModelCompare from "./src/views/ModelCompare"
 import {CursorStyleOption, CursorEventOption} from "./src/cursors/CursorOptions"
 import {ControlsOption} from "./src/builders/ControlsBuilder";
 import {CameraOption} from "./src/builders/CameraBuilder";
+import {ModelFormat} from "./src/misc/ModelLoader";
+import {SelectorOption} from "./src/builders/SelectorBuilder";
 
-export {CompareViews, ModelView, ModelCompare, CursorStyleOption, CursorEventOption, ControlsOption, CameraOption}
+export {CompareViews, ModelView, ModelCompare, CursorStyleOption, CursorEventOption, ControlsOption, CameraOption, ModelFormat, SelectorOption}

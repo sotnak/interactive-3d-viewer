@@ -1,16 +1,19 @@
 import React, {useEffect, useRef, useState} from "react";
+import 'bootstrap/dist/css/bootstrap.css'
 import {ControlsOption} from "../builders/ControlsBuilder";
 import {CameraOption} from "../builders/CameraBuilder";
 import * as IDAuthority from "../misc/IDAuthority";
 import ModelCompareLogic from "../logic/ModelCompareLogic";
 import {SelectorOption} from "../builders/SelectorBuilder";
 import {EnvironmentParams} from "../builders/SceneBuilder";
+import {Model} from "../misc/ModelLoader";
+import {ProgressBar} from "react-bootstrap";
 
 
 interface Props {
     style?: React.CSSProperties
     requestHeaders?: {[p: string]: string}
-    urls: string[],
+    models: Model[]
     controlsOption?: ControlsOption,
     cameraOption?: CameraOption
     selectorOption?: SelectorOption
@@ -28,8 +31,8 @@ const ModelCompare = ({
                        ...props
                    }: Props) => {
 
-    if(props.urls.length!=2)
-        throw new Error("2 urls must be supplied")
+    if(props.models.length!=2)
+        throw new Error("2 models must be supplied")
 
     if( style.height || (style.top && style.bottom) ){} else {
         style.height = 450
@@ -91,7 +94,7 @@ const ModelCompare = ({
             return;
         setLP(0)
 
-        mcl.loadBoth(props.urls, requestHeaders, (progress)=>{
+        mcl.loadBothModels(props.models, requestHeaders, (progress)=>{
             //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
             //console.log(progress.loaded, progress.total)
             setLP(progress.loaded/progress.total)
@@ -102,12 +105,15 @@ const ModelCompare = ({
         return ()=>{
             mcl.removeLoaded()
         }
-    },[mcl, props.urls, requestHeaders])
+    },[mcl,
+        props.models[0].url, props.models[0].format,
+        props.models[1].url, props.models[1].format,
+        requestHeaders])
 
     return (
         <div style={style}>
-            <span style={{ top: '0px', left: '0px'}}>{loadPercentage}</span>
-            <canvas ref={canvasRef}/>
+            <ProgressBar now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
+            <canvas ref={canvasRef} />
         </div>
     );
 }

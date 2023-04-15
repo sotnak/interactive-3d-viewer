@@ -1,16 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
+import 'bootstrap/dist/css/bootstrap.css'
 import {ControlsOption} from "../builders/ControlsBuilder";
 import * as IDAuthority from '../misc/IDAuthority'
 import ModelViewLogic from "../logic/ModelViewLogic";
 import {CameraOption} from "../builders/CameraBuilder";
 import {EnvironmentParams} from "../builders/SceneBuilder";
-import {ModelFormat} from "../misc/ModelLoader";
+import {Model} from "../misc/ModelLoader";
+import {ProgressBar} from "react-bootstrap";
 
 interface Props {
     style?: React.CSSProperties
     requestHeaders?: {[p: string]: string}
-    url: string,
-    modelFormat?: ModelFormat
+    model: Model
     controlsOption?: ControlsOption,
     cameraOption?: CameraOption
     environmentParams?: EnvironmentParams
@@ -21,7 +22,6 @@ const ModelView = ({
                        requestHeaders = {},
                        controlsOption = ControlsOption.Orbit,
                        cameraOption = CameraOption.perspective,
-                       modelFormat = ModelFormat.gltf,
                        ...props
                     }: Props) => {
 
@@ -75,7 +75,7 @@ const ModelView = ({
             return;
         setLP(0)
 
-        mvl.loadModel(modelFormat, props.url, requestHeaders, (progress)=>{
+        mvl.loadModel(props.model, requestHeaders, (progress)=>{
             //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
             //console.log(progress.loaded, progress.total)
             setLP(progress.loaded/progress.total)
@@ -86,11 +86,11 @@ const ModelView = ({
         return ()=>{
             mvl.removeLoaded()
         }
-    },[mvl, props.url, modelFormat, requestHeaders])
+    },[mvl, props.model.url, props.model.format, requestHeaders])
 
     return (
         <div style={style}>
-            <span style={{ top: '0px', left: '0px'}}>{loadPercentage}</span>
+            <ProgressBar now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
             <canvas ref={canvasRef}/>
         </div>
     );

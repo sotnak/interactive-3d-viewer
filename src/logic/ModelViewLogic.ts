@@ -9,7 +9,7 @@ import {ControlsOption} from "../builders/ControlsBuilder";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "../misc/ModelLoader";
-import {ModelFormat} from "../misc/ModelLoader";
+import {Model, ModelFormat} from "../misc/ModelLoader";
 import {getResizeObserver} from "../misc/CanvasResizeObserver";
 
 
@@ -97,15 +97,17 @@ export default class ModelViewLogic {
         return this.loadedModel;
     }
 
-    async loadModel(modelFormat: ModelFormat, url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void): Promise<THREE.Group> {
+    async loadModel(model: Model, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void): Promise<THREE.Group> {
         this.loadedModel = undefined
 
         if(!this.scene)
             throw new Error('Unable to load. Scene is undefined.')
 
-        console.log(this.id, "loading model:", url)
+        console.log(this.id, "loading model:", model.url, model.format)
 
-        this.loadedModel = await ModelLoader.load(modelFormat, url, requestHeaders, this.scene, onProgress);
+        this.loadedModel = await ModelLoader.load(model.format ?? ModelFormat.gltf, model.url, requestHeaders, this.scene, onProgress);
+
+        console.log(this.id, "model loaded")
 
         return this.loadedModel;
     }

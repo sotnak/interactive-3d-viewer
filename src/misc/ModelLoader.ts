@@ -13,24 +13,33 @@ export enum ModelFormat{
     obj='obj'
 }
 
+export interface Model{
+    url: string,
+    format?: ModelFormat
+}
+
+function processObject3D( object: THREE.Object3D ) {
+    //light stripes - casting & receiving shadows
+    object.castShadow = true;
+    object.receiveShadow = true;
+
+    //object.matrixWorldNeedsUpdate = true;
+
+    //@ts-ignore
+    if (object.isMesh) {
+        //needed for switching between selectors
+        //@ts-ignore
+        object.material.transparent = true;
+    }
+}
+
 async function loadGLTF(url: string, requestHeaders: {[p: string]: string}, scene: THREE.Scene, onProgress?: (event: ProgressEvent<EventTarget>) => void ){
     const loader = new GLTFLoader();
     loader.setRequestHeader(requestHeaders)
 
     const gltf = await loader.loadAsync(url, onProgress)
 
-    gltf.scene.traverse( function ( object ) {
-        //light stripes - casting & receiving shadows
-        object.castShadow = true;
-        object.receiveShadow = true;
-
-        //@ts-ignore
-        if(object.isMesh) {
-            //needed for switching between selectors
-            //@ts-ignore
-            object.material.transparent = true;
-        }
-    } );
+    gltf.scene.traverse( processObject3D );
 
     gltf.scene.name=groupName
 
@@ -44,18 +53,7 @@ async function modelLoad(loader: FBXLoader | OBJLoader, url: string, requestHead
 
     const group = await loader.loadAsync(url, onProgress)
 
-    group.traverse( function ( object ) {
-        //light stripes - casting & receiving shadows
-        object.castShadow = true;
-        object.receiveShadow = true;
-
-        //@ts-ignore
-        if(object.isMesh) {
-            //needed for switching between selectors
-            //@ts-ignore
-            object.material.transparent = true;
-        }
-    } );
+    group.traverse( processObject3D );
 
     group.name=groupName
     scene.add( group );

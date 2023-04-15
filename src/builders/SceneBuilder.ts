@@ -13,10 +13,42 @@ function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
 
     group.add( gridHelper );
 
-    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: RGBToString(ground?.color) ?? 0x999999, depthWrite: true } ) );
+    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: RGBToString(ground?.color) ?? 0x999999, depthWrite: ground?.depthWrite ?? true } ) );
     mesh.rotation.x = - Math.PI / 2;
     mesh.receiveShadow = true;
     group.add( mesh );
+
+    return group;
+}
+
+function lightSpam(): THREE.Group {
+
+    const group = new THREE.Group()
+    group.name = "BUILDER_lightSpam"
+
+    const dirLight1 = new THREE.DirectionalLight( 0xffffff );
+    dirLight1.position.set( -10, 0, 0 );
+    group.add( dirLight1 );
+
+    const dirLight2 = new THREE.DirectionalLight( 0xffffff );
+    dirLight2.position.set( 10, 0, 0 );
+    group.add( dirLight2 );
+
+    const dirLight3 = new THREE.DirectionalLight( 0xffffff );
+    dirLight3.position.set( 0, -10, 0 );
+    group.add( dirLight3 );
+
+    const dirLight4 = new THREE.DirectionalLight( 0xffffff );
+    dirLight4.position.set( 0, 10, 0 );
+    group.add( dirLight4 );
+
+    const dirLight5 = new THREE.DirectionalLight( 0xffffff );
+    dirLight5.position.set( 0, 0, -10 );
+    group.add( dirLight5 );
+
+    const dirLight6 = new THREE.DirectionalLight( 0xffffff );
+    dirLight6.position.set( 0, 0, 10 );
+    group.add( dirLight6 );
 
     return group;
 }
@@ -25,12 +57,12 @@ function buildLights(): THREE.Group {
     const group = new THREE.Group()
     group.name = "BUILDER_lights"
 
-    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x999999 );
+    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x999999, 0.1 );
     hemiLight.position.set( 0, 200, 0 );
     group.add( hemiLight );
 
     const dirLight = new THREE.DirectionalLight( 0xffffff );
-    dirLight.position.set( 0, 200, 100 );
+    dirLight.position.set( 0, 15, 10 );
     dirLight.castShadow = true;
     //light stripes - casting & receiving shadows
     dirLight.shadow.bias = -0.01
@@ -40,7 +72,9 @@ function buildLights(): THREE.Group {
     dirLight.shadow.camera.right = 120;
     group.add( dirLight );
 
-    group.add(new THREE.AmbientLight(0xffffff, 0.3))
+    group.add( lightSpam() )
+
+    //group.add(new THREE.AmbientLight(0xffffff, 0.3))
 
     return group;
 }
@@ -68,6 +102,7 @@ interface FogParams{
 
 interface GroundParams{
     color: RGBColor
+    depthWrite?: boolean
 }
 
 interface GridParams{

@@ -23,13 +23,15 @@ export default {
         resolve(),
         typescript({
             include:["src/**", "index.ts"],
+            exclude:["__fixtures__/*.fixture.*"]
         }),
-        /*postcss({
+        postcss({
             extensions: ['.css']
-        }),*/
+        }),
         uglify(),
         babel({
-            include:["src/**", "index.ts"]
+            include:["src/**", "index.ts"],
+            exclude: 'node_modules/**'
         }),
     ]
 }

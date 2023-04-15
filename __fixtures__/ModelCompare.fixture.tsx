@@ -5,35 +5,39 @@ import {ControlsOption} from "../src/builders/ControlsBuilder";
 
 
 const env = require('../env.json')
-const urls = ['http://109.123.202.213:3000/models/63074a95436ca90038a65720', 'http://109.123.202.213:3000/models/6307ec890f6bbd0038ff2471']
+const models = [{url: 'http://109.123.202.213:3000/models/63074a95436ca90038a65720'}, {url: 'http://109.123.202.213:3000/models/6307ec890f6bbd0038ff2471'}]
 const style: {[p: string]: string} = {width: '99%', height: '98%', position: 'absolute'}
 
 export default
 {
-    default: <ModelCompare urls={urls}
+    default: <ModelCompare models={models}
                            requestHeaders={{'Authorization': env.token}}
                            style={style}
                            activeModelIndex={0}
     />,
-    opacity: <ModelCompare urls={urls}
+    noStyle: <ModelCompare models={models}
+                           requestHeaders={{'Authorization': env.token}}
+                           activeModelIndex={0}
+    />,
+    opacity: <ModelCompare models={models}
                            requestHeaders={{'Authorization': env.token}}
                            style={style}
                            activeModelIndex={0}
                            selectorOption={1}
     />,
-    trackball: <ModelCompare urls={urls}
+    trackball: <ModelCompare models={models}
                              requestHeaders={{'Authorization': env.token}}
                              style={style}
                              controlsOption={ControlsOption.Trackball}
                              activeModelIndex={0}
     />,
-    orthographic: <ModelCompare urls={urls}
+    orthographic: <ModelCompare models={models}
                                 requestHeaders={{'Authorization': env.token}}
                                 style={style}
                                 cameraOption={CameraOption.orthographic}
                                 activeModelIndex={0}
     />,
-    redAndBlue: <ModelCompare urls={urls}
+    redAndBlue: <ModelCompare models={models}
                               requestHeaders={{'Authorization': env.token}}
                               style={style}
                               activeModelIndex={0}
