@@ -7,7 +7,7 @@ function onWindowResizeBuilder(canvas: HTMLCanvasElement, camera: THREE.Camera, 
 
     return () => {
 
-        renderer.setSize(parent.clientWidth, parent.clientHeight);
+        renderer.setSize(parent.clientWidth, parent.clientHeight - 16);
 
         const bounds = canvas.getBoundingClientRect()
 
