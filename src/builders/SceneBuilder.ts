@@ -1,5 +1,32 @@
 import * as THREE from "three";
 
+interface RGBColor{
+    r: number
+    g:number
+    b:number
+}
+
+interface FogParams{
+    color?: RGBColor
+    near?: number
+    far?: number
+}
+
+interface GroundParams{
+    color?: RGBColor
+    depthWrite?: boolean
+}
+
+interface GridParams{
+    color: RGBColor
+}
+
+export interface EnvironmentParams{
+    fog?: FogParams
+    ground?: GroundParams
+    grid?: GridParams
+}
+
 function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
 
     const group = new THREE.Group()
@@ -86,33 +113,6 @@ function rebuildScene(scene: THREE.Scene, fog?:FogParams){
 
 function RGBToString(rgb?: RGBColor){
     return rgb ? `rgb(${rgb.r},${rgb.g},${rgb.b})` : undefined
-}
-
-interface RGBColor{
-    r: number
-    g:number
-    b:number
-}
-
-interface FogParams{
-    color: RGBColor
-    near?: number
-    far?: number
-}
-
-interface GroundParams{
-    color: RGBColor
-    depthWrite?: boolean
-}
-
-interface GridParams{
-    color: RGBColor
-}
-
-export interface EnvironmentParams{
-    fog?: FogParams
-    ground?: GroundParams
-    grid?: GridParams
 }
 
 export function build(): THREE.Scene{
