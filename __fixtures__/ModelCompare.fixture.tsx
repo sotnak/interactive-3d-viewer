@@ -2,10 +2,15 @@ import React from "react";
 import ModelCompare from "../src/views/ModelCompare";
 import {CameraOption} from "../src/builders/CameraBuilder";
 import {ControlsOption} from "../src/builders/ControlsBuilder";
+import {ModelFormat} from "../src/misc/ModelLoader";
 
 
 const env = require('../env.json')
-const models = [{url: 'http://109.123.202.213:3000/models/63074a95436ca90038a65720'}, {url: 'http://109.123.202.213:3000/models/6307ec890f6bbd0038ff2471'}]
+const models = [
+    {url: 'http://109.123.202.213:3000/models/63074a95436ca90038a65720', format: ModelFormat.gltf},
+    {url: 'http://109.123.202.213:3000/models/6307ec890f6bbd0038ff2471', format: ModelFormat.gltf}
+]
+
 const style: {[p: string]: string} = {width: '99%', height: '98%', position: 'absolute'}
 
 export default

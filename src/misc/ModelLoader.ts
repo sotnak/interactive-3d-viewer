@@ -15,7 +15,7 @@ export enum ModelFormat{
 
 export interface Model{
     url: string,
-    format?: ModelFormat
+    format: ModelFormat
 }
 
 function processObject3D( object: THREE.Object3D ) {

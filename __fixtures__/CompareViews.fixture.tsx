@@ -2,6 +2,7 @@ import React from "react";
 import CompareViews from '../src/views/CompareViews'
 import {CursorEventOption, CursorStyleOption} from "../src/cursors/CursorOptions";
 import {CameraOption} from "../src/builders/CameraBuilder";
+import {ModelFormat} from "../src/misc/ModelLoader";
 
 const env = require('../env.json')
 
@@ -9,8 +10,10 @@ const styles: {[p: string]: string}[] = [
     {position: 'absolute', width:'49%', left: '0px', top: '0px', bottom: '10px'},
     {position: 'absolute', width:'49%', right: '0px', top: '0px', bottom: '10px'}
 ]
-
-const models = [{url: 'http://109.123.202.213:3000/models/63074a95436ca90038a65720'}, {url: 'http://109.123.202.213:3000/models/6307ec890f6bbd0038ff2471'}]
+const models = [
+    {url: 'http://109.123.202.213:3000/models/63074a95436ca90038a65720', format: ModelFormat.gltf},
+    {url: 'http://109.123.202.213:3000/models/6307ec890f6bbd0038ff2471', format: ModelFormat.gltf}
+]
 
 export default
 {

@@ -11,28 +11,29 @@ if(!env.token){
 }
 
 const style: {[p: string]: string} = {width: '99%', height: '98%', position: 'absolute'}
+const model = {url: 'http://109.123.202.213:3000/models/6371826358b03a003a9de77d', format: ModelFormat.gltf}
 
 export default
 {
     default: <ModelView style={style}
-                      model={ {url: 'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'} }
+                      model={ model }
                       requestHeaders={{'Authorization': env.token}}
     />,
     trackball: <ModelView style={style}
                           controlsOption={ControlsOption.Trackball}
-                          model={ {url: 'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'} }
+                          model={ model }
                           requestHeaders={{'Authorization': env.token}}
     />,
     orthographic: <ModelView style={style}
-                             model={ {url: 'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'} }
+                             model={ model }
                             requestHeaders={{'Authorization': env.token}}
                             cameraOption={CameraOption.orthographic}
     />,
-    noStyle: <ModelView model={ {url: 'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'} }
+    noStyle: <ModelView model={ model }
                         requestHeaders={{'Authorization': env.token}}
     />,
     redAndBlue: <ModelView style={style}
-                           model={ {url: 'http://109.123.202.213:3000/models/6371826358b03a003a9de77d'} }
+                           model={ model }
                            requestHeaders={{'Authorization': env.token}}
                            environmentParams={ { fog:{color:{r:50,g:0,b:0}, near:1, far:150}, ground:{color:{r:0,g:0,b:50}}, grid:{color:{r:255,g:255,b:255}} } }
     />,

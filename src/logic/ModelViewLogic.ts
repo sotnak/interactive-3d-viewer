@@ -103,9 +103,9 @@ export default class ModelViewLogic {
         if(!this.scene)
             throw new Error('Unable to load. Scene is undefined.')
 
-        console.log(this.id, "loading model:", model.url, model.format)
+        console.log(this.id, "loading model:", model.url, ModelFormat[model.format])
 
-        this.loadedModel = await ModelLoader.load(model.format ?? ModelFormat.gltf, model.url, requestHeaders, this.scene, onProgress);
+        this.loadedModel = await ModelLoader.load(model.format, model.url, requestHeaders, this.scene, onProgress);
 
         console.log(this.id, "model loaded")
 
