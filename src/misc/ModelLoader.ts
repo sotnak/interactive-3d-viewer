@@ -76,6 +76,8 @@ export async function load(modelFormat: ModelFormat, url: string, requestHeaders
             return modelLoad(new OBJLoader(loadingManager), url, requestHeaders, scene, onProgress);
         case ModelFormat.gltf:
             return loadGLTF(url, requestHeaders, scene, onProgress);
+        default:
+            throw new Error("Unsupported model format");
     }
 }
 

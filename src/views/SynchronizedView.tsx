@@ -9,6 +9,7 @@ import {CameraOption} from "../builders/CameraBuilder";
 import {EnvironmentParams} from "../builders/SceneBuilder";
 import {Model} from "../misc/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
+import CustomModal from "../misc/CustomModal";
 
 interface Props {
     style?: React.CSSProperties
@@ -38,6 +39,8 @@ const SynchronizedView = ({
 
     const [svl, setSvl] = useState<SynchronizedViewLogic>()
     const [loadPercentage, setLP] = useState<number>(0)
+
+    const [errorMessage, setEM] = useState<string | undefined>(undefined)
 
     // setup scene, when canvas is ready
     useEffect(()=>{
@@ -113,6 +116,9 @@ const SynchronizedView = ({
             setLP(progress.loaded/progress.total)
         }).then(()=>{
             setLP(100)
+        }).catch((e)=>{
+            setEM(e.message)
+            throw e;
         })
 
         return ()=>{
@@ -124,6 +130,8 @@ const SynchronizedView = ({
         <div style={style}>
             <ProgressBar now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
             <canvas ref={canvasRef}/>
+
+            {errorMessage ? <CustomModal messsage={errorMessage} handleClose={ ()=>{setEM(undefined)} }/> : null}
         </div>
     );
 }
