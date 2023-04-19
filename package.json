@@ -1,5 +1,5 @@
 {
-  "name": "@sotnak/interactive-3d-viewer",
+  "name": "@antospa2/interactive-3d-viewer",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
@@ -7,15 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "cosmos": "cosmos",
     "cosmos-export": "cosmos-export",
-    "buildLib": "rollup -c",
-    "publishLib": "npm publish --access=public"
+    "build": "rollup -c"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "files": [
     "dist",
-    "assets",
     "README.md"
   ],
   "devDependencies": {
