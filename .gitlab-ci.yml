@@ -25,7 +25,7 @@ build-job:
       - dist
 
 deploy-job:
-  stage: publish
+  stage: deploy
   dependencies:
     - build-job
   script:
