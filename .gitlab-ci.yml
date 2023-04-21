@@ -29,5 +29,7 @@ deploy-job:
   dependencies:
     - build-job
   script:
-    - npm publish --"@antospa2:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
+    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">>.npmrc
+    - sed -i '$s/}/,\n"publishConfig":{"@antospa2:registry":"https:\/\/${CI_SERVER_HOST}\/api\/v4\/projects\/${CI_PROJECT_ID}\/packages\/npm\/"}}/' package.json
+    - npm publish
   allow_failure: true
