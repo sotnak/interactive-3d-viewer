@@ -1,4 +1,4 @@
-image: node:19.3.0
+image: node:14-buster
 
 stages:
   - install
@@ -21,6 +21,7 @@ build-job:
   script:
     - npm run build
   artifacts:
+    name: "build_${CI_JOB_ID}"
     paths:
       - dist
 
