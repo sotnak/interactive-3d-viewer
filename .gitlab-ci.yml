@@ -21,7 +21,6 @@ build-job:
   script:
     - npm run build
   artifacts:
-    name: "build_${CI_JOB_ID}"
     paths:
       - dist
 
@@ -30,6 +29,5 @@ deploy-job:
   dependencies:
     - build-job
   script:
-    - npm config set @antospa2:registry "https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
-    - npm publish
+    - npm publish --"@antospa2:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
   allow_failure: true
