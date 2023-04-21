@@ -1,4 +1,4 @@
-image: node:14-buster
+image: node:19.3.0
 
 stages:
   - install
@@ -29,6 +29,6 @@ deploy-job:
   dependencies:
     - build-job
   script:
-    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">>.npmrc
+    - npm set registry "https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm publish
   allow_failure: true
