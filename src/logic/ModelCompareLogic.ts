@@ -1,8 +1,8 @@
 import ModelViewLogic from "./ModelViewLogic";
 import ModelSelector, {ComparableModel, ComparableState} from "../selectors/ModelSelector";
 import * as SelectorBuilder from "../builders/SelectorBuilder";
-import {Model} from "../misc/ModelLoader";
-import {LoadingCallbacksHandler} from "../misc/LoadingCallbacksHandler";
+import {Model} from "../loading/ModelLoader";
+import {LoadingCallbacksHandler} from "../loading/LoadingCallbacksHandler";
 
 
 export default class ModelCompareLogic extends ModelViewLogic{
@@ -22,8 +22,11 @@ export default class ModelCompareLogic extends ModelViewLogic{
     async loadBothModels(models: Model[], requestHeaders: { [p: string]: string }, onProgress?: (event: ProgressEvent<EventTarget>) => void) {
         const lch = new LoadingCallbacksHandler()
 
-        this.comparableModels[0] = {model: await this.loadModel(models[0], requestHeaders, lch.participate(onProgress)), state: ComparableState.default}
-        this.comparableModels[1] = {model: await this.loadModel(models[1], requestHeaders, lch.participate(onProgress)), state: ComparableState.default}
+        const model1 = this.loadModel(models[0], requestHeaders, lch.participate(onProgress))
+        const model2 = this.loadModel(models[1], requestHeaders, lch.participate(onProgress))
+
+        this.comparableModels[0] = {model: await model1, state: ComparableState.default}
+        this.comparableModels[1] = {model: await model2, state: ComparableState.default}
 
         this.setActive(this.activeModel)
     }

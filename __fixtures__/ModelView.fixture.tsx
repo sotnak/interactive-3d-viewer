@@ -2,7 +2,7 @@ import React from "react";
 import ModelView from "../src/views/ModelView";
 import {ControlsOption} from "../src/builders/ControlsBuilder";
 import {CameraOption} from "../src/builders/CameraBuilder";
-import {ModelFormat} from "../src/misc/ModelLoader";
+import {ModelFormat} from "../src/loading/ModelLoader";
 
 const env = require('../env.json')
 

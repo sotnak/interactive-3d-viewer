@@ -8,10 +8,10 @@ import * as ControlsBuilder from "../builders/ControlsBuilder";
 import {ControlsOption} from "../builders/ControlsBuilder";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
-import * as ModelLoader from "../misc/ModelLoader";
-import {Model, ModelFormat} from "../misc/ModelLoader";
+import * as ModelLoader from "../loading/ModelLoader";
+import {Model, ModelFormat} from "../loading/ModelLoader";
 import {getResizeObserver} from "../misc/CanvasResizeObserver";
-import {LoadingCallbacksHandler} from "../misc/LoadingCallbacksHandler";
+import {LoadingCallbacksHandler} from "../loading/LoadingCallbacksHandler";
 
 
 export default class ModelViewLogic {
@@ -108,9 +108,7 @@ export default class ModelViewLogic {
 
         console.log(this.id, "loading model:", model.url, ModelFormat[model.format])
 
-        const lch = new LoadingCallbacksHandler()
-
-        this.loadedModel = await ModelLoader.load(model.format, model.url, requestHeaders, this.scene, lch.participate(onProgress));
+        this.loadedModel = await ModelLoader.load(model.format, model.url, requestHeaders, this.scene, onProgress);
 
         console.log(this.id, "model loaded")
 

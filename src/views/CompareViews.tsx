@@ -5,7 +5,7 @@ import SynchronizerImpl from "../synchronization/SynchronizerImpl";
 import SynchronizedView from "./SynchronizedView";
 import {CameraOption} from "../builders/CameraBuilder";
 import {EnvironmentParams} from "../builders/SceneBuilder";
-import {Model} from "../misc/ModelLoader";
+import {Model} from "../loading/ModelLoader";
 
 interface Props{
     requestHeaders?: {[p: string]: string}

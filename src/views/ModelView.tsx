@@ -5,7 +5,7 @@ import * as IDAuthority from '../misc/IDAuthority'
 import ModelViewLogic from "../logic/ModelViewLogic";
 import {CameraOption} from "../builders/CameraBuilder";
 import {EnvironmentParams} from "../builders/SceneBuilder";
-import {Model} from "../misc/ModelLoader";
+import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 

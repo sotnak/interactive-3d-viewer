@@ -6,7 +6,7 @@ import * as IDAuthority from "../misc/IDAuthority";
 import ModelCompareLogic from "../logic/ModelCompareLogic";
 import {SelectorOption} from "../builders/SelectorBuilder";
 import {EnvironmentParams} from "../builders/SceneBuilder";
-import {Model} from "../misc/ModelLoader";
+import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 

@@ -2,7 +2,7 @@ import React from "react";
 import CompareViews from '../src/views/CompareViews'
 import {CursorEventOption, CursorStyleOption} from "../src/cursors/CursorOptions";
 import {CameraOption} from "../src/builders/CameraBuilder";
-import {ModelFormat} from "../src/misc/ModelLoader";
+import {ModelFormat} from "../src/loading/ModelLoader";
 
 const env = require('../env.json')
 

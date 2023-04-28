@@ -7,7 +7,7 @@ import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import SynchronizedViewLogic from "../logic/SynchronizedViewLogic";
 import {CameraOption} from "../builders/CameraBuilder";
 import {EnvironmentParams} from "../builders/SceneBuilder";
-import {Model} from "../misc/ModelLoader";
+import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 
