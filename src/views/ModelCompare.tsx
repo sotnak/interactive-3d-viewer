@@ -99,8 +99,7 @@ const ModelCompare = ({
 
         mcl.loadBothModels(props.models, requestHeaders, (progress)=>{
             //https://discourse.threejs.org/t/gltfloader-onprogress-total-is-always-0/5735
-            //console.log(progress.loaded, progress.total)
-            setLP(progress.loaded/progress.total)
+            setLP( (progress.loaded/progress.total) * 100 )
         }).then(()=>{
             setLP(100)
         }).catch((e)=>{
@@ -118,7 +117,7 @@ const ModelCompare = ({
 
     return (
         <div style={style}>
-            <ProgressBar now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
+            <ProgressBar animated={false} now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
             <canvas ref={canvasRef} />
 
             {errorMessage ? <CustomModal messsage={errorMessage} handleClose={ ()=>{setEM(undefined)} }/> : null}

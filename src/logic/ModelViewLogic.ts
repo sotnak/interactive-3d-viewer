@@ -11,6 +11,7 @@ import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as ModelLoader from "../misc/ModelLoader";
 import {Model, ModelFormat} from "../misc/ModelLoader";
 import {getResizeObserver} from "../misc/CanvasResizeObserver";
+import {LoadingCallbacksHandler} from "../misc/LoadingCallbacksHandler";
 
 
 export default class ModelViewLogic {
@@ -92,7 +93,9 @@ export default class ModelViewLogic {
 
         console.log(this.id, "loading model:", url)
 
-        this.loadedModel = await ModelLoader.load(ModelFormat.gltf, url, requestHeaders, this.scene, onProgress);
+        const lch = new LoadingCallbacksHandler()
+
+        this.loadedModel = await ModelLoader.load(ModelFormat.gltf, url, requestHeaders, this.scene, lch.participate(onProgress) );
 
         return this.loadedModel;
     }
@@ -105,7 +108,9 @@ export default class ModelViewLogic {
 
         console.log(this.id, "loading model:", model.url, ModelFormat[model.format])
 
-        this.loadedModel = await ModelLoader.load(model.format, model.url, requestHeaders, this.scene, onProgress);
+        const lch = new LoadingCallbacksHandler()
+
+        this.loadedModel = await ModelLoader.load(model.format, model.url, requestHeaders, this.scene, lch.participate(onProgress));
 
         console.log(this.id, "model loaded")
 

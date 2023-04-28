@@ -2,6 +2,7 @@ import ModelViewLogic from "./ModelViewLogic";
 import ModelSelector, {ComparableModel, ComparableState} from "../selectors/ModelSelector";
 import * as SelectorBuilder from "../builders/SelectorBuilder";
 import {Model} from "../misc/ModelLoader";
+import {LoadingCallbacksHandler} from "../misc/LoadingCallbacksHandler";
 
 
 export default class ModelCompareLogic extends ModelViewLogic{
@@ -10,15 +11,19 @@ export default class ModelCompareLogic extends ModelViewLogic{
     protected selector?: ModelSelector;
 
     async loadBoth(urls: string[], requestHeaders: { [p: string]: string }, onProgress?: (event: ProgressEvent<EventTarget>) => void) {
-        this.comparableModels[0] = {model: await this.load(urls[0], requestHeaders, onProgress), state: ComparableState.default}
-        this.comparableModels[1] = {model: await this.load(urls[1], requestHeaders, onProgress), state: ComparableState.default}
+        const lch = new LoadingCallbacksHandler()
+
+        this.comparableModels[0] = {model: await this.load(urls[0], requestHeaders, lch.participate(onProgress)), state: ComparableState.default}
+        this.comparableModels[1] = {model: await this.load(urls[1], requestHeaders, lch.participate(onProgress)), state: ComparableState.default}
 
         this.setActive(this.activeModel)
     }
 
     async loadBothModels(models: Model[], requestHeaders: { [p: string]: string }, onProgress?: (event: ProgressEvent<EventTarget>) => void) {
-        this.comparableModels[0] = {model: await this.loadModel(models[0], requestHeaders, onProgress), state: ComparableState.default}
-        this.comparableModels[1] = {model: await this.loadModel(models[1], requestHeaders, onProgress), state: ComparableState.default}
+        const lch = new LoadingCallbacksHandler()
+
+        this.comparableModels[0] = {model: await this.loadModel(models[0], requestHeaders, lch.participate(onProgress)), state: ComparableState.default}
+        this.comparableModels[1] = {model: await this.loadModel(models[1], requestHeaders, lch.participate(onProgress)), state: ComparableState.default}
 
         this.setActive(this.activeModel)
     }
