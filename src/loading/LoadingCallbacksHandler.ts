@@ -35,8 +35,6 @@ export class LoadingCallbacksHandler {
             participant.onProgress(event.loaded, event.total)
             const accumulated = this.participants.reduce( this.accumulate, new Participant() )
 
-            console.log(accumulated)
-
             onProgress(  new ProgressEvent(event.type, {
                 loaded: accumulated.loaded,
                 total: accumulated.total
