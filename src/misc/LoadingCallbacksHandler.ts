@@ -1,9 +1,4 @@
-export interface LoadingEvent{
-    loaded: number
-    total: number
-}
-
-class Participant implements LoadingEvent{
+class Participant{
     loaded: number = 0;
     total: number = 0;
 
