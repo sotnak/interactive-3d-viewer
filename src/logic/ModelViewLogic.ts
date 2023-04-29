@@ -10,6 +10,7 @@ import * as ModelLoader from "../loading/ModelLoader";
 import {Model, ModelFormat} from "../loading/ModelLoader";
 import {getResizeObserver} from "../misc/CanvasResizeObserver";
 import {LoadingCallbacksHandler} from "../loading/LoadingCallbacksHandler";
+import {CameraOption} from "../builders/CameraBuilder";
 
 
 export default class ModelViewLogic {
@@ -53,11 +54,11 @@ export default class ModelViewLogic {
         if(this.scene)
             SceneBuilder.rebuild(this.scene, envParams)
     }
-    setControls(option: ControlsBuilder.ControlsOption){
+    setControls(option: ControlsOption){
         if(!this.camera)
             return
 
-        console.log(this.id, "set controls:", ControlsBuilder.ControlsOption[option])
+        console.log(this.id, "set controls:", ControlsOption[option])
 
         if(this.controls){
             const oldControls = this.controls
@@ -70,9 +71,9 @@ export default class ModelViewLogic {
         this.controls = ControlsBuilder.build(this.canvas, this.camera, option)
     }
 
-    setCamera(cameraOption: CameraBuilder.CameraOption, controlsOption: ControlsOption){
+    setCamera(cameraOption: CameraOption, controlsOption: ControlsOption){
 
-        console.log(this.id, "set camera:", CameraBuilder.CameraOption[cameraOption])
+        console.log(this.id, "set camera:", CameraOption[cameraOption])
 
         this.resizeObserver?.disconnect()
 
