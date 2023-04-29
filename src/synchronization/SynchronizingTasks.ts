@@ -1,16 +1,15 @@
 import * as THREE from "three";
 import {SynchronizedAttributes} from "./Synchronizer";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
 import * as CursorHelpers from "../cursors/CursorHelpers";
 import {Cursor, CursorType} from "../cursors/Cursor";
+import {Controls} from "../builders/ControlsBuilder";
 
 export const setCameraPosition = (attr: SynchronizedAttributes, camera?: THREE.Camera) => {
     if(attr.cameraPosition)
         camera?.position.set(attr.cameraPosition.x, attr.cameraPosition.y, attr.cameraPosition.z)
 }
 
-export const setCameraTarget = (attr: SynchronizedAttributes, controls?: OrbitControls | TrackballControls) => {
+export const setCameraTarget = (attr: SynchronizedAttributes, controls?: Controls) => {
     if(attr.cameraTarget)
         controls?.target.set(attr.cameraTarget.x, attr.cameraTarget.y, attr.cameraTarget.z)
 }

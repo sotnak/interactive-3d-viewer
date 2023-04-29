@@ -2,12 +2,10 @@ import * as THREE from "three";
 import * as RendererBuilder from "../builders/RendererBuilder";
 import getParentElement from "../misc/getParentElement";
 import * as SceneBuilder from "../builders/SceneBuilder";
-import {EnvironmentParams, rebuild} from "../builders/SceneBuilder";
+import {EnvironmentParams} from "../builders/SceneBuilder";
 import * as CameraBuilder from "../builders/CameraBuilder";
 import * as ControlsBuilder from "../builders/ControlsBuilder";
-import {ControlsOption} from "../builders/ControlsBuilder";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import {TrackballControls} from "three/examples/jsm/controls/TrackballControls";
+import {Controls, ControlsOption} from "../builders/ControlsBuilder";
 import * as ModelLoader from "../loading/ModelLoader";
 import {Model, ModelFormat} from "../loading/ModelLoader";
 import {getResizeObserver} from "../misc/CanvasResizeObserver";
@@ -21,7 +19,7 @@ export default class ModelViewLogic {
     protected parentElement: HTMLElement;
     protected scene?: THREE.Scene;
     protected camera?: THREE.Camera;
-    protected controls?: OrbitControls | TrackballControls;
+    protected controls?: Controls;
     protected loadedModel?: THREE.Group;
     protected resizeObserver?: ResizeObserver;
 
@@ -53,7 +51,7 @@ export default class ModelViewLogic {
 
     setEnvironment(envParams?: EnvironmentParams){
         if(this.scene)
-            rebuild(this.scene, envParams)
+            SceneBuilder.rebuild(this.scene, envParams)
     }
     setControls(option: ControlsBuilder.ControlsOption){
         if(!this.camera)

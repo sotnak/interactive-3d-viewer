@@ -106,7 +106,7 @@ function buildLights(): THREE.Group {
     return group;
 }
 
-function rebuildScene(scene: THREE.Scene, fog?:FogParams){
+function rebuildScene(scene: THREE.Scene, fog?:FogParams): void{
     scene.background = new THREE.Color( RGBToString(fog?.color) ?? 0xa0a0a0 );
     scene.fog = new THREE.Fog( RGBToString(fog?.color) ?? 0xa0a0a0, fog?.near ?? 200,  fog?.far ??1000 );
 }
@@ -126,7 +126,7 @@ export function build(): THREE.Scene{
     return scene
 }
 
-export function rebuild(scene: THREE.Scene, envParam?: EnvironmentParams){
+export function rebuild(scene: THREE.Scene, envParam?: EnvironmentParams): void{
     rebuildScene(scene, envParam?.fog)
 
     const oldGround = scene.children.find( obj => obj.name === "BUILDER_ground" )

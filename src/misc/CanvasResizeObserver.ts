@@ -34,7 +34,7 @@ function onWindowResizeBuilder(canvas: HTMLCanvasElement, camera: THREE.Camera, 
 
 }
 
-export function getResizeObserver(canvas: HTMLCanvasElement, camera: THREE.Camera, renderer?: THREE.WebGLRenderer){
+export function getResizeObserver(canvas: HTMLCanvasElement, camera: THREE.Camera, renderer?: THREE.WebGLRenderer): ResizeObserver{
 
     if(!renderer)
         throw new Error("Renderer undefined")
