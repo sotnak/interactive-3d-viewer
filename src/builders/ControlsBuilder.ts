@@ -23,6 +23,9 @@ export function build(canvas: HTMLCanvasElement, camera: THREE.Camera, option: C
         case ControlsOption.Trackball:
             const track = new TrackballControls( camera, canvas );
             track.zoomSpeed = 0.1
-            return track
+            return track;
+
+        default:
+            throw new Error("Unknown controls option")
     }
 }

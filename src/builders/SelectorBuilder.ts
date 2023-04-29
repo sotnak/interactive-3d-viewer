@@ -13,5 +13,8 @@ export function build(option: SelectorOption): ModelSelector{
             return new RenderOrderSelector();
         case SelectorOption.opacity:
             return new OpacitySelector();
+
+        default:
+            throw new Error("Unknown selector option")
     }
 }
