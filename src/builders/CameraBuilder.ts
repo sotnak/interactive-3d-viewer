@@ -13,7 +13,7 @@ export function build(cameraOption: CameraOption = CameraOption.perspective): TH
 
     switch (cameraOption){
         case CameraOption.perspective:
-            camera = new THREE.PerspectiveCamera( 50 );
+            camera = new THREE.PerspectiveCamera( 50, 1, 0.1,  1000000);
             //@ts-ignore
             camera.far = 1000; camera.near = 1;
             camera.position.x = defaultPosition.x;
@@ -21,7 +21,7 @@ export function build(cameraOption: CameraOption = CameraOption.perspective): TH
             camera.position.z = defaultPosition.z;
             break;
         case CameraOption.orthographic:
-            camera = new THREE.OrthographicCamera();
+            camera = new THREE.OrthographicCamera(1, 1, 1, 1, 0.1, 1000000);
             //@ts-ignore
             camera.zoom = 0.05
             camera.position.x = defaultPosition.x;
