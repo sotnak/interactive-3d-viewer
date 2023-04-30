@@ -26,8 +26,9 @@ export default
     />,
     orthographic: <ModelView style={style}
                              model={ model }
-                            requestHeaders={{'Authorization': env.token}}
-                            cameraOption={CameraOption.orthographic}
+                             requestHeaders={{'Authorization': env.token}}
+                             controlsOption={ControlsOption.Orbit}
+                             cameraOption={CameraOption.orthographic}
     />,
     noStyle: <ModelView model={ model }
                         requestHeaders={{'Authorization': env.token}}
