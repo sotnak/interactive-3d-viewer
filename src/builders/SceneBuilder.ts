@@ -40,7 +40,7 @@ function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
 
     group.add( gridHelper );
 
-    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: RGBToString(ground?.color) ?? 0x999999, depthWrite: ground?.depthWrite ?? true } ) );
+    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshLambertMaterial( { color: RGBToString(ground?.color) ?? 0x999999, depthWrite: ground?.depthWrite ?? true } ) );
     mesh.rotation.x = - Math.PI / 2;
     mesh.receiveShadow = true;
     group.add( mesh );
