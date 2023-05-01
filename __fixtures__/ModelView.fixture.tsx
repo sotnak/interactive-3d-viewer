@@ -37,6 +37,7 @@ export default
                            model={ model }
                            requestHeaders={{'Authorization': env.token}}
                            environmentParams={ { fog:{color:{r:50,g:0,b:0}, near:1, far:150}, ground:{color:{r:0,g:0,b:50}}, grid:{color:{r:255,g:255,b:255}} } }
+                           cameraOption={CameraOption.perspective}
     />,
     format: <ModelView style={style}
                        model={ {url: 'http://109.123.202.213:3000/models/625003a8310f630038b0b798', format: ModelFormat.obj} }
