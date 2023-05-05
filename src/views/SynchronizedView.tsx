@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css'
 import {ControlsOption} from "../builders/ControlsBuilder";
 import * as IDAuthority from '../misc/IDAuthority'
@@ -10,6 +10,7 @@ import {EnvironmentParams} from "../builders/SceneBuilder";
 import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
+import ComponentRef from "../misc/ComponentRef";
 
 interface Props {
     style?: React.CSSProperties
@@ -22,14 +23,14 @@ interface Props {
     environmentParams?: EnvironmentParams
 }
 
-const SynchronizedView = ({
+const SynchronizedView = React.forwardRef<{resetCamera: ()=>void}, Props>(({
                        style = {},
                        requestHeaders = {},
                        controlsOption = ControlsOption.Orbit,
                        cursorOption = {style: CursorStyleOption.disabled},
                        cameraOption = CameraOption.perspective,
                        ...props
-                   }: Props) => {
+                   }: Props, ref: React.Ref<ComponentRef>) => {
 
     if( style.height || (style.top && style.bottom) ){} else {
         style.height = 450
@@ -123,7 +124,13 @@ const SynchronizedView = ({
         return ()=>{
             svl.removeLoaded()
         }
-    },[svl, props.model.format, props.model.url, requestHeaders])
+    },[svl, props.model.format, props.model.url, requestHeaders]);
+
+    useImperativeHandle(ref, ()=>({
+        resetCamera() {
+            svl?.resetCamera()
+        }
+    }), [svl]);
 
     return (
         <div style={style}>
@@ -133,6 +140,6 @@ const SynchronizedView = ({
             {errorMessage ? <CustomModal messsage={errorMessage} handleClose={ ()=>{setEM(undefined)} }/> : null}
         </div>
     );
-}
+})
 
 export default SynchronizedView;

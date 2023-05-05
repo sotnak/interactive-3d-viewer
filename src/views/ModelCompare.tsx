@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useImperativeHandle, useRef, useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css'
 import {ControlsOption} from "../builders/ControlsBuilder";
 import {CameraOption} from "../builders/CameraBuilder";
@@ -9,6 +9,7 @@ import {EnvironmentParams} from "../builders/SceneBuilder";
 import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
+import ComponentRef from "../misc/ComponentRef";
 
 
 interface Props {
@@ -22,7 +23,7 @@ interface Props {
     environmentParams?: EnvironmentParams
 }
 
-const ModelCompare = ({
+const ModelCompare = React.forwardRef<{resetCamera: ()=>void}, Props>(({
                           style = {},
                           requestHeaders = {},
                           controlsOption = ControlsOption.Orbit,
@@ -30,7 +31,7 @@ const ModelCompare = ({
                           selectorOption = SelectorOption.renderOrder,
                           activeModelIndex = 0,
                        ...props
-                   }: Props) => {
+                   }: Props, ref: React.Ref<ComponentRef>) => {
 
     if(props.models.length!=2)
         throw new Error("2 models must be supplied")
@@ -113,7 +114,13 @@ const ModelCompare = ({
     },[mcl,
         props.models[0].url, props.models[0].format,
         props.models[1].url, props.models[1].format,
-        requestHeaders])
+        requestHeaders]);
+
+    useImperativeHandle(ref, ()=>({
+        resetCamera() {
+            mcl?.resetCamera()
+        }
+    }), [mcl]);
 
     return (
         <div style={style}>
@@ -123,6 +130,6 @@ const ModelCompare = ({
             {errorMessage ? <CustomModal messsage={errorMessage} handleClose={ ()=>{setEM(undefined)} }/> : null}
         </div>
     );
-}
+})
 
 export default ModelCompare

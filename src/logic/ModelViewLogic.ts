@@ -84,6 +84,10 @@ export default class ModelViewLogic {
         this.resizeObserver.observe(getParentElement(this.canvas))
     }
 
+    resetCamera(){
+        this.controls?.reset()
+    }
+
     async load(url: string, requestHeaders: {[p: string]: string}, onProgress?: (event: ProgressEvent<EventTarget>) => void): Promise<THREE.Group> {
         this.loadedModel = undefined
 
