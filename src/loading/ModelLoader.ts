@@ -82,8 +82,8 @@ export async function load(modelFormat: ModelFormat, url: string, requestHeaders
 }
 
 export function removeLoaded(scene: THREE.Scene){
-    const old = scene.children.find( obj => obj.name === groupName )
+    const olds = scene.children.filter( obj => obj.name === groupName )
 
-    if(old)
-        scene.remove(old)
+    if(olds.length > 0)
+        scene.remove(...olds)
 }

@@ -33,8 +33,6 @@ export default class ModelCompareLogic extends ModelViewLogic{
 
     removeLoaded() {
         this.comparableModels = []
-
-        super.removeLoaded();
         super.removeLoaded();
     }
 
