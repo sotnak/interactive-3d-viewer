@@ -48,32 +48,32 @@ function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
     return group;
 }
 
-function lightSpam(): THREE.Group {
+function lightSpam(intensity: number = 1): THREE.Group {
 
     const group = new THREE.Group()
     group.name = "BUILDER_lightSpam"
 
-    const dirLight1 = new THREE.DirectionalLight( 0xffffff );
+    const dirLight1 = new THREE.DirectionalLight( 0xffffff, intensity );
     dirLight1.position.set( -10, 0, 0 );
     group.add( dirLight1 );
 
-    const dirLight2 = new THREE.DirectionalLight( 0xffffff );
+    const dirLight2 = new THREE.DirectionalLight( 0xffffff, intensity );
     dirLight2.position.set( 10, 0, 0 );
     group.add( dirLight2 );
 
-    const dirLight3 = new THREE.DirectionalLight( 0xffffff );
+    const dirLight3 = new THREE.DirectionalLight( 0xffffff, intensity );
     dirLight3.position.set( 0, -10, 0 );
     group.add( dirLight3 );
 
-    const dirLight4 = new THREE.DirectionalLight( 0xffffff );
+    const dirLight4 = new THREE.DirectionalLight( 0xffffff, intensity );
     dirLight4.position.set( 0, 10, 0 );
     group.add( dirLight4 );
 
-    const dirLight5 = new THREE.DirectionalLight( 0xffffff );
+    const dirLight5 = new THREE.DirectionalLight( 0xffffff, intensity );
     dirLight5.position.set( 0, 0, -10 );
     group.add( dirLight5 );
 
-    const dirLight6 = new THREE.DirectionalLight( 0xffffff );
+    const dirLight6 = new THREE.DirectionalLight( 0xffffff, intensity );
     dirLight6.position.set( 0, 0, 10 );
     group.add( dirLight6 );
 
@@ -84,11 +84,11 @@ function buildLights(): THREE.Group {
     const group = new THREE.Group()
     group.name = "BUILDER_lights"
 
-    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x999999, 0.1 );
+    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x999999, 0.7 );
     hemiLight.position.set( 0, 200, 0 );
     group.add( hemiLight );
 
-    const dirLight = new THREE.DirectionalLight( 0xffffff );
+    const dirLight = new THREE.DirectionalLight( 0xffffff, 0.1 );
     dirLight.position.set( 0, 15, 10 );
     dirLight.castShadow = true;
     //light stripes - casting & receiving shadows
@@ -99,9 +99,9 @@ function buildLights(): THREE.Group {
     dirLight.shadow.camera.right = 120;
     group.add( dirLight );
 
-    group.add( lightSpam() )
+    //group.add( lightSpam(0.1) )
 
-    //group.add(new THREE.AmbientLight(0xffffff, 0.3))
+    group.add(new THREE.AmbientLight(0xffffff, 0.3))
 
     return group;
 }

@@ -18,6 +18,29 @@ export interface Model{
     format: ModelFormat
 }
 
+function standardToLambert(material: THREE.MeshStandardMaterial){
+
+    return new THREE.MeshLambertMaterial({
+        color: material.color,
+        emissive: material.emissive,
+        emissiveMap: material.emissiveMap,
+        //roughness: material.roughness,
+        //roughnessMap: material.roughnessMap,
+        //metalness: material.metalness,
+        //metalnessMap: material.metalnessMap,
+        map: material.map,
+        lightMap: material.lightMap,
+        aoMap: material.aoMap,
+        normalMap: material.normalMap ?? undefined,
+        bumpMap: material.bumpMap ?? undefined,
+        displacementMap: material.displacementMap ?? undefined,
+        envMap: material.envMap,
+        alphaMap: material.alphaMap,
+        opacity: material.opacity,
+        fog: material.fog,
+    })
+}
+
 function processObject3D( object: THREE.Object3D ) {
     //light stripes - casting & receiving shadows
     object.castShadow = true;
@@ -27,6 +50,13 @@ function processObject3D( object: THREE.Object3D ) {
 
     //@ts-ignore
     if (object.isMesh) {
+        //@ts-ignore
+        object.material.fog = false;
+
+        //fixes dark models
+        //@ts-ignore
+        object.material.metalness = 0;
+
         //needed for switching between selectors
         //@ts-ignore
         object.material.transparent = true;
