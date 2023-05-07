@@ -36,7 +36,11 @@ export default
     redAndBlue: <ModelView style={style}
                            model={ model }
                            requestHeaders={{'Authorization': env.token}}
-                           environmentParams={ { fog:{color:{r:50,g:0,b:0}, near:1, far:150}, ground:{color:{r:0,g:0,b:50}}, grid:{color:{r:255,g:255,b:255}} } }
+                           environmentParams={ {
+                               fog:{color:{r:100,g:0,b:0}, near:1, far:150},
+                               ground:{color:{r:0,g:0,b:100}},
+                               grid:{color:{r:255,g:255,b:255}},
+                               light:{intensity: 2.5, color: {r:100, g:100, b:100}, useHemisphericColors: true } } }
                            cameraOption={CameraOption.perspective}
     />,
     format: <ModelView style={style}

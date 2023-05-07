@@ -2,7 +2,7 @@ import * as THREE from "three";
 import * as RendererBuilder from "../builders/RendererBuilder";
 import getParentElement from "../misc/getParentElement";
 import * as SceneBuilder from "../builders/SceneBuilder";
-import {EnvironmentParams} from "../builders/SceneBuilder";
+import EnvironmentParams from "../misc/EnvironmentParams";
 import * as CameraBuilder from "../builders/CameraBuilder";
 import * as ControlsBuilder from "../builders/ControlsBuilder";
 import {Controls, ControlsOption} from "../builders/ControlsBuilder";

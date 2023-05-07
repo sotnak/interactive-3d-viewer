@@ -4,7 +4,7 @@ import {CursorEventOption, CursorStyleOption} from "../cursors/CursorOptions";
 import SynchronizerImpl from "../synchronization/SynchronizerImpl";
 import SynchronizedView from "./SynchronizedView";
 import {CameraOption} from "../builders/CameraBuilder";
-import {EnvironmentParams} from "../builders/SceneBuilder";
+import EnvironmentParams from "../misc/EnvironmentParams";
 import {Model} from "../loading/ModelLoader";
 import ComponentRef from "../misc/ComponentRef";
 

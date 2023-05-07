@@ -6,7 +6,7 @@ import {ControlsOption} from "./src/builders/ControlsBuilder";
 import {CameraOption} from "./src/builders/CameraBuilder";
 import {ModelFormat, Model} from "./src/loading/ModelLoader";
 import {SelectorOption} from "./src/builders/SelectorBuilder";
-import {EnvironmentParams} from "./src/builders/SceneBuilder";
+import EnvironmentParams from "./src/misc/EnvironmentParams";
 import ComponentRef from "./src/misc/ComponentRef";
 
 export {CompareViews, ModelView, ModelCompare, CursorStyleOption, CursorEventOption, ControlsOption, CameraOption, ModelFormat, SelectorOption, Model, EnvironmentParams, ComponentRef}

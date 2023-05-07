@@ -4,7 +4,7 @@ import {ControlsOption} from "../builders/ControlsBuilder";
 import * as IDAuthority from '../misc/IDAuthority'
 import ModelViewLogic from "../logic/ModelViewLogic";
 import {CameraOption} from "../builders/CameraBuilder";
-import {EnvironmentParams} from "../builders/SceneBuilder";
+import EnvironmentParams from "../misc/EnvironmentParams";
 import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";

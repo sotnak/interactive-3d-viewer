@@ -1,31 +1,14 @@
 import * as THREE from "three";
+import EnvironmentParams, {
+    FogParams,
+    GridParams,
+    GroundParams,
+    LightParams,
+    RGBToString
+} from "../misc/EnvironmentParams";
 
-interface RGBColor{
-    r: number
-    g:number
-    b:number
-}
-
-interface FogParams{
-    color?: RGBColor
-    near?: number
-    far?: number
-}
-
-interface GroundParams{
-    color?: RGBColor
-    depthWrite?: boolean
-}
-
-interface GridParams{
-    color: RGBColor
-}
-
-export interface EnvironmentParams{
-    fog?: FogParams
-    ground?: GroundParams
-    grid?: GridParams
-}
+const defaultGroundColor = 0x999999
+const defaultFogColor = 0xa0a0a0
 
 function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
 
@@ -40,7 +23,7 @@ function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
 
     group.add( gridHelper );
 
-    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshLambertMaterial( { color: RGBToString(ground?.color) ?? 0x999999, depthWrite: ground?.depthWrite ?? true } ) );
+    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshLambertMaterial( { color: RGBToString(ground?.color) ?? defaultGroundColor, depthWrite: ground?.depthWrite ?? true } ) );
     mesh.rotation.x = - Math.PI / 2;
     mesh.receiveShadow = true;
     group.add( mesh );
@@ -80,15 +63,19 @@ function lightSpam(intensity: number = 1): THREE.Group {
     return group;
 }
 
-function buildLights(): THREE.Group {
+function buildLights(light?: LightParams, ground?: GroundParams, fog?: FogParams): THREE.Group {
     const group = new THREE.Group()
     group.name = "BUILDER_lights"
 
-    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x999999, 0.7 );
+    const hemiLight = new THREE.HemisphereLight(
+        RGBToString(fog?.color) ?? RGBToString(light?.color) ?? defaultFogColor,
+        RGBToString(ground?.color) ?? RGBToString(light?.color) ?? defaultGroundColor,
+        0.6 * (light?.intensity ?? 1) );
+
     hemiLight.position.set( 0, 200, 0 );
     group.add( hemiLight );
 
-    const dirLight = new THREE.DirectionalLight( 0xffffff, 0.1 );
+    const dirLight = new THREE.DirectionalLight( RGBToString(light?.color) ?? 0xffffff, 0.1 * (light?.intensity ?? 1) );
     dirLight.position.set( 0, 15, 10 );
     dirLight.castShadow = true;
     //light stripes - casting & receiving shadows
@@ -101,18 +88,14 @@ function buildLights(): THREE.Group {
 
     //group.add( lightSpam(0.1) )
 
-    group.add(new THREE.AmbientLight(0xffffff, 0.3))
+    group.add(new THREE.AmbientLight( RGBToString(light?.color) ?? 0xffffff, 0.4 * (light?.intensity ?? 1) ))
 
     return group;
 }
 
 function rebuildScene(scene: THREE.Scene, fog?:FogParams): void{
-    scene.background = new THREE.Color( RGBToString(fog?.color) ?? 0xa0a0a0 );
-    scene.fog = new THREE.Fog( RGBToString(fog?.color) ?? 0xa0a0a0, fog?.near ?? 200,  fog?.far ??1000 );
-}
-
-function RGBToString(rgb?: RGBColor){
-    return rgb ? `rgb(${rgb.r},${rgb.g},${rgb.b})` : undefined
+    scene.background = new THREE.Color( RGBToString(fog?.color) ?? defaultFogColor );
+    scene.fog = new THREE.Fog( RGBToString(fog?.color) ?? defaultFogColor, fog?.near ?? 200,  fog?.far ??1000 );
 }
 
 export function build(): THREE.Scene{
@@ -120,8 +103,6 @@ export function build(): THREE.Scene{
     const scene = new THREE.Scene();
 
     rebuildScene(scene);
-
-    scene.add(buildLights())
 
     return scene
 }
@@ -135,4 +116,15 @@ export function rebuild(scene: THREE.Scene, envParam?: EnvironmentParams): void{
         scene.remove(oldGround)
 
     scene.add(buildGround( envParam?.ground, envParam?.grid ))
+
+    const oldLights = scene.children.find( obj => obj.name === "BUILDER_lights" )
+
+    if(oldLights)
+        scene.remove(oldLights)
+
+    if(envParam?.light?.useHemisphericColors) {
+        scene.add(buildLights(envParam?.light, envParam?.ground, envParam?.fog))
+    } else {
+        scene.add(buildLights(envParam?.light))
+    }
 }
