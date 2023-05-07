@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import EnvironmentParams, {
+    dim,
     FogParams,
     GridParams,
     GroundParams,
@@ -69,7 +70,7 @@ function buildLights(light?: LightParams, ground?: GroundParams, fog?: FogParams
 
     const hemiLight = new THREE.HemisphereLight(
         RGBToString(fog?.color) ?? RGBToString(light?.color) ?? defaultFogColor,
-        RGBToString(ground?.color) ?? RGBToString(light?.color) ?? defaultGroundColor,
+        RGBToString(dim(ground?.color)) ?? RGBToString(dim(light?.color)) ?? defaultGroundColor,
         0.6 * (light?.intensity ?? 1) );
 
     hemiLight.position.set( 0, 200, 0 );

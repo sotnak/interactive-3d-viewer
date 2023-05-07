@@ -33,5 +33,12 @@ export default interface EnvironmentParams{
 }
 
 export function RGBToString(rgb?: RGBColor){
-    return rgb ? `rgb(${rgb.r},${rgb.g},${rgb.b})` : undefined
+    return rgb ? `rgb(${Math.floor(rgb.r)},${Math.floor(rgb.g)},${Math.floor(rgb.b)})` : undefined
+}
+
+export function dim(rgb?: RGBColor, rate: number = 2){
+    if(rgb)
+        return {r: rgb.r/rate, g: rgb.g/rate, b: rgb.b/rate};
+
+    return rgb;
 }
