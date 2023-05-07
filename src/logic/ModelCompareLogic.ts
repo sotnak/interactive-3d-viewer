@@ -51,8 +51,6 @@ export default class ModelCompareLogic extends ModelViewLogic{
     }
 
     setActive(n: number){
-        if(this.comparableModels.length==0 || !this.selector)
-            return;
 
         console.log(this.id, "set active:", n)
 
@@ -60,9 +58,9 @@ export default class ModelCompareLogic extends ModelViewLogic{
 
         for(let i = 0; i<this.comparableModels.length; i+=1){
             if(i == this.activeModel){
-                this.selector.activate(this.comparableModels[i])
+                this.selector?.activate(this.comparableModels[i])
             } else {
-                this.selector.deactivate(this.comparableModels[i])
+                this.selector?.deactivate(this.comparableModels[i])
             }
         }
     }
