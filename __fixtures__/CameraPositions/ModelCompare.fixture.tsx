@@ -31,6 +31,6 @@ export default ()=>{
         <button onClick={ ()=>{ref.current?.moveCamera(CameraPositions.right)} } > right camera </button>
         <button onClick={ ()=>{ref.current?.moveCamera(CameraPositions.front)} } > front camera </button>
         <button onClick={ ()=>{ref.current?.moveCamera(CameraPositions.rear)} } > rear camera </button>
-        <button onClick={ ()=>{ref.current?.moveCamera(CameraPositions.up)} } > up camera </button>
+        <button onClick={ ()=>{ref.current?.moveCamera(CameraPositions.top)} } > top camera </button>
     </>
 }

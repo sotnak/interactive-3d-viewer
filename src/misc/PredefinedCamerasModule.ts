@@ -6,7 +6,7 @@ export enum CameraPositions{
     right,
     front,
     rear,
-    up
+    top
 }
 
 function leftCamera(camera: THREE.Camera, controls: Controls){
@@ -33,7 +33,7 @@ function rearCamera(camera: THREE.Camera, controls: Controls){
     camera.position.set(n_position.x, n_position.y, n_position.z)
 }
 
-function upCamera(camera: THREE.Camera, controls: Controls){
+function topCamera(camera: THREE.Camera, controls: Controls){
     const distance = camera.position.distanceTo(controls.target)
     const n_position = new THREE.Vector3(0,distance,0).add(controls.target)
     camera.position.set(n_position.x, n_position.y, n_position.z)
@@ -53,8 +53,8 @@ export function moveCamera(position: CameraPositions, camera: THREE.Camera, cont
         case CameraPositions.rear:
             rearCamera(camera, controls)
             break;
-        case CameraPositions.up:
-            upCamera(camera, controls)
+        case CameraPositions.top:
+            topCamera(camera, controls)
             break;
         default:
             throw new Error("Unknown camera position")
