@@ -16,8 +16,9 @@ const model = {url: 'http://109.123.202.213:3000/models/6371826358b03a003a9de77d
 export default
 {
     default: <ModelView style={style}
-                      model={ model }
-                      requestHeaders={{'Authorization': env.token}}
+                        model={ model }
+                        requestHeaders={{'Authorization': env.token}}
+                        sensitivity={ {zoom: 1, pan: 1, rotate: 1} }
     />,
     trackball: <ModelView style={style}
                           controlsOption={ControlsOption.Trackball}

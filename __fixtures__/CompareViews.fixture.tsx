@@ -20,6 +20,7 @@ export default
     default: <CompareViews styles={styles}
                            models={models}
                            requestHeaders={{'Authorization': env.token}}
+                           sensitivity={ {zoom: 1, pan: 1, rotate: 1} }
     />,
     orthographic: <CompareViews styles={styles}
                                 models={models}

@@ -9,6 +9,7 @@ import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 import ComponentRef from "../misc/ComponentRef";
+import ControlsSensitivity from "../misc/ControlsSensitivity";
 
 interface Props {
     style?: React.CSSProperties
@@ -16,7 +17,8 @@ interface Props {
     model: Model
     controlsOption?: ControlsOption,
     cameraOption?: CameraOption
-    environmentParams?: EnvironmentParams
+    environmentParams?: EnvironmentParams,
+    sensitivity?: ControlsSensitivity
 }
 
 const ModelView = React.forwardRef<{resetCamera: ()=>void}, Props>(({
@@ -72,6 +74,11 @@ const ModelView = React.forwardRef<{resetCamera: ()=>void}, Props>(({
     useEffect(()=>{
         mvl?.setCamera(cameraOption, controlsOption)
     }, [mvl, cameraOption])
+
+    // set controls sensitivity, when mvl is ready / sensitivity changes
+    useEffect(()=>{
+        mvl?.setSensitivity(props.sensitivity)
+    }, [mvl, props.sensitivity])
 
     // load model, when mv is ready / url or requestHeaders changes
     useEffect(()=>{

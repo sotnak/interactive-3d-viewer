@@ -19,6 +19,7 @@ export default
                            requestHeaders={{'Authorization': env.token}}
                            style={style}
                            activeModelIndex={0}
+                           sensitivity={ {zoom: 1, pan: 1, rotate: 1} }
     />,
     noStyle: <ModelCompare models={models}
                            requestHeaders={{'Authorization': env.token}}

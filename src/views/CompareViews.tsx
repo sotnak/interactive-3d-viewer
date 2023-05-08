@@ -7,6 +7,7 @@ import {CameraOption} from "../builders/CameraBuilder";
 import EnvironmentParams from "../misc/EnvironmentParams";
 import {Model} from "../loading/ModelLoader";
 import ComponentRef from "../misc/ComponentRef";
+import ControlsSensitivity from "../misc/ControlsSensitivity";
 
 interface Props{
     requestHeaders?: {[p: string]: string}
@@ -15,6 +16,7 @@ interface Props{
     cameraOption?: CameraOption
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
     environmentParams?: EnvironmentParams
+    sensitivity?: ControlsSensitivity
 }
 
 const CompareViews = React.forwardRef<{resetCamera: ()=>void}, Props>(({
@@ -49,6 +51,7 @@ const CompareViews = React.forwardRef<{resetCamera: ()=>void}, Props>(({
                               requestHeaders={props.requestHeaders}
                               synchronizer={synchronizer}
                               environmentParams={props.environmentParams}
+                              sensitivity={props.sensitivity}
                               ref={refs[index]}
             />
         )}

@@ -8,6 +8,9 @@ export interface Controls extends THREE.EventDispatcher{
     update(): void
 
     target: THREE.Vector3
+    rotateSpeed : Number
+    panSpeed : Number
+    zoomSpeed : Number
 }
 
 export enum ControlsOption{
@@ -21,9 +24,7 @@ export function build(canvas: HTMLCanvasElement, camera: THREE.Camera, option: C
             return new OrbitControls(camera, canvas);
 
         case ControlsOption.Trackball:
-            const track = new TrackballControls( camera, canvas );
-            track.zoomSpeed = 0.1
-            return track;
+            return new TrackballControls( camera, canvas );
 
         default:
             throw new Error("Unknown controls option")

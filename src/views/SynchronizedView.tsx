@@ -11,6 +11,7 @@ import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 import ComponentRef from "../misc/ComponentRef";
+import ControlsSensitivity from "../misc/ControlsSensitivity";
 
 interface Props {
     style?: React.CSSProperties
@@ -21,6 +22,7 @@ interface Props {
     synchronizer?: Synchronizer
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
     environmentParams?: EnvironmentParams
+    sensitivity?: ControlsSensitivity
 }
 
 const SynchronizedView = React.forwardRef<{resetCamera: ()=>void}, Props>(({
@@ -104,6 +106,11 @@ const SynchronizedView = React.forwardRef<{resetCamera: ()=>void}, Props>(({
     useEffect(()=>{
         svl?.setCamera(cameraOption, controlsOption)
     }, [svl, cameraOption])
+
+    // set controls sensitivity, when svl is ready / sensitivity changes
+    useEffect(()=>{
+        svl?.setSensitivity(props.sensitivity)
+    }, [svl, props.sensitivity])
 
     // load model, when svl is ready / url or requestHeaders changes
     useEffect(()=>{

@@ -11,6 +11,7 @@ import {Model, ModelFormat} from "../loading/ModelLoader";
 import {getResizeObserver} from "../misc/CanvasResizeObserver";
 import {LoadingCallbacksHandler} from "../loading/LoadingCallbacksHandler";
 import {CameraOption} from "../builders/CameraBuilder";
+import ControlsSensitivity from "../misc/ControlsSensitivity";
 
 
 export default class ModelViewLogic {
@@ -23,6 +24,7 @@ export default class ModelViewLogic {
     protected controls?: Controls;
     protected loadedModel?: THREE.Group;
     protected resizeObserver?: ResizeObserver;
+    protected sensitivity: ControlsSensitivity | undefined;
 
     constructor(canvas: HTMLCanvasElement, id: number) {
         this.canvas = canvas
@@ -69,6 +71,18 @@ export default class ModelViewLogic {
         }
 
         this.controls = ControlsBuilder.build(this.canvas, this.camera, option)
+        this.setSensitivity(this.sensitivity)
+    }
+
+    setSensitivity(sensitivity?: ControlsSensitivity){
+        //console.log(this.id, "set sensitivity:", sensitivity)
+
+        this.sensitivity = sensitivity
+        if(this.controls) {
+            this.controls.panSpeed = sensitivity?.pan ?? 1
+            this.controls.rotateSpeed = sensitivity?.rotate ?? 1
+            this.controls.zoomSpeed = sensitivity?.zoom ?? 1
+        }
     }
 
     setCamera(cameraOption: CameraOption, controlsOption: ControlsOption){
@@ -85,6 +99,8 @@ export default class ModelViewLogic {
     }
 
     resetCamera(){
+        console.log(this.id, "reset camera")
+
         this.controls?.reset()
     }
 

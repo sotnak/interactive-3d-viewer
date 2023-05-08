@@ -10,17 +10,19 @@ import {Model} from "../loading/ModelLoader";
 import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 import ComponentRef from "../misc/ComponentRef";
+import ControlsSensitivity from "../misc/ControlsSensitivity";
 
 
 interface Props {
     style?: React.CSSProperties
     requestHeaders?: {[p: string]: string}
     models: Model[]
-    controlsOption?: ControlsOption,
+    controlsOption?: ControlsOption
     cameraOption?: CameraOption
     selectorOption?: SelectorOption
     activeModelIndex?: number
     environmentParams?: EnvironmentParams
+    sensitivity?: ControlsSensitivity
 }
 
 const ModelCompare = React.forwardRef<{resetCamera: ()=>void}, Props>(({
@@ -81,6 +83,11 @@ const ModelCompare = React.forwardRef<{resetCamera: ()=>void}, Props>(({
     useEffect(()=>{
         mcl?.setCamera(cameraOption, controlsOption)
     }, [mcl, cameraOption])
+
+    // set controls sensitivity, when mcl is ready / sensitivity changes
+    useEffect(()=>{
+        mcl?.setSensitivity(props.sensitivity)
+    }, [mcl, props.sensitivity])
 
     // set selector, when mcl is ready / selectorOption changes
     useEffect(()=>{
