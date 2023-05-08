@@ -23,8 +23,8 @@ export default ()=>{
         <ModelView style={style}
                       model={ model }
                       requestHeaders={{'Authorization': env.token}}
-                      controlsOption={ControlsOption.Orbit}
-                      cameraOption={CameraOption.perspective}
+                      controlsOption={ControlsOption.Trackball}
+                      cameraOption={CameraOption.orthographic}
                       ref={ref}
         />
         <button onClick={ ()=>{ref.current?.moveCamera(CameraPositions.left)} } > left camera </button>

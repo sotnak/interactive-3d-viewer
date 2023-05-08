@@ -24,7 +24,7 @@ export default ()=>{
         <CompareViews styles={styles}
                       models={models}
                       requestHeaders={{'Authorization': env.token}}
-                      cameraOption={CameraOption.perspective}
+                      cameraOption={CameraOption.orthographic}
                       ref={ref}
         />
         <button onClick={ ()=>{ref.current?.moveCamera(CameraPositions.left)} } > left camera </button>
