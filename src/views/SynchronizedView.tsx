@@ -12,6 +12,7 @@ import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 import ComponentRef from "../misc/ComponentRef";
 import ControlsSensitivity from "../misc/ControlsSensitivity";
+import {CameraPositions} from "../misc/PredefinedCamerasModule";
 
 interface Props {
     style?: React.CSSProperties
@@ -25,7 +26,7 @@ interface Props {
     sensitivity?: ControlsSensitivity
 }
 
-const SynchronizedView = React.forwardRef<{resetCamera: ()=>void}, Props>(({
+const SynchronizedView = React.forwardRef<ComponentRef, Props>(({
                        style = {},
                        requestHeaders = {},
                        controlsOption = ControlsOption.Orbit,
@@ -134,8 +135,11 @@ const SynchronizedView = React.forwardRef<{resetCamera: ()=>void}, Props>(({
     },[svl, props.model.format, props.model.url, requestHeaders]);
 
     useImperativeHandle(ref, ()=>({
-        resetCamera() {
+        resetCamera(): void{
             svl?.resetCamera()
+        },
+        moveCamera(position: CameraPositions): void{
+            svl?.setCameraPosition(position)
         }
     }), [svl]);
 

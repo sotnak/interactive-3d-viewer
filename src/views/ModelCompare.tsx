@@ -11,6 +11,7 @@ import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 import ComponentRef from "../misc/ComponentRef";
 import ControlsSensitivity from "../misc/ControlsSensitivity";
+import {CameraPositions} from "../misc/PredefinedCamerasModule";
 
 
 interface Props {
@@ -25,7 +26,7 @@ interface Props {
     sensitivity?: ControlsSensitivity
 }
 
-const ModelCompare = React.forwardRef<{resetCamera: ()=>void}, Props>(({
+const ModelCompare = React.forwardRef<ComponentRef, Props>(({
                           style = {},
                           requestHeaders = {},
                           controlsOption = ControlsOption.Orbit,
@@ -123,9 +124,12 @@ const ModelCompare = React.forwardRef<{resetCamera: ()=>void}, Props>(({
         props.models[1].url, props.models[1].format,
         requestHeaders]);
 
-    useImperativeHandle(ref, ()=>({
-        resetCamera() {
+    useImperativeHandle(ref, (): ComponentRef =>({
+        resetCamera(): void{
             mcl?.resetCamera()
+        },
+        moveCamera(position: CameraPositions): void{
+            mcl?.setCameraPosition(position)
         }
     }), [mcl]);
 

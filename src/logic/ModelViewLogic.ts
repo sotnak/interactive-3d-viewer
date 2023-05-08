@@ -12,6 +12,7 @@ import {getResizeObserver} from "../misc/CanvasResizeObserver";
 import {LoadingCallbacksHandler} from "../loading/LoadingCallbacksHandler";
 import {CameraOption} from "../builders/CameraBuilder";
 import ControlsSensitivity from "../misc/ControlsSensitivity";
+import {CameraPositions, moveCamera} from "../misc/PredefinedCamerasModule";
 
 
 export default class ModelViewLogic {
@@ -96,6 +97,11 @@ export default class ModelViewLogic {
 
         this.resizeObserver = getResizeObserver(this.canvas, this.camera, this.renderer);
         this.resizeObserver.observe(getParentElement(this.canvas))
+    }
+
+    setCameraPosition(position: CameraPositions){
+        if(this.camera && this.controls)
+            moveCamera(position, this.camera, this.controls)
     }
 
     resetCamera(){

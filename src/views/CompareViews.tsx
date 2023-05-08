@@ -8,6 +8,7 @@ import EnvironmentParams from "../misc/EnvironmentParams";
 import {Model} from "../loading/ModelLoader";
 import ComponentRef from "../misc/ComponentRef";
 import ControlsSensitivity from "../misc/ControlsSensitivity";
+import {CameraPositions} from "../misc/PredefinedCamerasModule";
 
 interface Props{
     requestHeaders?: {[p: string]: string}
@@ -19,7 +20,7 @@ interface Props{
     sensitivity?: ControlsSensitivity
 }
 
-const CompareViews = React.forwardRef<{resetCamera: ()=>void}, Props>(({
+const CompareViews = React.forwardRef<ComponentRef, Props>(({
                           cameraOption = CameraOption.perspective,
                           //styles = [{},{}],
                           ...props}: Props, ref: React.Ref<ComponentRef>)=>{
@@ -34,10 +35,14 @@ const CompareViews = React.forwardRef<{resetCamera: ()=>void}, Props>(({
 
     const refs :  React.RefObject<ComponentRef>[] = [useRef<ComponentRef>(null), useRef<ComponentRef>(null)]
 
-    useImperativeHandle(ref, ()=>({
-        resetCamera() {
+    useImperativeHandle(ref, (): ComponentRef =>({
+        resetCamera(): void{
             refs[0].current?.resetCamera()
             refs[1].current?.resetCamera();
+        },
+        moveCamera(position: CameraPositions): void{
+            refs[0].current?.moveCamera(position)
+            refs[1].current?.moveCamera(position)
         }
     }), [refs[0].current, refs[1].current]);
 

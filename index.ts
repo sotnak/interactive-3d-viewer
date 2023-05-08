@@ -9,5 +9,6 @@ import {SelectorOption} from "./src/builders/SelectorBuilder";
 import EnvironmentParams from "./src/misc/EnvironmentParams";
 import ComponentRef from "./src/misc/ComponentRef";
 import ControlsSensitivity from "./src/misc/ControlsSensitivity";
+import {CameraPositions} from "./src/misc/PredefinedCamerasModule";
 
-export {CompareViews, ModelView, ModelCompare, CursorStyleOption, CursorEventOption, ControlsOption, CameraOption, ModelFormat, SelectorOption, Model, EnvironmentParams, ComponentRef, ControlsSensitivity}
+export {CompareViews, ModelView, ModelCompare, CursorStyleOption, CursorEventOption, ControlsOption, CameraOption, ModelFormat, SelectorOption, Model, EnvironmentParams, ComponentRef, ControlsSensitivity, CameraPositions}
