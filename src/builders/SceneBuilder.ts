@@ -24,7 +24,7 @@ function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
     group.add( gridHelper );
 
     if(grid?.showAxes) {
-        const axesHelper = new THREE.AxesHelper(2000)
+        const axesHelper = new THREE.AxesHelper(1000)
         //@ts-ignore
         axesHelper.material.fog = false;
         group.add(axesHelper)
