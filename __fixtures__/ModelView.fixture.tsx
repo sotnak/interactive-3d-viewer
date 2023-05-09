@@ -19,6 +19,7 @@ export default
                         model={ model }
                         requestHeaders={{'Authorization': env.token}}
                         sensitivity={ {zoom: 1, pan: 1, rotate: 1} }
+                        environmentParams={ {grid:{showAxes: true}} }
     />,
     trackball: <ModelView style={style}
                           controlsOption={ControlsOption.Trackball}

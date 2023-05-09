@@ -21,6 +21,7 @@ export default
                            models={models}
                            requestHeaders={{'Authorization': env.token}}
                            sensitivity={ {zoom: 1, pan: 1, rotate: 1} }
+                           environmentParams={ {grid:{showAxes: true}} }
     />,
     orthographic: <CompareViews styles={styles}
                                 models={models}

@@ -16,7 +16,8 @@ export interface GroundParams{
 }
 
 export interface GridParams{
-    color: RGBColor
+    color?: RGBColor
+    showAxes?: boolean
 }
 
 export interface LightParams{

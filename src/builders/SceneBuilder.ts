@@ -21,8 +21,16 @@ function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
     gridHelper.material.opacity = 0.2;
     //@ts-ignore
     gridHelper.material.transparent = true;
-
     group.add( gridHelper );
+
+    if(grid?.showAxes) {
+        const axesHelper = new THREE.AxesHelper(2000)
+        //@ts-ignore
+        axesHelper.material.fog = false;
+        group.add(axesHelper)
+
+        console.log(axesHelper)
+    }
 
     const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshLambertMaterial( { color: RGBToString(ground?.color) ?? defaultGroundColor, depthWrite: ground?.depthWrite ?? true } ) );
     mesh.rotation.x = - Math.PI / 2;

@@ -20,6 +20,7 @@ export default
                            style={style}
                            activeModelIndex={0}
                            sensitivity={ {zoom: 1, pan: 1, rotate: 1} }
+                           environmentParams={ {grid:{showAxes: true}} }
     />,
     noStyle: <ModelCompare models={models}
                            requestHeaders={{'Authorization': env.token}}
