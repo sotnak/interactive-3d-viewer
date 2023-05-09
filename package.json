@@ -20,7 +20,7 @@
     "@antospa2:registry": "https://gitlab.fit.cvut.cz/api/v4/projects/52605/packages/npm/"
   },
   "engines": {
-    "node": ">=19.0.3"
+    "node": ">=19.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
