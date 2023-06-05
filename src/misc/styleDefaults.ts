@@ -19,3 +19,5 @@ const styleDefaults = (style: React.CSSProperties)=>{
 
     return n_style
 }
+
+export default styleDefaults;

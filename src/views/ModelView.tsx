@@ -12,6 +12,7 @@ import ComponentRef from "../misc/ComponentRef";
 import ControlsSensitivity from "../misc/ControlsSensitivity";
 import {CameraPositions} from "../misc/PredefinedCamerasModule";
 import FullscreenToggle from "../misc/FullscreenToggle";
+import styleDefaults from "../misc/styleDefaults";
 
 interface Props {
     style?: React.CSSProperties

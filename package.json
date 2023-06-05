@@ -1,6 +1,6 @@
 {
   "name": "@antospa2/interactive-3d-viewer",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -50,7 +50,9 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.149.0"
+    "three": "^0.149.0",
+    "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.5"
   },
   "dependencies": {
     "bootstrap": "^5.2.3",
