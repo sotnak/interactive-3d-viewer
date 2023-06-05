@@ -20,6 +20,11 @@ interface Props{
     sensitivity?: ControlsSensitivity
 }
 
+const fullscreenStyles: React.CSSProperties[] = [
+    {float:"left", height:"100vh", width:"50vw", borderRight: "1px solid"},
+    {float:"left", height:"100vh", width:"50vw", borderLeft: "1px solid"}
+]
+
 const CompareViews = React.forwardRef<ComponentRef, Props>(({
                           cameraOption = CameraOption.perspective,
                           //styles = [{},{}],
@@ -34,6 +39,9 @@ const CompareViews = React.forwardRef<ComponentRef, Props>(({
     const[synchronizer] = useState<Synchronizer>(new SynchronizerImpl)
 
     const refs :  React.RefObject<ComponentRef>[] = [useRef<ComponentRef>(null), useRef<ComponentRef>(null)]
+    const divRef = useRef<HTMLDivElement>(null)
+
+    const [isFullscreen, setIsFS] = useState<boolean>(false)
 
     useImperativeHandle(ref, (): ComponentRef =>({
         resetCamera(): void{
@@ -46,10 +54,10 @@ const CompareViews = React.forwardRef<ComponentRef, Props>(({
         }
     }), [refs[0].current, refs[1].current]);
 
-    return<div>
+    return<div ref={divRef}>
         {props.models.map((model, index)=>
             <SynchronizedView key={index}
-                              style={props.styles?.at(index)}
+                              style={isFullscreen ? fullscreenStyles[index] : props.styles?.at(index)}
                               cursorOption={props.cursorOption}
                               cameraOption={cameraOption}
                               model={model}
@@ -58,6 +66,9 @@ const CompareViews = React.forwardRef<ComponentRef, Props>(({
                               environmentParams={props.environmentParams}
                               sensitivity={props.sensitivity}
                               ref={refs[index]}
+                              isFullscreen={isFullscreen}
+                              setIsFS={setIsFS}
+                              divRef={divRef}
             />
         )}
     </div>

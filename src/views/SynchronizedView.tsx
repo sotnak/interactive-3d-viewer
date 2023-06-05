@@ -13,6 +13,7 @@ import CustomModal from "../misc/CustomModal";
 import ComponentRef from "../misc/ComponentRef";
 import ControlsSensitivity from "../misc/ControlsSensitivity";
 import {CameraPositions} from "../misc/PredefinedCamerasModule";
+import FullscreenToggle from "../misc/FullscreenToggle";
 
 interface Props {
     style?: React.CSSProperties
@@ -24,6 +25,9 @@ interface Props {
     cursorOption?: {style: CursorStyleOption; event?: CursorEventOption}
     environmentParams?: EnvironmentParams
     sensitivity?: ControlsSensitivity
+    setIsFS: React.Dispatch<React.SetStateAction<boolean>>
+    isFullscreen: boolean
+    divRef: React.RefObject<HTMLDivElement>
 }
 
 const SynchronizedView = React.forwardRef<ComponentRef, Props>(({
@@ -147,6 +151,7 @@ const SynchronizedView = React.forwardRef<ComponentRef, Props>(({
         <div style={style}>
             <ProgressBar animated={false} now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
             <canvas ref={canvasRef}/>
+            <FullscreenToggle isFullscreen={props.isFullscreen} setIsFS={props.setIsFS} divRef={props.divRef}/>
 
             {errorMessage ? <CustomModal messsage={errorMessage} handleClose={ ()=>{setEM(undefined)} }/> : null}
         </div>

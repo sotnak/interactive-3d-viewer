@@ -12,6 +12,7 @@ import CustomModal from "../misc/CustomModal";
 import ComponentRef from "../misc/ComponentRef";
 import ControlsSensitivity from "../misc/ControlsSensitivity";
 import {CameraPositions} from "../misc/PredefinedCamerasModule";
+import FullscreenToggle from "../misc/FullscreenToggle";
 
 
 interface Props {
@@ -25,6 +26,8 @@ interface Props {
     environmentParams?: EnvironmentParams
     sensitivity?: ControlsSensitivity
 }
+
+const fullscreenStyle: React.CSSProperties = {width:"100vw", height:"100vh"}
 
 const ModelCompare = React.forwardRef<ComponentRef, Props>(({
                           style = {},
@@ -44,9 +47,11 @@ const ModelCompare = React.forwardRef<ComponentRef, Props>(({
     }
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const divRef = useRef<HTMLDivElement>(null)
 
     const [mcl, setMcl] = useState<ModelCompareLogic>()
     const [loadPercentage, setLP] = useState<number>(0)
+    const [isFullscreen, setIsFS] = useState<boolean>(false)
 
     const [errorMessage, setEM] = useState<string | undefined>(undefined)
 
@@ -134,9 +139,10 @@ const ModelCompare = React.forwardRef<ComponentRef, Props>(({
     }), [mcl]);
 
     return (
-        <div style={style}>
+        <div style={ isFullscreen ? fullscreenStyle : style} ref={divRef}>
             <ProgressBar animated={false} now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
             <canvas ref={canvasRef} />
+            <FullscreenToggle isFullscreen={isFullscreen} setIsFS={setIsFS} divRef={divRef}/>
 
             {errorMessage ? <CustomModal messsage={errorMessage} handleClose={ ()=>{setEM(undefined)} }/> : null}
         </div>
