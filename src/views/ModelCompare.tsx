@@ -42,9 +42,7 @@ const ModelCompare = React.forwardRef<ComponentRef, Props>(({
     if(props.models.length!=2)
         throw new Error("2 models must be supplied")
 
-    if( style.height || (style.top && style.bottom) ){} else {
-        style.height = 450
-    }
+    style = styleDefaults(style)
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const divRef = useRef<HTMLDivElement>(null)

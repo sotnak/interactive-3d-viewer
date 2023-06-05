@@ -7,8 +7,8 @@ import {ModelFormat} from "../src/loading/ModelLoader";
 const env = require('../env.json')
 
 const styles: {[p: string]: string}[] = [
-    {position: 'absolute', width:'49%', left: '0px', top: '0px', bottom: '10px'},
-    {position: 'absolute', width:'49%', right: '0px', top: '0px', bottom: '10px'}
+    {width: '45vw', height: '60vh', float: 'left'},
+    {width: '45vw', height: '60vh', float: 'left'}
 ]
 const models = [
     {url: 'http://109.123.202.213:3000/models/63074a95436ca90038a65720', format: ModelFormat.gltf},

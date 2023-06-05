@@ -39,9 +39,7 @@ const SynchronizedView = React.forwardRef<ComponentRef, Props>(({
                        ...props
                    }: Props, ref: React.Ref<ComponentRef>) => {
 
-    if( style.height || (style.top && style.bottom) ){} else {
-        style.height = 450
-    }
+    style = styleDefaults(style)
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 

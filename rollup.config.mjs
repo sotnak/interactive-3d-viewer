@@ -16,7 +16,8 @@ export default {
     external:[
       "react",
         "react-bootstrap",
-        "react-dom"
+        "react-dom",
+        "bootstrap-icons"
     ],
     plugins: [
         peerDepsExternal(),
