@@ -28,8 +28,6 @@ function buildGround(ground?: GroundParams, grid?: GridParams): THREE.Group{
         //@ts-ignore
         axesHelper.material.fog = false;
         group.add(axesHelper)
-
-        console.log(axesHelper)
     }
 
     const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshLambertMaterial( { color: RGBToString(ground?.color) ?? defaultGroundColor, depthWrite: ground?.depthWrite ?? true } ) );
