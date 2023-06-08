@@ -7,13 +7,13 @@ import ModelCompareLogic from "../logic/ModelCompareLogic";
 import {SelectorOption} from "../builders/SelectorBuilder";
 import EnvironmentParams from "../misc/EnvironmentParams";
 import {Model} from "../loading/ModelLoader";
-import {ProgressBar} from "react-bootstrap";
 import CustomModal from "../misc/CustomModal";
 import ComponentRef from "../misc/ComponentRef";
 import ControlsSensitivity from "../misc/ControlsSensitivity";
 import {CameraPositions} from "../misc/PredefinedCamerasModule";
 import FullscreenToggle from "../misc/FullscreenToggle";
 import styleDefaults from "../misc/styleDefaults";
+import CustomProgressBar from "../misc/CustomProgressBar";
 
 
 interface Props {
@@ -139,7 +139,7 @@ const ModelCompare = React.forwardRef<ComponentRef, Props>(({
 
     return (
         <div style={ isFullscreen ? fullscreenStyle : style} ref={divRef}>
-            <ProgressBar animated={false} now={loadPercentage} label={`${loadPercentage}%`} style={{position:'relative', zIndex:1, top:0, left:0, right:0}} />
+            <CustomProgressBar loadPercentage={loadPercentage} keepVisible={3000}/>
             <canvas ref={canvasRef} />
             <FullscreenToggle isFullscreen={isFullscreen} setIsFS={setIsFS} divRef={divRef}/>
 
